@@ -13,12 +13,7 @@ export function brandedEmail({ eyebrow, title, rows = [], panelHtml = "", button
   return `<!doctype html><html><body style="margin:0;padding:0;background:#f3f4f6">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:24px 12px"><tr><td align="center">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb">
-  <tr><td style="background:#000000;padding:18px 24px">
-    <table role="presentation" cellpadding="0" cellspacing="0"><tr>
-      <td style="vertical-align:middle"><img src="cid:bv-logo" width="31" height="30" alt="" style="display:block;border:0;outline:none"></td>
-      <td style="vertical-align:middle;padding-left:11px;font-family:${SANS};font-size:18px;line-height:1;font-weight:800;color:#ffffff"><strong style="font-weight:800">BoothVue</strong></td>
-    </tr></table>
-  </td></tr>
+  ${emailHeader()}
   <tr><td style="padding:26px 24px 6px">
     <div style="font-family:${MONO};font-size:11px;line-height:1;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#2563eb">${esc(eyebrow)}</div>
     <div style="font-family:${SANS};font-size:22px;line-height:1.3;font-weight:700;color:#111827;margin-top:10px">${esc(title)}</div>
@@ -91,11 +86,19 @@ export function emailFooter({ note = "", links = [] } = {}) {
       <td style="vertical-align:middle"><a href="${site}"><img src="cid:bv-logo" width="42" height="41" alt="BoothVue" style="display:block;border:0"></a></td>
       <td style="vertical-align:middle;padding-left:11px"><a href="${site}" style="font:700 26px/1 ${FF};color:#ffffff;letter-spacing:-.02em;text-decoration:none">Booth<span style="color:${VUE}">Vue</span></a></td>
     </tr></table>
-    <p style="margin:14px 0 18px;font:400 17px/1.3 ${FF};color:#ffffff;letter-spacing:-.01em">See your booth <b>before it&rsquo;s built</b></p>
+    <p style="margin:11px 0 18px;font:400 17px/1.3 ${FF};color:#ffffff;letter-spacing:-.01em">See your booth <b>before it&rsquo;s built</b></p>
     <table role="presentation" align="center" cellpadding="0" cellspacing="0" style="margin:0 auto 35px"><tr>${btn(site + "/app/", "OPEN THE STUDIO")}${btn(share, "SHARE BOOTHVUE")}${btn(site + "/#contact", "CONTACT US")}</tr></table>
     ${note ? `<p style="margin:0 0 3px;font:11.5px/1.6 ${FF};color:#cfd6e3">${esc(note)}</p>` : ""}
     <p style="margin:0 0 3px;font:11.5px/1.6 ${FF};color:#cfd6e3">Questions? <a href="mailto:support@boothvue.co" style="color:#ffffff;text-decoration:none">support@boothvue.co</a> &middot; <a href="${site}" style="color:#ffffff;text-decoration:none">${host === "staging.boothvue.co" ? "boothvue.co" : host}</a></p>
     <p style="margin:15px 0 6px;font:11.5px/1.6 ${FF};color:#cfd6e3">${all.map(a).join(" &nbsp;|&nbsp; ")}</p>
     <p style="margin:12px 0 0;font:10.5px/1.6 ${FF};color:#8c95a6">&copy; ${new Date().getFullYear()} <b style="color:#cfd6e3">BoothVue&trade;</b>. All rights reserved. BoothVue and the BoothVue logo are trademarks of 8ThirtyOne.</p>
   </td></tr>`;
+}
+
+// Dark header for every BoothVue email, matching FoldVue: logo, wordmark with "Vue" in blue, tagline underneath.
+export function emailHeader() {
+  return `<tr><td style="background:#0d1526;padding:24px 28px 22px"><table role="presentation" cellpadding="0" cellspacing="0"><tr>
+    <td style="width:34px;vertical-align:top"><a href="${SITE}"><img src="cid:bv-logo" width="34" height="33" alt="BoothVue" style="display:block;border:0"></a></td>
+    <td style="padding-left:10px;font:700 22px/1 ${FF};color:#ffffff;letter-spacing:-.02em">Booth<span style="color:${VUE}">Vue</span><div style="margin-top:5px;font:400 14px/1.3 ${FF};color:#aab3c3;letter-spacing:0">See your booth before it&rsquo;s built</div></td>
+  </tr></table></td></tr>`;
 }

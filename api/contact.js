@@ -5,7 +5,7 @@
 //   CONTACT_FROM     a sender on the verified domain, e.g. "BoothVue <contact@boothvue.co>"
 // Without them, messages are only logged to the function logs.
 import { LOGO_PNG_BASE64 } from "./_logo.js";
-import { emailFooter } from "./_email.js";
+import { emailFooter, emailHeader } from "./_email.js";
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -23,12 +23,7 @@ function emailHtml(msg) {
   return `<!doctype html><html><body style="margin:0;padding:0;background:#f3f4f6">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:24px 12px"><tr><td align="center">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb">
-  <tr><td style="background:#000000;padding:18px 24px">
-    <table role="presentation" cellpadding="0" cellspacing="0"><tr>
-      <td style="vertical-align:middle"><img src="cid:bv-logo" width="31" height="30" alt="" style="display:block;border:0;outline:none"></td>
-      <td style="vertical-align:middle;padding-left:11px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:18px;line-height:1;font-weight:800;color:#ffffff"><strong style="font-weight:800">BoothVue</strong></td>
-    </tr></table>
-  </td></tr>
+  ${emailHeader()}
   <tr><td style="padding:26px 24px 6px">
     <div style="font:600 11px/1 Menlo,Consolas,monospace;letter-spacing:.2em;text-transform:uppercase;color:#2563eb">New contact message</div>
     <div style="font:700 22px/1.3 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#111827;margin-top:10px">${esc(msg.topic || "General question")} from ${esc(msg.name)}</div>

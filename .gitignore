@@ -4,3 +4,8 @@ node_modules/
 .env.*
 .DS_Store
 shots/
+
+# Local key files, never commit
+*key*.rtf
+*key*.txt
+*.rtf
