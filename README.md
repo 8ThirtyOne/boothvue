@@ -23,10 +23,10 @@ Landing site and 3D trade show booth designer, staged at `staging.boothvue.co`.
 | `thanks/index.html` | Page shown after a successful payment |
 | `js/config.js`, `js/accounts.js` | Supabase sign-in (email links) and the signed-in customer's active pass |
 | `api/_db.js` | Server access to the passes table (SUPABASE_URL, SUPABASE_SECRET_KEY) |
-| `supabase/schema.sql` | Database setup, run once in the Supabase SQL Editor |
-| `supabase/002_ai_limits.sql` | Adds AI action limits per pass; run after schema.sql |
-| `supabase/003_designs.sql` | Designs table for saved designs and share links |
-| `supabase/004_renders.sql` | Renders table, image and video credit functions, public "renders" storage bucket |
+| `supabase/migrations/001_schema.sql` | Database setup, run once in the Supabase SQL Editor |
+| `supabase/migrations/002_ai_limits.sql` | Adds AI action limits per pass; run after 001_schema.sql |
+| `supabase/migrations/003_designs.sql` | Designs table for saved designs and share links |
+| `supabase/migrations/004_renders.sql` | Renders table, image and video credit functions, public "renders" storage bucket |
 | `terms/`, `privacy/`, `refunds/` | Legal pages (drafts: fill in the highlighted details and have them reviewed) |
 
 ## Hosting (Vercel)

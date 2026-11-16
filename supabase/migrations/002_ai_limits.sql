@@ -1,6 +1,6 @@
 -- BoothVue: AI action limits per pass.
 -- Run once in Supabase: SQL Editor -> New query -> paste all of this -> Run.
--- (Run after schema.sql. Safe to run again.)
+-- (Run after 001_schema.sql. Safe to run again.)
 
 alter table public.passes add column if not exists ai_total integer not null default 0;
 alter table public.passes add column if not exists ai_used  integer not null default 0 check (ai_used >= 0);

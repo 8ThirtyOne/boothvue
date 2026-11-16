@@ -128,7 +128,7 @@ export async function passById(id) {
   return rows && rows[0] ? rows[0] : null;
 }
 
-// ── Refunds (needs supabase/007_refunds.sql)
+// ── Refunds (needs supabase/migrations/007_refunds.sql)
 export async function passBySession(session) {
   const rows = await rest(`passes?select=*&stripe_session=eq.${encodeURIComponent(session)}&limit=1`);
   return rows && rows[0] ? rows[0] : null;
@@ -154,7 +154,7 @@ export async function takeBackTopup(t) {
   return Array.isArray(rows) && rows[0] ? rows[0] : null;
 }
 
-// ── A/B tests (needs supabase/008_ab_tests.sql)
+// ── A/B tests (needs supabase/migrations/008_ab_tests.sql)
 export async function recordAbEvent({ test, variant, event, visitor }) {
   await rest("ab_events", { method: "POST", body: { test, variant, event, visitor }, prefer: "return=minimal" });
 }
