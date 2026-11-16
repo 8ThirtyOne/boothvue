@@ -1,4 +1,4 @@
--- AI Booth Studio: handy admin queries for the Supabase SQL Editor.
+-- BoothVue: handy admin queries for the Supabase SQL Editor.
 -- These are NOT setup scripts. Run one query at a time: select the lines you want, then Run (Cmd+Enter).
 -- Replace customer@example.com with the customer's email.
 --

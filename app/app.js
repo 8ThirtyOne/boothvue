@@ -1,4 +1,4 @@
-// AI Booth Studio app (split out of index.html). Classic script: functions stay global for the page's inline handlers.
+// BoothVue app (split out of index.html). Classic script: functions stay global for the page's inline handlers.
 // ═══════════════════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════════════════
@@ -11,7 +11,7 @@ const S = {
   cornerSide: "left", floorTrim: false, placed: [], boothType: "inline", system: "seg", units: "ft", corner: "sharp", cladding: "single", ceiling: "none", endCap: "none", power: true, measures: [], showDims: false, showElDims: false, edits: {}, added: [], noText: false, drags: {}, knownSize: null, custom: null, lightAdj: { bright: 1, warm: 0, floorColor: null },
   furn: new Set(),
   brand: {
-    company: 'AI BOOTH STUDIO', tagline: 'Design. Build. Show.',
+    company: 'BOOTHVUE', tagline: 'Design. Build. Show.',
     primary: '#0a84ff', secondary: '#ff9f0a', accent: '#ffffff', bg: '#101820',
     graphicStyle: 'solid', logoScale: 1, lightStyle: 'warm', lightInt: 0.7,
   },
@@ -2022,7 +2022,7 @@ function addHallDetail(addE) {
 // High-resolution export
 let exporting = false;
 function setExportMsg(t) { document.getElementById('export-msg').textContent = t; }
-// Free exports carry a small "Made with AI Booth Studio" mark; anyone with an active pass gets clean images.
+// Free exports carry a small "Made with BoothVue" mark; anyone with an active pass gets clean images.
 function hasActivePass() { return !!(acct.live && acct.signedIn && acct.row && new Date(acct.row.ends_at) > new Date()); }
 const LOGO_PATHS = ['M128.6 61 81.6 45.8V23.5l73.5 27z', 'M71.9,141.9V23.5L25.8,58.3l-9.5,104,1.5-.5c15.2-9.9,33.5-16.8,53.6-19.6l.6-.2Z', 'M160,56.6l-34.9,12.9v73.8c15.6,3,30,8.5,42.5,15.9l-7.6-102.6Z'];
 async function watermarked(src, W, H) {
@@ -2031,7 +2031,7 @@ async function watermarked(src, W, H) {
   try { await document.fonts.load('700 20px "Bricolage Grotesque"'); } catch {}
   const u = Math.max(W, H) / 100;                        // 1% of the long side
   const fs = Math.round(u * 1.25), pad = Math.round(u * .8), logo = Math.round(fs * 1.5), gap = Math.round(u * .6);
-  const main = 'Made with AI Booth Studio', site = 'aiboothstudio.com';
+  const main = 'Made with BoothVue', site = 'aiboothstudio.com';
   g.font = `700 ${fs}px "Bricolage Grotesque", system-ui, sans-serif`; const mw = g.measureText(main).width;
   g.font = `500 ${fs}px "Bricolage Grotesque", system-ui, sans-serif`; const sw = g.measureText(site).width;
   const sep = Math.round(fs * .9), bw = pad * 2 + logo + gap + mw + sep + sw, bh = pad * 2 + logo, m = Math.round(u * 1.6);
@@ -2258,7 +2258,7 @@ async function exportModel() {
   btn.disabled = true; msg.textContent = 'Building the 3D model…';
   try {
     const glb = await buildGlb();
-    const readme = new TextEncoder().encode(`AI Booth Studio 3D model\n\nbooth.glb is a binary glTF 2.0 file in meters, Y up, with materials and textures embedded.\nIt opens in Blender (File > Import > glTF 2.0), SketchUp, 3ds Max, Cinema 4D, Unreal, Unity and most AI 3D tools.\nLights are included as KHR_lights_punctual; the show floor, crowd and background are not part of the model.\n`);
+    const readme = new TextEncoder().encode(`BoothVue 3D model\n\nbooth.glb is a binary glTF 2.0 file in meters, Y up, with materials and textures embedded.\nIt opens in Blender (File > Import > glTF 2.0), SketchUp, 3ds Max, Cinema 4D, Unreal, Unity and most AI 3D tools.\nLights are included as KHR_lights_punctual; the show floor, crowd and background are not part of the model.\n`);
     const zip = zipStore([{ name: 'booth.glb', data: glb }, { name: 'README.txt', data: readme }]);
     msg.textContent = 'Waiting for you to confirm the save…';
     await downloads.save({ filename: 'booth-3d-model.zip', data: zip });
@@ -2641,7 +2641,7 @@ function heroCamera() {
 }
 function loadStartupScene() {
   const set = (id, v) => { const e = document.getElementById(id); if (e) { if (e.type === 'checkbox') e.checked = v; else e.value = v; } };
-  Object.assign(S.brand, { company: 'AI BOOTH STUDIO', tagline: 'Design. Build. Show.', primary: '#0f5c7a', secondary: '#f2a541', accent: '#ffffff', bg: '#0b1f2a', graphicStyle: 'gradient', lightStyle: 'warm', lightInt: .85 });
+  Object.assign(S.brand, { company: 'BOOTHVUE', tagline: 'Design. Build. Show.', primary: '#0f5c7a', secondary: '#f2a541', accent: '#ffffff', bg: '#0b1f2a', graphicStyle: 'gradient', lightStyle: 'warm', lightInt: .85 });
   [['company-name', S.brand.company], ['tagline', S.brand.tagline], ['graphic-style', 'gradient'], ['light-style', 'warm'], ['light-int', 85], ['floor-mat', 'laminate']]
     .forEach(([k, v]) => set(k, v));
   ['primary', 'secondary', 'accent', 'bg'].forEach(k => { set('col-' + k, S.brand[k]); set('hex-' + k, S.brand[k]); });
@@ -3208,7 +3208,7 @@ function serializeDesign() {
 function blankDesign() {
   return { v: 1, env: 'none', size: '10x10', custom: null, boothType: 'inline', system: 'seg', units: S.units, corner: 'sharp', cladding: 'single', ceiling: 'none', endCap: 'none', wallH: 8, sideH: 8, floorMat: 'carpet-solid', floorRiser: 'none', noText: false, power: true,
     els: { backwall: true, sidewalls: true, header: true, counter: true, shelf: false, lights: true, floor: true },
-    brand: { company: 'AI BOOTH STUDIO', tagline: 'Design. Build. Show.', primary: '#0a84ff', secondary: '#ff9f0a', accent: '#ffffff', bg: '#101820', graphicStyle: 'solid', logoScale: 1, lightStyle: 'warm', lightInt: .7 },
+    brand: { company: 'BOOTHVUE', tagline: 'Design. Build. Show.', primary: '#0a84ff', secondary: '#ff9f0a', accent: '#ffffff', bg: '#101820', graphicStyle: 'solid', logoScale: 1, lightStyle: 'warm', lightInt: .7 },
     furn: [], placed: [], added: [], edits: {}, drags: {} };
 }
 function applyDesign(raw) {
@@ -3254,7 +3254,7 @@ function syncControls() {
 const TEMPLATES = [
   { name: '10×10 starter', note: 'Inline, fabric back wall, counter and two chairs', d: { size: '10x10', boothType: 'inline', wallH: 8, sideH: 3, furn: ['chair-padded', 'plant'], els: { backwall: true, sidewalls: true, header: true, counter: true, shelf: false, lights: true, floor: true }, floorMat: 'carpet-solid', brand: { company: 'YOUR COMPANY', tagline: 'Visit us at the show.', primary: '#1f6feb', secondary: '#f2a541', accent: '#ffffff', bg: '#0d1b2a', graphicStyle: 'gradient', logoScale: 1, lightStyle: 'warm', lightInt: .8 }, env: 'showfloor' } },
   { name: '10×20 product demo', note: 'Inline, video wall, demo desk, plinths', d: { size: '10x20', boothType: 'inline', wallH: 8, sideH: 4, furn: ['uplight'], placed: [{ id: 't1', item: 'videowall', x: 1.3, z: -1.2, ry: 0 }, { id: 't2', item: 'laptop-desk', x: -1.4, z: .2, ry: 0 }, { id: 't3', item: 'plinth', x: .6, z: .5, ry: 0 }, { id: 't4', item: 'plinth', x: 2.2, z: .5, ry: 0 }, { id: 't5', item: 'banner', x: -2.6, z: 1.1, ry: .3 }], els: { backwall: true, sidewalls: true, header: true, counter: false, shelf: false, lights: true, floor: true }, floorMat: 'concrete', brand: { company: 'VOLTEDGE', tagline: 'See it run live.', primary: '#111827', secondary: '#22d3ee', accent: '#ffffff', bg: '#0b0f17', graphicStyle: 'geometric', logoScale: 1, lightStyle: 'cool', lightInt: .85 }, env: 'showfloor' } },
-  { name: '20×20 lounge', note: 'Peninsula, sofa, café table, kiosk, plants', d: { size: '20x20', boothType: 'peninsula', wallH: 10, sideH: 4, corner: 'rounded', furn: ['lounge', 'table-round', 'chair-padded', 'plant', 'uplight', 'pendant', 'brochure', 'kiosk'], floorMat: 'laminate', brand: { company: 'AI BOOTH STUDIO', tagline: 'Design. Build. Show.', primary: '#0f5c7a', secondary: '#f2a541', accent: '#ffffff', bg: '#0b1f2a', graphicStyle: 'gradient', logoScale: 1, lightStyle: 'warm', lightInt: .85 }, env: 'showfloor' } },
+  { name: '20×20 lounge', note: 'Peninsula, sofa, café table, kiosk, plants', d: { size: '20x20', boothType: 'peninsula', wallH: 10, sideH: 4, corner: 'rounded', furn: ['lounge', 'table-round', 'chair-padded', 'plant', 'uplight', 'pendant', 'brochure', 'kiosk'], floorMat: 'laminate', brand: { company: 'BOOTHVUE', tagline: 'Design. Build. Show.', primary: '#0f5c7a', secondary: '#f2a541', accent: '#ffffff', bg: '#0b1f2a', graphicStyle: 'gradient', logoScale: 1, lightStyle: 'warm', lightInt: .85 }, env: 'showfloor' } },
   { name: '20×20 island tower', note: 'Island, center wall, hanging ring sign, coffee bar', d: { size: '20x20', boothType: 'island', wallH: 12, sideH: 0, furn: ['plant'], placed: [{ id: 't1', item: 'coffee-bar', x: 0, z: 1.6, ry: 0 }, { id: 't2', item: 'stool', x: -.5, z: 2.4, ry: 0 }, { id: 't3', item: 'stool', x: .5, z: 2.4, ry: 0 }, { id: 't4', item: 'totem', x: -2.4, z: -1.8, ry: .4 }, { id: 't5', item: 'totem', x: 2.4, z: -1.8, ry: -.4 }, { id: 't6', item: 'cocktail', x: 2, z: 1.8, ry: 0 }], floorMat: 'dark-wood', brand: { company: 'HALCYON', tagline: 'Pause here.', primary: '#5b3df5', secondary: '#f9c74f', accent: '#ffffff', bg: '#1a1033', graphicStyle: 'diagonal', logoScale: 1.1, lightStyle: 'accent', lightInt: .8 }, env: 'showfloor' } },
   { name: '30×30 flagship', note: 'Island, display car, stage, meeting room, video wall', d: { size: '30x30', boothType: 'island', wallH: 12, sideH: 0, ceiling: 'none', furn: [], placed: [{ id: 't1', item: 'car', x: -1.8, z: 1.4, ry: .5 }, { id: 't2', item: 'stage', x: 2.6, z: 2.4, ry: 0 }, { id: 't3', item: 'meeting-room', x: 2.7, z: -2.8, ry: 0 }, { id: 't4', item: 'videowall', x: 0, z: -.7, ry: Math.PI }, { id: 't6', item: 'sofa', x: -3, z: -2.6, ry: 0 }, { id: 't7', item: 'tree', x: -4.1, z: -3.9, ry: 0 }], floorMat: 'marble', brand: { company: 'AURELIA MOTORS', tagline: 'The next drive.', primary: '#14213d', secondary: '#fca311', accent: '#ffffff', bg: '#0b1020', graphicStyle: 'gradient', logoScale: 1, lightStyle: 'daylight', lightInt: .9 }, env: 'showfloor' } },
   { name: 'Outdoor canopy', note: '10×10 pop-up tent, table, banner', d: { size: '10x10', boothType: 'island', system: 'canopy', wallH: 8, sideH: 0, els: { backwall: false, sidewalls: false, header: false, counter: false, shelf: false, lights: false, floor: true }, furn: [], placed: [{ id: 't1', item: 'conf-table', x: 0, z: -.4, ry: 0 }, { id: 't2', item: 'banner', x: -1.1, z: -.9, ry: .2 }, { id: 't3', item: 'chair', x: 0, z: -1.2, ry: 0 }], floorMat: 'rubber', brand: { company: 'TRAILHEAD', tagline: 'Gear for every season.', primary: '#2d6a4f', secondary: '#f4a261', accent: '#ffffff', bg: '#1b2b24', graphicStyle: 'solid', logoScale: 1, lightStyle: 'daylight', lightInt: .7 }, env: 'tent' } },
@@ -3433,7 +3433,7 @@ function openAccountPreview() {
       document.getElementById('acct-email').value = ''; done();
     };
     document.getElementById('acct-google').onclick = done;
-    document.getElementById('acct-buy').onclick = e => { e.preventDefault(); msg.textContent = 'Passes are listed on the AI Booth Studio website under Pricing.'; };
+    document.getElementById('acct-buy').onclick = e => { e.preventDefault(); msg.textContent = 'Passes are listed on the BoothVue website under Pricing.'; };
     return;
   }
   const p = GEN_PASSES[acct.pass], exp = new Date(Date.now() + PASS_DAYS[acct.pass] * 864e5);
@@ -3511,7 +3511,7 @@ REFERENCE IMAGES: ${aiRefs.length} image(s) are attached. Use them as the main v
       corner: enumOk(d.corner, ['sharp', 'rounded'], 'sharp'), cladding: enumOk(d.cladding, ['single', 'panels'], 'single'), ceiling: enumOk(d.ceiling, ['none', 'grid', 'fabric'], 'none'), endCap: enumOk(d.endCap, ['none', 'left', 'right', 'both'], 'none'),
       floorMat: enumOk(d.floorMat, ['carpet-solid', 'carpet-tile', 'vinyl', 'laminate', 'dark-wood', 'marble', 'concrete', 'rubber'], 'carpet-solid'),
       els: d.els && typeof d.els === 'object' ? Object.fromEntries(Object.entries(d.els).map(([k, v]) => [k, !!v])) : undefined,
-      brand: { ...blankDesign().brand, ...(d.brand || {}), company: String(d.brand?.company || 'AI BOOTH STUDIO').slice(0, 40), tagline: String(d.brand?.tagline || '').slice(0, 80), lightInt: Math.max(.3, Math.min(1, num(d.brand?.lightInt, .8))) },
+      brand: { ...blankDesign().brand, ...(d.brand || {}), company: String(d.brand?.company || 'BOOTHVUE').slice(0, 40), tagline: String(d.brand?.tagline || '').slice(0, 80), lightInt: Math.max(.3, Math.min(1, num(d.brand?.lightInt, .8))) },
       env: enumOk(d.env, ['showfloor', 'convention', 'openfloor', 'drama', 'studio', 'tent'], 'showfloor'),
     };
     if (design.size === 'custom' && !design.custom) design.size = '20x20';
@@ -3598,7 +3598,7 @@ async function importDesignFile(e) {
     const j = JSON.parse(await f.text());
     if (!j || j.boothStudioDesign !== 1 || typeof j.design !== 'object') throw 0;
     closeModal(); applyDesign(j.design);
-  } catch { dsMsg('That file is not an AI Booth Studio design.'); }
+  } catch { dsMsg('That file is not an BoothVue design.'); }
 }
 
 // ═══ UI shell: sidebar with brand and tabs, collapsible sections, floating canvas controls ═══
@@ -3741,7 +3741,7 @@ function loadStartupScene() {
     size: '20x20', boothType: 'peninsula', system: 'seg', wallH: 10, sideH: 0, corner: 'sharp',
     els: { backwall: true, sidewalls: false, header: false, counter: false, shelf: false, lights: false, floor: true },
     floorMat: 'carpet-solid', floorTrim: false, furn: [],
-    brand: { company: 'AI BOOTH STUDIO', tagline: 'Design. Build. Show.', primary: '#0f5c7a', secondary: '#f2a541', accent: '#ffffff', bg: '#0b1f2a', graphicStyle: 'gradient', logoScale: .85, lightStyle: 'warm', lightInt: .85 },
+    brand: { company: 'BOOTHVUE', tagline: 'Design. Build. Show.', primary: '#0f5c7a', secondary: '#f2a541', accent: '#ffffff', bg: '#0b1f2a', graphicStyle: 'gradient', logoScale: .85, lightStyle: 'warm', lightInt: .85 },
     placed: [
       { id: 'start-podium', item: 'podium', x: -1.75, z: 1.25, ry: .35 },
       { id: 'start-table', item: 'cocktail', x: .45, z: .35, ry: 0 },
@@ -3921,7 +3921,7 @@ function starterDesign(sizeKey) {
     size: key, boothType: 'peninsula', system: 'seg', wallH: 10, sideH: 0, corner: 'sharp', units: S.units,
     els: { backwall: true, sidewalls: false, header: false, counter: false, shelf: false, lights: false, floor: true },
     floorMat: 'carpet-solid', floorTrim: false, furn: [],
-    brand: { company: 'AI BOOTH STUDIO', tagline: 'Design. Build. Show.', primary: '#0f5c7a', secondary: '#f2a541', accent: '#ffffff', bg: '#0b1f2a', graphicStyle: 'gradient', logoScale: .85, lightStyle: 'warm', lightInt: .85 },
+    brand: { company: 'BOOTHVUE', tagline: 'Design. Build. Show.', primary: '#0f5c7a', secondary: '#f2a541', accent: '#ffffff', bg: '#0b1f2a', graphicStyle: 'gradient', logoScale: .85, lightStyle: 'warm', lightInt: .85 },
     placed: starterPlaced(wM, dM), env: 'showfloor',
   };
 }

@@ -1,4 +1,4 @@
--- AI Booth Studio: extra AI Build actions bought on top of a pass (packs of 10).
+-- BoothVue: extra AI Build actions bought on top of a pass (packs of 10).
 -- Run once in Supabase: SQL Editor -> New query -> paste all of this -> Run. (Safe to run again.)
 
 -- Top-up purchases can now also be AI Build actions.

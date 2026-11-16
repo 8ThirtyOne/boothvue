@@ -85,7 +85,7 @@ export default async function handler(req, res) {
         button: { href: dashboard, label: "View in Stripe" },
         footer: `Stripe session ${s.id}`,
       });
-      const text = [`${mode} purchase on AI Booth Studio`, "", `Pass: ${passName}`, `Amount: ${paid}`, `Customer: ${email}`, `Stripe: ${dashboard}`, "", recorded ? "The pass is switched on." : "This pass still needs to be activated by hand."].join("\n");
+      const text = [`${mode} purchase on BoothVue`, "", `Pass: ${passName}`, `Amount: ${paid}`, `Customer: ${email}`, `Stripe: ${dashboard}`, "", recorded ? "The pass is switched on." : "This pass still needs to be activated by hand."].join("\n");
       await sendToOwner({ subject: `${test ? "[Test] " : ""}New purchase: ${passName} (${paid})`, text, html, replyTo: email !== "unknown" ? email : undefined });
 
       // Confirmation to the customer
@@ -108,8 +108,8 @@ export default async function handler(req, res) {
             ["Account email", esc(email)],
           ],
           panelHtml: steps,
-          button: { href: `${site}/app/#signin`, label: "Open AI Booth Studio" },
-          footer: "Thanks for choosing AI Booth Studio. Your card receipt comes separately from Stripe. Questions? Just reply to this email.",
+          button: { href: `${site}/app/#signin`, label: "Open BoothVue" },
+          footer: "Thanks for choosing BoothVue. Your card receipt comes separately from Stripe. Questions? Just reply to this email.",
         });
         const custText = [
           `Your ${passName} is ready${test ? " (test purchase)" : ""}.`, "",
@@ -117,7 +117,7 @@ export default async function handler(req, res) {
           recorded ? `Open ${site}/app/ and sign in with ${email} to start designing.` : "Your pass is being switched on and will be ready shortly.",
           "", "Your card receipt comes separately from Stripe. Questions? Just reply to this email.",
         ].join("\n");
-        await sendToCustomer({ to: email, subject: `${test ? "[Test] " : ""}Your AI Booth Studio ${passName} is ready`, text: custText, html: custHtml });
+        await sendToCustomer({ to: email, subject: `${test ? "[Test] " : ""}Your BoothVue ${passName} is ready`, text: custText, html: custHtml });
       }
 
     }
@@ -173,13 +173,13 @@ async function handleTopup(req, res, event, s) {
     await sendToCustomer({
       to: email,
       subject: `${test ? "[Test] " : ""}Your ${what} ${units === 1 ? "is" : "are"} ready`,
-      text: `${what} ${units === 1 ? "was" : "were"} added to your AI Booth Studio pass${until ? `. Use ${units === 1 ? "it" : "them"} by ${until}` : ""}.\nOpen ${site}/app/ and click ${kind === "ai" ? "AI Build" : "AI Render"}.`,
+      text: `${what} ${units === 1 ? "was" : "were"} added to your BoothVue pass${until ? `. Use ${units === 1 ? "it" : "them"} by ${until}` : ""}.\nOpen ${site}/app/ and click ${kind === "ai" ? "AI Build" : "AI Render"}.`,
       html: brandedEmail({
         eyebrow: test ? "Payment confirmed · test" : "Payment confirmed",
         title: `Your ${what} ${units === 1 ? "is" : "are"} ready`,
         rows,
         panelHtml: added ? `Already on your pass. Open the app and click <b>${kind === "ai" ? "AI Build" : "AI Render"}</b> to use them.` : "They're being added to your pass and will be ready shortly.",
-        button: { href: `${site}/app/`, label: "Open AI Booth Studio" },
+        button: { href: `${site}/app/`, label: "Open BoothVue" },
         footer: "Your card receipt comes separately from Stripe. Questions? Just reply to this email.",
       }),
     });

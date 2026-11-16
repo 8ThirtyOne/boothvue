@@ -1,4 +1,4 @@
--- AI Booth Studio: extra image and video credits bought on top of a pass.
+-- BoothVue: extra image and video credits bought on top of a pass.
 -- Run once in Supabase: SQL Editor -> New query -> paste all of this -> Run. (Safe to run again.)
 
 -- One row per paid top-up. The Stripe session is unique, so a resent Stripe notice never adds credits twice.

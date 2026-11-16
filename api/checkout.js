@@ -32,7 +32,7 @@ export default async function handler(req, res) {
       "line_items[0][quantity]": String(qty),
       "line_items[0][price_data][currency]": "usd",
       "line_items[0][price_data][unit_amount]": String(addon.amount),
-      "line_items[0][price_data][product_data][name]": `AI Booth Studio ${addon.name}`,
+      "line_items[0][price_data][product_data][name]": `BoothVue ${addon.name}`,
       "line_items[0][price_data][product_data][description]": addonId === "ai"
         ? `Each pack adds 10 AI Build actions to your pass (AI Build, photo to 3D, prompt writing). Use them by ${until}, when your pass ends.`
         : `Added to your pass for photo-realistic AI Render ${addonId === "video" ? "10-second videos" : "images"}. Use them by ${until}, when your pass ends.`,
@@ -53,7 +53,7 @@ export default async function handler(req, res) {
       "line_items[0][quantity]": "1",
       "line_items[0][price_data][currency]": "usd",
       "line_items[0][price_data][unit_amount]": String(plan.amount),
-      "line_items[0][price_data][product_data][name]": `AI Booth Studio ${plan.name}`,
+      "line_items[0][price_data][product_data][name]": `BoothVue ${plan.name}`,
       "line_items[0][price_data][product_data][description]": `${plan.days} days of full access, ${plan.ai} AI Build actions, ${plan.images} AI images and ${plan.videos} 10-second AI video${plan.videos === 1 ? "" : "s"}. One-time payment, no subscription.`,
       customer_creation: "always",
       billing_address_collection: "auto",

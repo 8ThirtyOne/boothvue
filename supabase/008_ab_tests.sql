@@ -1,4 +1,4 @@
--- AI Booth Studio: A/B test counts (views and clicks per version of a page section).
+-- BoothVue: A/B test counts (views and clicks per version of a page section).
 -- Run once in Supabase: SQL Editor -> New query -> paste all of this -> Run. (Safe to run again.)
 -- Stores no personal data: just the test, the version shown, what happened and a random visitor id.
 create table if not exists public.ab_events (
