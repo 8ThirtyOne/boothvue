@@ -2031,7 +2031,7 @@ async function watermarked(src, W, H) {
   try { await document.fonts.load('700 20px "Bricolage Grotesque"'); } catch {}
   const u = Math.max(W, H) / 100;                        // 1% of the long side
   const fs = Math.round(u * 1.25), pad = Math.round(u * .8), logo = Math.round(fs * 1.5), gap = Math.round(u * .6);
-  const main = 'Made with BoothVue', site = 'aiboothstudio.com';
+  const main = 'Made with BoothVue', site = 'boothvue.co';
   g.font = `700 ${fs}px "Bricolage Grotesque", system-ui, sans-serif`; const mw = g.measureText(main).width;
   g.font = `500 ${fs}px "Bricolage Grotesque", system-ui, sans-serif`; const sw = g.measureText(site).width;
   const sep = Math.round(fs * .9), bw = pad * 2 + logo + gap + mw + sep + sw, bh = pad * 2 + logo, m = Math.round(u * 1.6);
@@ -3329,11 +3329,11 @@ async function queueGen(kind) {
   drawGen();
 }
 
-// Accounts: real sign-in through window.aibdAuth (Supabase) on the hosted site; a preview everywhere else.
-const acct = { signedIn: false, name: '', email: '', pass: 'month', row: null, live: !!window.aibdAuth };
+// Accounts: real sign-in through window.bvAuth (Supabase) on the hosted site; a preview everywhere else.
+const acct = { signedIn: false, name: '', email: '', pass: 'month', row: null, live: !!window.bvAuth };
 const PASS_DAYS = { week: 7, month: 30, year: 365 };
 const fmtDate = d => new Date(d).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
-if (window.aibdAuth) window.aibdAuth.onChange(st => {
+if (window.bvAuth) window.bvAuth.onChange(st => {
   acct.signedIn = !!st.user; acct.email = st.user?.email || ''; acct.name = acct.email; acct.row = st.pass;
   if (st.pass) { acct.pass = st.pass.plan; genState.pass = st.pass.plan; genState.used = { img: st.pass.images_used, vid: st.pass.videos_used }; }
   drawAcctBtn();
@@ -3356,7 +3356,7 @@ function openAccountLive() {
       const v = input.value.trim();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { msg.textContent = 'Enter a valid email address.'; return; }
       btn.disabled = true; msg.textContent = 'Sending…';
-      try { await window.aibdAuth.sendLink(v); showSent(v); return; }
+      try { await window.bvAuth.sendLink(v); showSent(v); return; }
       catch (e) { msg.textContent = /rate|seconds|too many/i.test(e?.message || '') ? 'Too many sign-in emails. Wait a minute and try again.' : "Couldn't send the sign-in link. Try again."; }
       btn.disabled = false;
     };
@@ -3382,7 +3382,7 @@ function openAccountLive() {
       const timer = setInterval(tick, 1000);
       resend.onclick = async () => {
         resend.disabled = true; m2.textContent = 'Sending…';
-        try { await window.aibdAuth.sendLink(email); showSent(email); }
+        try { await window.bvAuth.sendLink(email); showSent(email); }
         catch (e) { m2.textContent = /rate|seconds|too many/i.test(e?.message || '') ? 'Too many sign-in emails. Wait a minute and try again.' : "Couldn't send the sign-in link. Try again."; resend.disabled = false; }
       };
       document.getElementById('acct-change').onclick = () => openAccountLive();
@@ -3402,8 +3402,8 @@ function openAccountLive() {
     <div class="acct-msg" id="acct-msg" aria-live="polite"></div>`;
   document.getElementById('acct-who').textContent = acct.email;
   const more = document.getElementById('acct-more'); if (more) more.onclick = () => (window.openBuyExtras || window.openGenerate)();
-  const rf = document.getElementById('acct-refresh'); if (rf) rf.onclick = async () => { rf.disabled = true; await window.aibdAuth.refresh(); };
-  document.getElementById('acct-out').onclick = async () => { await window.aibdAuth.signOut(); closeModal(); };
+  const rf = document.getElementById('acct-refresh'); if (rf) rf.onclick = async () => { rf.disabled = true; await window.bvAuth.refresh(); };
+  document.getElementById('acct-out').onclick = async () => { await window.bvAuth.signOut(); closeModal(); };
 }
 function drawAcctBtn() {
   const b = document.getElementById('acct-btn'); if (!b) return;

@@ -1,7 +1,7 @@
 // AI Render, live version: photo-realistic images and videos from the current view, using the customer's pass credits.
 // Loaded after app.js on the hosted site. Replaces the preview AI Render window.
 (function () {
-  const auth = window.aibdAuth;
+  const auth = window.bvAuth;
   if (!auth) return; // not on the hosted site: keep the preview
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
   const live = { items: [], polling: new Map(), loaded: false, mode: 'upgrade' };
@@ -191,14 +191,14 @@
 // Back from buying extra credits: show the AI Render window and pick up the new credits.
 (function afterCreditPurchase() {
   const q = new URLSearchParams(location.search);
-  if (q.get('credits') !== 'added' || !window.aibdAuth) return;
+  if (q.get('credits') !== 'added' || !window.bvAuth) return;
   const kind = q.get('kind'); q.delete('credits'); q.delete('kind'); history.replaceState(null, '', location.pathname + (q.toString() ? `?${q}` : '') + location.hash);
   let shown = false;
   const show = () => {
     if (shown || !acct.signedIn) return; shown = true;
     if (kind === 'ai') { openAccount(); const m = document.getElementById('acct-msg'); if (m) m.textContent = 'Payment received. Your extra AI Build actions appear here in a few seconds.'; }
     else { window.openGenerate(); const st = document.getElementById('gen-status'); if (st) st.textContent = 'Payment received. Your extra credits appear here in a few seconds.'; }
-    [3000, 8000, 15000].forEach(ms => setTimeout(() => window.aibdAuth.refresh(), ms));
+    [3000, 8000, 15000].forEach(ms => setTimeout(() => window.bvAuth.refresh(), ms));
   };
-  window.aibdAuth.onChange(show); setTimeout(show, 1500);
+  window.bvAuth.onChange(show); setTimeout(show, 1500);
 })();

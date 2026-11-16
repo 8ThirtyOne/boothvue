@@ -36,6 +36,6 @@ export default async function handler(req, res) {
   const text = [`${decision.label}: ${PAGES[page]}`, `From: ${who}${email && name ? ` <${email}>` : ""}`, "", comments || "(no comments)"].join("\n");
   const sent = await sendToOwner({ subject: `Review reply · ${decision.label} · ${PAGES[page]} (${who})`, text, html, replyTo: email || undefined }).catch(() => false);
   console.log("review reply", JSON.stringify({ page, decision: b.decision, from: who, sent: !!sent }));
-  if (sent === false) return res.status(502).json({ code: "send_failed", message: "Your reply couldn't be sent. Please email support@aiboothstudio.com instead." });
+  if (sent === false) return res.status(502).json({ code: "send_failed", message: "Your reply couldn't be sent. Please email support@boothvue.co instead." });
   return res.status(200).json({ ok: true });
 }

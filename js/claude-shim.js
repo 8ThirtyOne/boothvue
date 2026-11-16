@@ -28,7 +28,7 @@
     for (const b of opts.images || []) images.push(await toJpegBase64(b));
     let res;
     const headers = { 'Content-Type': 'application/json' };
-    const token = window.aibdAuth ? await window.aibdAuth.token().catch(() => null) : null;
+    const token = window.bvAuth ? await window.bvAuth.token().catch(() => null) : null;
     if (token) headers.Authorization = `Bearer ${token}`;
     try {
       res = await fetch('/api/claude', {

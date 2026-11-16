@@ -2,7 +2,7 @@
 // Sends through Resend (resend.com) when these environment variables are set in Vercel:
 //   RESEND_API_KEY   the Resend API key
 //   CONTACT_TO       where messages go
-//   CONTACT_FROM     a sender on the verified domain, e.g. "BoothVue <contact@aiboothstudio.com>"
+//   CONTACT_FROM     a sender on the verified domain, e.g. "BoothVue <contact@boothvue.co>"
 // Without them, messages are only logged to the function logs.
 import { LOGO_PNG_BASE64 } from "./_logo.js";
 
@@ -24,7 +24,7 @@ function emailHtml(msg) {
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb">
   <tr><td style="background:#000000;padding:18px 24px">
     <table role="presentation" cellpadding="0" cellspacing="0"><tr>
-      <td style="vertical-align:middle"><img src="cid:aibd-logo" width="31" height="30" alt="" style="display:block;border:0;outline:none"></td>
+      <td style="vertical-align:middle"><img src="cid:bv-logo" width="31" height="30" alt="" style="display:block;border:0;outline:none"></td>
       <td style="vertical-align:middle;padding-left:11px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:18px;line-height:1;font-weight:800;color:#ffffff"><strong style="font-weight:800">BoothVue</strong></td>
     </tr></table>
   </td></tr>
@@ -39,7 +39,7 @@ function emailHtml(msg) {
   <tr><td style="padding:18px 24px 26px">
     <a href="mailto:${esc(msg.email)}?subject=${encodeURIComponent("Re: " + (msg.topic || "Your message to BoothVue"))}" style="display:inline-block;background:#2563eb;color:#ffffff;font:700 14px/1 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;text-decoration:none;padding:12px 20px;border-radius:999px">Reply to ${first}</a>
   </td></tr>
-  <tr><td style="padding:14px 24px;border-top:1px solid #e5e7eb;font:12px/1.5 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#9ca3af">Sent from the contact form at aiboothstudio.com.</td></tr>
+  <tr><td style="padding:14px 24px;border-top:1px solid #e5e7eb;font:12px/1.5 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#9ca3af">Sent from the contact form at boothvue.co.</td></tr>
 </table>
 </td></tr></table></body></html>`;
 }
@@ -73,7 +73,7 @@ export default async function handler(req, res) {
         subject: `New message: ${msg.topic || "General question"} from ${msg.name}`.replace(/[\r\n]+/g, " ").slice(0, 150),
         text,
         html: emailHtml(msg),
-        attachments: [{ filename: "boothvue-logo.png", content: LOGO_PNG_BASE64, content_id: "aibd-logo" }],
+        attachments: [{ filename: "boothvue-logo.png", content: LOGO_PNG_BASE64, content_id: "bv-logo" }],
       }),
     });
     if (!r.ok) {

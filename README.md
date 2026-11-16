@@ -1,6 +1,6 @@
 # BoothVue
 
-Landing site and 3D trade show booth designer, staged at `staging.aiboothstudio.com`.
+Landing site and 3D trade show booth designer, staged at `staging.boothvue.co`.
 
 | Path | What it is |
 |---|---|
@@ -34,7 +34,7 @@ Landing site and 3D trade show booth designer, staged at `staging.aiboothstudio.
 1. Import this repository in Vercel. No build step is needed; framework preset "Other".
 2. In **Settings → Environment Variables**, add `ANTHROPIC_API_KEY` (from console.anthropic.com). Without it the site works but the AI features say they aren't set up.
 3. In **Settings → Deployment Protection**, keep protection on while this is a test site.
-4. In **Settings → Domains**, add `staging.aiboothstudio.com`, then add the CNAME record Vercel shows in GoDaddy DNS.
+4. In **Settings → Domains**, add `staging.boothvue.co`, then add the CNAME record Vercel shows in GoDaddy DNS.
 
 Every push to `main` deploys; every other branch gets its own preview link.
 

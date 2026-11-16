@@ -1,8 +1,8 @@
 // Accounts: email sign-in links through Supabase Auth, and the signed-in customer's active pass.
-// Exposes window.aibdAuth for the app. Does nothing when Supabase isn't configured
+// Exposes window.bvAuth for the app. Does nothing when Supabase isn't configured
 // (the app then keeps its preview account window).
 (function () {
-  const cfg = window.AIBD_CONFIG || {};
+  const cfg = window.BV_CONFIG || {};
   if (!cfg.supabaseUrl || !cfg.supabasePublishableKey || !window.supabase) return;
 
   const client = window.supabase.createClient(cfg.supabaseUrl, cfg.supabasePublishableKey, {
@@ -35,7 +35,7 @@
   client.auth.getSession().then(({ data }) => update(data.session));
   client.auth.onAuthStateChange((_event, session) => { setTimeout(() => update(session), 0); });
 
-  window.aibdAuth = {
+  window.bvAuth = {
     state,
     client, // the signed-in Supabase client, used by the app for the customer's own designs
     userId() { return state.user ? state.user.id : null; },

@@ -1,7 +1,7 @@
 // Designs saved to the customer's account (Supabase), autosave, share links and the view-only mode for shared links.
 // Loaded after app.js. Signed-out visitors keep the original browser-only Designs window.
 (function () {
-  const auth = window.aibdAuth;
+  const auth = window.bvAuth;
   const baseOpenDesigns = window.openDesigns;
   const cloud = { id: null, name: '', lastSaved: '', timer: null, viewing: null };
   const signedIn = () => !!(auth && auth.state && auth.state.user);
