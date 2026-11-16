@@ -83,7 +83,7 @@ export function emailFooter({ note = "", links = [] } = {}) {
   const all = [...links, ["Privacy policy", site + "/privacy/"], ["Terms", site + "/terms/"]];
   return `<tr><td style="height:35px;line-height:35px;font-size:0">&nbsp;</td></tr><tr><td align="center" style="background:#0d1526;padding:49px 28px 30px;text-align:center">
     <table role="presentation" align="center" cellpadding="0" cellspacing="0" style="margin:0 auto"><tr>
-      <td style="vertical-align:middle"><a href="${site}"><img src="cid:bv-logo" width="42" height="41" alt="BoothVue" style="display:block;border:0"></a></td>
+      <td style="vertical-align:middle"><a href="${site}" style="display:block;width:42px;height:42px;background:#2563eb;border-radius:10px;text-decoration:none"><img src="cid:bv-logo" width="27" height="26" alt="BoothVue" style="display:block;border:0;margin:0 auto;padding-top:8px"></a></td>
       <td style="vertical-align:middle;padding-left:11px"><a href="${site}" style="font:700 26px/1 ${FF};color:#ffffff;letter-spacing:-.02em;text-decoration:none">Booth<span style="color:${VUE}">Vue</span></a></td>
     </tr></table>
     <p style="margin:11px 0 18px;font:400 17px/1.3 ${FF};color:#ffffff;letter-spacing:-.01em">See your booth <b>before it&rsquo;s built</b></p>
@@ -98,7 +98,7 @@ export function emailFooter({ note = "", links = [] } = {}) {
 // Dark header for every BoothVue email, matching FoldVue: logo, wordmark with "Vue" in blue, tagline underneath.
 export function emailHeader() {
   return `<tr><td style="background:#0d1526;padding:24px 28px 22px"><table role="presentation" cellpadding="0" cellspacing="0"><tr>
-    <td style="width:34px;vertical-align:top"><a href="${SITE}"><img src="cid:bv-logo" width="34" height="33" alt="BoothVue" style="display:block;border:0"></a></td>
+    <td style="width:34px;vertical-align:top"><a href="${SITE}" style="display:block;width:34px;height:34px;background:#2563eb;border-radius:8px;text-decoration:none"><img src="cid:bv-logo" width="22" height="21" alt="BoothVue" style="display:block;border:0;margin:0 auto;padding-top:6px"></a></td>
     <td style="padding-left:10px;font:700 22px/1 ${FF};color:#ffffff;letter-spacing:-.02em">Booth<span style="color:${VUE}">Vue</span><div style="margin-top:5px;font:400 14px/1.3 ${FF};color:#aab3c3;letter-spacing:0">See your booth before it&rsquo;s built</div></td>
   </tr></table></td></tr>`;
 }
