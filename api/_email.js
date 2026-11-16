@@ -26,7 +26,7 @@ export function brandedEmail({ eyebrow, title, rows = [], panelHtml = "", button
   ${rows.length ? `<tr><td style="padding:12px 24px 4px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">${rows.map(row).join("")}</table></td></tr>` : ""}
   ${panelHtml ? `<tr><td style="padding:12px 24px 4px"><div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:16px 18px;font-family:${SANS};font-size:15px;line-height:1.6;color:#111827">${panelHtml}</div></td></tr>` : ""}
   ${button ? `<tr><td style="padding:18px 24px 26px"><a href="${esc(button.href)}" style="display:inline-block;background:#2563eb;color:#ffffff;font-family:${SANS};font-size:14px;line-height:1;font-weight:700;text-decoration:none;padding:12px 20px;border-radius:999px">${esc(button.label)}</a></td></tr>` : `<tr><td style="padding:10px 24px"></td></tr>`}
-  ${footer ? `<tr><td style="padding:14px 24px;border-top:1px solid #e5e7eb;font-family:${SANS};font-size:12px;line-height:1.5;color:#9ca3af">${esc(footer)}</td></tr>` : ""}
+  ${emailFooter({ note: footer })}
 </table>
 </td></tr></table></body></html>`;
 }
@@ -73,4 +73,29 @@ export async function sendToOwner({ subject, text, html, replyTo }) {
   });
   if (!r.ok) console.error("resend error", r.status, (await r.text()).slice(0, 300));
   return r.ok;
+}
+
+// Shared dark footer for every BoothVue email, matching the FoldVue layout: centred logo and wordmark, tagline,
+// three outline buttons, an optional note, support line, policy links and copyright. Returns one <tr> for the card.
+export const SITE = (process.env.SITE_URL || "https://staging.boothvue.co").replace(/\/$/, "");
+const FF = "Bricolage Grotesque,Arial,Helvetica,sans-serif";
+const VUE = "#4f8cff";
+export function emailFooter({ note = "", links = [] } = {}) {
+  const site = SITE, host = site.replace(/^https?:\/\//, "");
+  const btn = (href, label) => `<td style="padding:0 4px"><a href="${href}" style="display:inline-block;padding:7px 13px;border:1.5px solid #c5cbd6;border-radius:999px;font:700 10.5px/1 ${FF};color:#c5cbd6;text-decoration:none;white-space:nowrap">${label}</a></td>`;
+  const a = ([label, href]) => `<a href="${href}" style="color:#ffffff;font-weight:700;text-decoration:none">${label}</a>`;
+  const share = `mailto:?subject=${encodeURIComponent("Have a look at BoothVue")}&body=${encodeURIComponent("See your trade show booth before it's built: " + site)}`;
+  const all = [...links, ["Privacy policy", site + "/privacy/"], ["Terms", site + "/terms/"]];
+  return `<tr><td style="height:35px;line-height:35px;font-size:0">&nbsp;</td></tr><tr><td align="center" style="background:#0d1526;padding:49px 28px 30px;text-align:center">
+    <table role="presentation" align="center" cellpadding="0" cellspacing="0" style="margin:0 auto"><tr>
+      <td style="vertical-align:middle"><a href="${site}"><img src="cid:bv-logo" width="42" height="41" alt="BoothVue" style="display:block;border:0"></a></td>
+      <td style="vertical-align:middle;padding-left:11px"><a href="${site}" style="font:700 26px/1 ${FF};color:#ffffff;letter-spacing:-.02em;text-decoration:none">Booth<span style="color:${VUE}">Vue</span></a></td>
+    </tr></table>
+    <p style="margin:14px 0 18px;font:400 17px/1.3 ${FF};color:#ffffff;letter-spacing:-.01em">See your booth <b>before it&rsquo;s built</b></p>
+    <table role="presentation" align="center" cellpadding="0" cellspacing="0" style="margin:0 auto 35px"><tr>${btn(site + "/app/", "OPEN THE STUDIO")}${btn(share, "SHARE BOOTHVUE")}${btn(site + "/#contact", "CONTACT US")}</tr></table>
+    ${note ? `<p style="margin:0 0 3px;font:11.5px/1.6 ${FF};color:#cfd6e3">${esc(note)}</p>` : ""}
+    <p style="margin:0 0 3px;font:11.5px/1.6 ${FF};color:#cfd6e3">Questions? <a href="mailto:support@boothvue.co" style="color:#ffffff;text-decoration:none">support@boothvue.co</a> &middot; <a href="${site}" style="color:#ffffff;text-decoration:none">${host === "staging.boothvue.co" ? "boothvue.co" : host}</a></p>
+    <p style="margin:15px 0 6px;font:11.5px/1.6 ${FF};color:#cfd6e3">${all.map(a).join(" &nbsp;|&nbsp; ")}</p>
+    <p style="margin:12px 0 0;font:10.5px/1.6 ${FF};color:#8c95a6">&copy; ${new Date().getFullYear()} <b style="color:#cfd6e3">BoothVue&trade;</b>. All rights reserved. BoothVue and the BoothVue logo are trademarks of 8ThirtyOne.</p>
+  </td></tr>`;
 }
