@@ -29,9 +29,19 @@ function brandLine(b = {}) {
 }
 // The brand lock. Logo, typeface and colors are the customer's and are never open to interpretation, in any mode.
 // It goes last in every prompt so it has the final word over the style text before it.
+// A plain-words description of a hex color ("a near-black navy blue"), so the AI doesn't brighten dark brand colors.
+function colorWords(hex) {
+  const n = parseInt(hex.slice(1), 16), r = (n >> 16) / 255, g = ((n >> 8) & 255) / 255, bl = (n & 255) / 255;
+  const max = Math.max(r, g, bl), min = Math.min(r, g, bl), l = (max + min) / 2, d = max - min, s = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1));
+  let h = 0; if (d) h = max === r ? ((g - bl) / d) % 6 : max === g ? (bl - r) / d + 2 : (r - g) / d + 4; h = (h * 60 + 360) % 360;
+  const depth = l < .08 ? "near-black" : l < .2 ? "very dark" : l < .38 ? "dark" : l < .62 ? "mid-tone" : l < .85 ? "light" : "very light";
+  if (s < .12) return l < .08 ? "near-black" : l > .92 ? "near-white" : `${depth} neutral grey`;
+  const hue = h < 15 ? "red" : h < 45 ? "orange" : h < 70 ? "yellow" : h < 95 ? "lime green" : h < 160 ? "green" : h < 195 ? "teal" : h < 230 ? "blue" : h < 255 ? "navy blue" : h < 290 ? "violet" : h < 335 ? "magenta" : "red";
+  return `${depth} ${s < .35 ? "muted " : ""}${hue}`;
+}
 function brandLock(b = {}, logoCount = 0) {
-  const names = ["primary", "secondary", "accent"], cols = (b.colors || []).map((c, i) => `${names[i] || "brand"} ${c}`);
-  if (b.bg) cols.push(`base ${b.bg}`);
+  const names = ["primary", "secondary", "accent"], cols = (b.colors || []).map((c, i) => `${names[i] || "brand"} ${c} (${colorWords(c)})`);
+  if (b.bg) cols.push(`base ${b.bg} (${colorWords(b.bg)})`);
   return [
     "BRAND LOCK. These rules are absolute and override every other instruction above, including the photo style:",
     logoCount
@@ -40,7 +50,7 @@ function brandLock(b = {}, logoCount = 0) {
     "Never redraw, restyle, simplify, stretch, recolor, outline, bevel or re-letter the logo, never add words or a tagline to it, and never invent any other logo, emblem, icon or brand mark.",
     `(2) TYPEFACE: all brand lettering${b.company ? `, including the name "${b.company}"` : ""}${b.tagline ? ` and the tagline "${b.tagline}"` : ""}, must use exactly the typeface${b.font ? ` "${b.font}"` : ""} shown in the attached booth image: the same letter shapes, weight, width, case and spacing. Never substitute another font or a stylized variant. Any other wording on the booth must use that same typeface, and spell every word exactly as given.`,
     cols.length
-      ? `(3) COLORS: the brand colors are exactly ${cols.join(", ")}. Use these exact colors for every branded surface, graphic, sign, light strip, LED edge, screen background and piece of colored furniture. Never shift their hue, saturation or brightness, and never introduce any other brand or accent color. Only neutral white, black, grey and natural material tones (wood, metal, glass, plants) may appear beside them.`
+      ? `(3) COLORS: the brand colors are exactly ${cols.join(", ")}. Use these exact colors for every branded surface, graphic, sign, light strip, LED edge, screen background and piece of colored furniture. Never shift their hue, saturation or brightness, and never introduce any other brand or accent color. Only neutral white, black, grey and natural material tones (wood, metal, glass, plants) may appear beside them. Dark colors must photograph dark: a near-black or very dark brand color stays that dark under the hall lighting and is never rendered as a brighter, lighter or more saturated version of itself. Keep the floor the same color it has in the attached booth image.`
       : "(3) COLORS: keep the booth's colors exactly as they appear in the attached image. Never shift their hue, saturation or brightness, and never introduce any other brand or accent color.",
     "If any earlier instruction conflicts with the brand lock, follow the brand lock.",
   ].join(" ");
@@ -120,6 +130,9 @@ export default async function handler(req, res) {
 
       const dir = clean(direction, 600), b = brandLine(brand);
       const multi = kind === "image" && MODELS.image.includes("nano-banana");   // this model takes several reference images
+      // The picture should come back the same shape as the view it was made from; the model takes a fixed list of shapes.
+      const RATIOS = [["21:9", 21 / 9], ["16:9", 16 / 9], ["3:2", 1.5], ["4:3", 4 / 3], ["5:4", 1.25], ["1:1", 1], ["4:5", .8], ["3:4", .75], ["2:3", 2 / 3], ["9:16", 9 / 16]];
+      const asp = Number(req.body?.aspect), ratio = multi && asp > .4 && asp < 3 ? RATIOS.reduce((p, q) => Math.abs(q[1] - asp) < Math.abs(p[1] - asp) ? q : p)[0] : null;
       b.logoCount = multi ? logos.length : 0;
       const prompt = kind === "video" ? PROMPTS.video(dir, fromPhoto) : PROMPTS[mode](dir, b);
       const imageUrl = fromPhoto ? sourceUrl : `data:image/jpeg;base64,${image}`;
@@ -128,8 +141,13 @@ export default async function handler(req, res) {
         : MODELS.image.includes("nano-banana")
           ? { prompt, image_urls: [imageUrl, ...logos.map(l => `data:image/jpeg;base64,${l}`)], num_images: 1, output_format: "jpeg", ...(MODELS.image.includes("pro") ? { resolution: IMAGE_RESOLUTION } : { limit_generations: true }) }
           : { prompt, image_url: imageUrl, output_format: "jpeg", guidance_scale: 5 };
-      const sub = await fal(`https://queue.fal.run/${MODELS[kind]}`, { method: "POST", body: JSON.stringify(input) });
-      const job = await sub.json().catch(() => ({}));
+      let sub = await fal(`https://queue.fal.run/${MODELS[kind]}`, { method: "POST", body: JSON.stringify(ratio ? { ...input, aspect_ratio: ratio } : input) });
+      let job = await sub.json().catch(() => ({}));
+      if (ratio && (!sub.ok || !job.request_id)) {   // if the shape setting is refused, send it without rather than fail the render
+        console.error("fal refused aspect_ratio", sub.status, JSON.stringify(job).slice(0, 200));
+        sub = await fal(`https://queue.fal.run/${MODELS[kind]}`, { method: "POST", body: JSON.stringify(input) });
+        job = await sub.json().catch(() => ({}));
+      }
       if (!sub.ok || !job.request_id) {
         await refundMediaCredit(pass.id, kind);
         console.error("fal submit failed", sub.status, JSON.stringify(job).slice(0, 300));

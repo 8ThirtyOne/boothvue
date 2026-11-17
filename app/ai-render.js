@@ -29,7 +29,7 @@
   const POLL_MS = { image: 4000, video: 10000 };
   // One-click art direction styles. Picking one fills the box, which stays editable.
   const STYLES = [
-    { id: 'flagship', name: 'Award-winning flagship', text: 'Concept upgrade: reimagine this booth as a dramatically enhanced, award-winning flagship exhibit that goes far beyond the 3D model. Premium custom-built finishes, dramatic LED lighting, bold oversized brand graphics and striking architectural forms, shot like a design-award photo.' },
+    { id: 'flagship', only: 'upgrade', name: 'Award-winning flagship', text: 'Concept upgrade: reimagine this booth as a dramatically enhanced, award-winning flagship exhibit that goes far beyond the 3D model. Premium custom-built finishes, dramatic LED lighting, bold oversized brand graphics and striking architectural forms, shot like a design-award photo.' },
     { id: 'hero', name: 'Clean hero shot', text: 'Professional architectural photograph, wide-angle 24mm lens at eye level, bright even exhibition hall lighting, polished concrete aisle in the foreground, sharp focus, high detail.' },
     { id: 'minimal', name: 'Premium and minimal', text: 'Sophisticated premium exhibit, minimalist luxury finishes, soft backlit glow, generous open space, high-end corporate feel.' },
     { id: 'busy', name: 'Busy show day', text: 'Award-winning exhibit on the busiest show day, crowds engaging with staff and screens, energetic atmosphere, dramatic lighting.' },
@@ -52,6 +52,7 @@
       const k = Math.min(1, 1600 / Math.max(img.naturalWidth, img.naturalHeight));
       const c = document.createElement('canvas'); c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
       c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      live.aspect = c.width / c.height;
       return c.toDataURL('image/jpeg', 0.88).split(',')[1];
     } finally { URL.revokeObjectURL(url); }
   }
@@ -113,7 +114,17 @@
       b.onclick = pick; b.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } }; });
     dirBox.oninput = () => { live.dir = dirBox.value; markStyle(); }; markStyle();
     const modeBtns = [...w.querySelectorAll('.gen-mode-btn')];
-    const setMode = m => { live.mode = m; modeBtns.forEach(b => { const on = b.dataset.mode === m; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); }); };
+    const setMode = m => {
+      live.mode = m; modeBtns.forEach(b => { const on = b.dataset.mode === m; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); });
+      // Styles that belong to the other mode are hidden, and their wording never stays behind in the box.
+      const fits = s => !s.only || s.only === m;
+      styleBtns.forEach(b => { b.hidden = !fits(STYLES.find(s => s.id === b.dataset.style)); });
+      const cur = STYLES.find(s => s.text === dirBox.value.trim());
+      if (cur && !fits(cur)) { dirBox.value = STYLES.find(s => s.id === 'hero').text; live.dir = dirBox.value; }
+      else if (m === 'upgrade' && live.autoDir && dirBox.value.trim() === STYLES.find(s => s.id === 'hero').text) { dirBox.value = STYLES[0].text; live.dir = dirBox.value; }
+      live.autoDir = !!(cur && !fits(cur)) || (live.autoDir && m !== 'upgrade');
+      markStyle();
+    };
     modeBtns.forEach(b => { b.onclick = () => setMode(b.dataset.mode); b.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setMode(b.dataset.mode); } }; }); setMode(live.mode);
     document.getElementById('gen-img').onclick = () => start('image');
     document.getElementById('gen-vid').onclick = () => start('video');
@@ -131,7 +142,7 @@
       const image = src ? undefined : await captureView();
       st.textContent = 'Sending to AI Render…';
       const direction = (document.getElementById('gen-dir')?.value || '').trim();
-      const { id } = await api('/api/render', { method: 'POST', body: JSON.stringify({ kind, mode: live.mode, image, sourceUrl: src || undefined, direction, brand: brandInfo(), logos: kind === 'image' ? brandLogos() : undefined }) });
+      const { id } = await api('/api/render', { method: 'POST', body: JSON.stringify({ kind, mode: live.mode, image, sourceUrl: src || undefined, direction, brand: brandInfo(), logos: kind === 'image' ? brandLogos() : undefined, aspect: kind === 'image' && image ? live.aspect : undefined }) });
       upsert({ id, kind, status: 'queued', created_at: new Date().toISOString() });
       poll(id, kind); auth.refresh();
       st.textContent = kind === 'image' ? 'Creating your image. It appears below in about 30 seconds.' : 'Creating your video. It appears below in 2–4 minutes; you can close this window and keep working.';
