@@ -109,13 +109,13 @@ export default async function handler(req, res) {
           ],
           panelHtml: steps,
           button: { href: `${site}/app/#signin`, label: "Open BoothVue" },
-          footer: "Thanks for choosing BoothVue. Your card receipt comes separately from Stripe. Questions? Just reply to this email.",
+          footer: "Thanks for choosing BoothVue. Your invoice and card receipt come separately from Stripe. Questions? Just reply to this email.",
         });
         const custText = [
           `Your ${passName} is ready${test ? " (test purchase)" : ""}.`, "",
           `Pass: ${passName}`, `Amount paid: ${paid}`, `Includes: ${includes}`, `Active until: ${until}`, `Account email: ${email}`, "",
           recorded ? `Open ${site}/app/ and sign in with ${email} to start designing.` : "Your pass is being switched on and will be ready shortly.",
-          "", "Your card receipt comes separately from Stripe. Questions? Just reply to this email.",
+          "", "Your invoice and card receipt come separately from Stripe. Questions? Just reply to this email.",
         ].join("\n");
         await sendToCustomer({ to: email, subject: `${test ? "[Test] " : ""}Your BoothVue ${passName} is ready`, text: custText, html: custHtml });
       }
@@ -180,7 +180,7 @@ async function handleTopup(req, res, event, s) {
         rows,
         panelHtml: added ? `Already on your pass. Open the app and click <b>${kind === "ai" ? "AI Build" : "AI Render"}</b> to use them.` : "They're being added to your pass and will be ready shortly.",
         button: { href: `${site}/app/`, label: "Open BoothVue" },
-        footer: "Your card receipt comes separately from Stripe. Questions? Just reply to this email.",
+        footer: "Your invoice and card receipt come separately from Stripe. Questions? Just reply to this email.",
       }),
     });
   }

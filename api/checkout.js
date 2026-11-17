@@ -28,6 +28,7 @@ export default async function handler(req, res) {
     const until = new Date(pass.ends_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
     form = new URLSearchParams({
       mode: "payment",
+      "invoice_creation[enabled]": "true", // a PDF invoice for every purchase; Stripe emails it with the receipt
       customer_email: user.email,
       "line_items[0][quantity]": String(qty),
       "line_items[0][price_data][currency]": "usd",
@@ -50,6 +51,7 @@ export default async function handler(req, res) {
     if (!plan) return res.status(400).json({ code: "bad_request", message: "Unknown pass." });
     form = new URLSearchParams({
       mode: "payment",
+      "invoice_creation[enabled]": "true", // a PDF invoice for every purchase; Stripe emails it with the receipt
       "line_items[0][quantity]": "1",
       "line_items[0][price_data][currency]": "usd",
       "line_items[0][price_data][unit_amount]": String(plan.amount),
