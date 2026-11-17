@@ -1,0 +1,16 @@
+/* Shared dark footer and link style, loaded on every page */
+a, a:hover, a:focus { text-decoration: none !important; }
+.site-foot { background: #05070c; color: #8d95a5; border-top: 1px solid #1c2029; font: 500 14px/1.5 "Bricolage Grotesque", "Manrope", system-ui, sans-serif; padding: 0; margin: 0; display: block; }
+.site-foot .sf-wrap { max-width: 1180px; margin: 0 auto; padding: 30px max(20px, env(safe-area-inset-right, 0px)) 30px max(20px, env(safe-area-inset-left, 0px)); display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px 18px; align-items: center; }
+.site-foot .sf-logo { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 24%; background: #2563eb; flex: none; }
+.site-foot .sf-logo svg { width: 62%; height: 62%; fill: #fff; }
+.site-foot p { margin: 0; }
+.site-foot .sf-1 { color: #eef1f6; font-weight: 700; font-size: 16px; }
+.site-foot .sf-1 span { color: #6ea2ff; }
+.site-foot .sf-2 { color: #6f7786; font-size: 14px; margin-top: 2px; }
+.site-foot .sf-2 b { color: #eef1f6; font-weight: 700; }
+.site-foot a { color: inherit; transition: color .15s; }
+.site-foot a:hover { color: #fff; }
+.site-foot .sf-links { display: flex; gap: 20px; flex-wrap: wrap; font-weight: 700; font-size: 13px; color: #aab2c2; }
+.site-foot .sf-note { grid-column: 1 / -1; margin-top: 14px; padding-top: 14px; border-top: 1px solid #14181f; font-size: 12px; color: #5b6270; }
+@media (max-width: 720px) { .site-foot .sf-wrap { grid-template-columns: auto minmax(0, 1fr); } .site-foot .sf-links { grid-column: 1 / -1; margin-top: 8px; } }
