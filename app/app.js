@@ -771,7 +771,7 @@ function getSZ(){
 //  TABS
 // ═══════════════════════════════════════════════════════
 function switchTab(t){
-  ['design','furnish','branding','specs'].forEach((id,i)=>{
+  ['branding','design','furnish','specs'].forEach((id,i)=>{
     document.querySelectorAll('.htab')[i].classList.toggle('active',id===t);
     const el=document.getElementById('tab-'+id); if(el) el.hidden=id!==t;
   });
@@ -3755,7 +3755,7 @@ async function importDesignFile(e) {
   brand.append($('header .logo'));
   const ver = document.createElement('span'); ver.className = 'ver'; ver.textContent = 'v78'; const home = document.createElement('a'); home.className = 'home-pill'; home.href = '/'; home.title = 'BoothVue home'; home.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h5v-5.5h3v5.5h5V10"/></svg><span>Home</span>'; brand.append(ver, home);
   const tabs = $('header .htabs');
-  ['Booth', 'Items', 'Brand', 'Specs'].forEach((t, i) => { tabs.children[i].textContent = t; });
+  ['Brand', 'Booth', 'Items', 'Specs'].forEach((t, i) => { tabs.children[i].textContent = t; });
   top.append(brand, tabs); sidebar.prepend(top);
 
   // Canvas: floating actions
@@ -3901,10 +3901,10 @@ function loadStartupScene() {
 
 // Specs page navigation: remembers the tab you came from and offers a way back
 const TAB_NAMES = { design: 'Booth', furnish: 'Items', branding: 'Brand', specs: 'Specs' };
-let currentTab = 'design', prevTab = 'design';
+let currentTab = 'branding', prevTab = 'branding';
 function switchTab(t) {
   if (t !== currentTab) { prevTab = currentTab; currentTab = t; }
-  ['design', 'furnish', 'branding', 'specs'].forEach((id, i) => {
+  ['branding', 'design', 'furnish', 'specs'].forEach((id, i) => {   // Brand comes first: set the brand, then build the booth
     document.querySelectorAll('.htab')[i].classList.toggle('active', id === t);
     const el = document.getElementById('tab-' + id); if (el) el.hidden = id !== t;
   });

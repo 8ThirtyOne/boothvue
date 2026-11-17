@@ -30,9 +30,9 @@
     <span>Booth<span class="vue">Vue</span></span>
   </a>
   <div class="htabs">
-    <button class="htab active" onclick="switchTab('design')">Structure</button>
+    <button class="htab active" onclick="switchTab('branding')">Branding</button>
+    <button class="htab" onclick="switchTab('design')">Structure</button>
     <button class="htab" onclick="switchTab('furnish')">Furnishings</button>
-    <button class="htab" onclick="switchTab('branding')">Branding</button>
     <button class="htab" onclick="switchTab('specs')">Specs</button>
   </div>
   <div class="hactions">
@@ -54,7 +54,7 @@
   <aside class="sidebar" id="sidebar">
 
     <!-- STRUCTURE TAB -->
-    <div id="tab-design">
+    <div id="tab-design" hidden>
       <div class="ss">
         <div class="ss-label">Export Render</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px">
@@ -248,7 +248,7 @@
     </div>
 
     <!-- BRANDING TAB -->
-    <div id="tab-branding" hidden>
+    <div id="tab-branding">
       <div class="ss">
         <div class="ss-label">Brand From Your Website</div>
         <div class="field"><label for="site-url">Website</label>
@@ -421,9 +421,9 @@
     <nav class="specs-nav" aria-label="Specs navigation">
       <button class="btn specs-back" onclick="goBackFromSpecs()"><span aria-hidden="true">←</span> Back to <span id="specs-back-name">Booth</span></button>
       <div class="specs-tabs" role="tablist">
+        <button class="stab" data-t="branding" onclick="switchTab('branding')">Brand</button>
         <button class="stab" data-t="design" onclick="switchTab('design')">Booth</button>
         <button class="stab" data-t="furnish" onclick="switchTab('furnish')">Items</button>
-        <button class="stab" data-t="branding" onclick="switchTab('branding')">Brand</button>
         <button class="stab active" data-t="specs" onclick="switchTab('specs')">Specs</button>
       </div>
       <button class="btn btn-primary" onclick="exportSpecs()">Save specs file</button>
