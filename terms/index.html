@@ -40,6 +40,7 @@
   @media (max-width: 380px) { .site-brand { font-size: 16px; } .site-nav-in { gap: 14px; } }
 
   /* Logo icon sits in a rounded blue square */
+  .vue { color: #2563eb; }
   .logo-sq { display: inline-grid; place-items: center; flex: none; width: var(--sq, 34px); height: var(--sq, 34px); border-radius: 24%; background: #2563eb; }
   .logo-sq > svg { width: 64% !important; height: 64% !important; fill: #fff !important; color: #fff !important; }
   .logo-sq > svg path { fill: #fff !important; }
@@ -51,7 +52,7 @@
   <div class="site-nav-in">
     <a class="site-brand" href="/" aria-label="BoothVue home">
       <span class="logo-sq" aria-hidden="true"><svg viewBox="13 16 156 150" aria-hidden="true"><path d="M128.6 61 81.6 45.8V23.5l73.5 27z"/><path d="M71.9,141.9V23.5L25.8,58.3l-9.5,104,1.5-.5c15.2-9.9,33.5-16.8,53.6-19.6l.6-.2Z"/><path d="M160,56.6l-34.9,12.9v73.8c15.6,3,30,8.5,42.5,15.9l-7.6-102.6Z"/></svg></span>
-      BoothVue
+      <span>Booth<span class="vue">Vue</span></span>
     </a>
     <nav class="site-links" aria-label="Sections">
       <a href="/#how">Workflow</a>
