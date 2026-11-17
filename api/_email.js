@@ -9,6 +9,8 @@ export const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<":
 // rows: [[label, valueHtml]], panelHtml: optional quoted block, button: { href, label }, footer: optional note in the footer
 const HF = "Google Sans Flex,Arial,Helvetica,sans-serif";
 export function brandedEmail({ eyebrow, title, intro = "", rows = [], panelHtml = "", button = null, footer = "" }) {
+  // "Vue" in blue wherever the brand name appears in the body text (not inside tags or the white-on-blue button)
+  const bv = s => String(s).replace(/BoothVue(?![^<>]*>)/g, `Booth<span style="color:${ACCENT}">Vue</span>`);
   const row = ([label, value]) => `<tr><td style="padding:7px 14px 7px 0;width:120px;vertical-align:top;font:600 12px/1.5 ${FF};letter-spacing:.06em;text-transform:uppercase;color:#676c77">${esc(label)}</td><td style="padding:7px 0;font:15px/1.5 ${FF};color:#16181d">${value}</td></tr>`;
   return `<!doctype html><html><head><meta charset="utf-8"><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Google+Sans+Flex:opsz,wght@6..144,500..800&display=swap" rel="stylesheet"></head><body style="margin:0;padding:0;background:#f2efe8">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f2efe8;padding:28px 12px"><tr><td align="center">
@@ -16,10 +18,10 @@ export function brandedEmail({ eyebrow, title, intro = "", rows = [], panelHtml 
   ${emailHeader()}
   <tr><td style="padding:28px 28px 8px">
     <p style="margin:0 0 6px;font:600 12px/1.4 ${FF};color:${ACCENT};text-transform:uppercase;letter-spacing:.1em">${esc(eyebrow)}</p>
-    <h1 style="margin:0 0 18px;font:700 24px/1.25 ${HF};color:#16181d">${esc(title)}</h1>
-    ${intro ? `<p style="margin:0 0 14px;font:15px/1.6 ${FF};color:#16181d">${intro}</p>` : ""}
-    ${rows.length ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 14px">${rows.map(row).join("")}</table>` : ""}
-    ${panelHtml ? `<div style="background:#f2efe8;border-left:3px solid ${ACCENT};border-radius:0 10px 10px 0;padding:14px 16px;margin:0 0 14px;font:15px/1.6 ${FF};color:#16181d">${panelHtml}</div>` : ""}
+    <h1 style="margin:0 0 18px;font:700 24px/1.25 ${HF};color:#16181d">${bv(esc(title))}</h1>
+    ${intro ? `<p style="margin:0 0 14px;font:15px/1.6 ${FF};color:#16181d">${bv(intro)}</p>` : ""}
+    ${rows.length ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 14px">${bv(rows.map(row).join(""))}</table>` : ""}
+    ${panelHtml ? `<div style="background:#f2efe8;border-left:3px solid ${ACCENT};border-radius:0 10px 10px 0;padding:14px 16px;margin:0 0 14px;font:15px/1.6 ${FF};color:#16181d">${bv(panelHtml)}</div>` : ""}
     ${button ? `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:18px 0 8px"><tr><td style="background:${ACCENT};border-radius:999px"><a href="${esc(button.href)}" style="display:inline-block;padding:12px 24px;font:600 15px/1 ${FF};color:#ffffff;text-decoration:none">${esc(button.label)}</a></td></tr></table>` : ""}
   </td></tr>
   ${emailFooter({ note: footer })}
