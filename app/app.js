@@ -44,13 +44,15 @@ camera.lookAt(0, 2, 0);
 let isDrag = false, lastM = {x:0,y:0};
 let oTarget = new THREE.Vector3(0,2,0);
 let oR = 22, oTh = Math.PI/4, oPh = 0.75;
+// Embed mode (/app/?embed=1): just the 3D booth for showing inside another page. It turns slowly until someone drags it.
+const EMBED = document.documentElement.classList.contains('embed'); let embedSpin = EMBED;
 function camUpdate() {
   camera.position.x = oTarget.x + oR * Math.sin(oPh) * Math.sin(oTh);
   camera.position.y = oTarget.y + oR * Math.cos(oPh);
   camera.position.z = oTarget.z + oR * Math.sin(oPh) * Math.cos(oTh);
   camera.lookAt(oTarget);
 }
-canvas.addEventListener('mousedown', e => { isDrag=true; lastM={x:e.clientX,y:e.clientY}; });
+canvas.addEventListener('mousedown', e => { embedSpin = false; isDrag=true; lastM={x:e.clientX,y:e.clientY}; });
 window.addEventListener('mouseup', () => isDrag=false);
 window.addEventListener('mousemove', e => {
   if (!isDrag) return;
@@ -58,9 +60,9 @@ window.addEventListener('mousemove', e => {
   oPh = Math.max(.08, Math.min(1.57, oPh-(e.clientY-lastM.y)*0.006));
   lastM={x:e.clientX,y:e.clientY}; camUpdate();
 });
-canvas.addEventListener('wheel', e => { oR=Math.max(3,Math.min(65,oR+e.deltaY*0.03)); camUpdate(); e.preventDefault(); },{passive:false});
+canvas.addEventListener('wheel', e => { if (EMBED) return; oR=Math.max(3,Math.min(65,oR+e.deltaY*0.03)); camUpdate(); e.preventDefault(); },{passive:false});
 let lTD=null, lT=null;
-canvas.addEventListener('touchstart',e=>{if(e.touches.length===1){isDrag=true;lT={x:e.touches[0].clientX,y:e.touches[0].clientY};}else if(e.touches.length===2){lTD=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}},{passive:true});
+canvas.addEventListener('touchstart',e=>{embedSpin=false;if(e.touches.length===1){isDrag=true;lT={x:e.touches[0].clientX,y:e.touches[0].clientY};}else if(e.touches.length===2){lTD=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}},{passive:true});
 canvas.addEventListener('touchmove',e=>{if(e.touches.length===1&&isDrag){const dx=e.touches[0].clientX-lT.x,dy=e.touches[0].clientY-lT.y;oTh-=dx*0.01;oPh=Math.max(.08,Math.min(1.57,oPh-dy*0.008));lT={x:e.touches[0].clientX,y:e.touches[0].clientY};camUpdate();}else if(e.touches.length===2&&lTD){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);oR=Math.max(3,Math.min(65,oR-(d-lTD)*0.05));lTD=d;camUpdate();}},{passive:true});
 canvas.addEventListener('touchend',()=>{isDrag=false;lTD=null;},{passive:true});
 
@@ -4021,7 +4023,7 @@ function resize(){
 window.addEventListener('resize',resize);
 resize();
 
-(function animate(){ requestAnimationFrame(animate); renderFrame(); drawOverlay(); })();
+(function animate(){ requestAnimationFrame(animate); if (embedSpin && !matchMedia('(prefers-reduced-motion: reduce)').matches) { oTh += 0.0016; camUpdate(); } renderFrame(); drawOverlay(); })();
 
 // INIT
 loadStartupScene();
