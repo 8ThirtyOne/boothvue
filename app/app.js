@@ -671,6 +671,7 @@ async function brandFromSite() {
     applySiteBrand(d);
     msg.textContent = `Brand set from ${d.site}. Adjust anything below.`;
     if (d.logo) placeSiteLogo(d.logo, token).catch(() => {});
+    showSitePics(d.images || [], token);
     window.bvAuth?.refresh?.().catch(() => {});
   } catch (e) { msg.textContent = e.message || "We couldn't read that website."; }
   go.disabled = false; go.textContent = 'Get Brand';
@@ -696,11 +697,40 @@ function drawSiteCard() {
 }
 // The site's logo goes on the booth the same way an uploaded logo does.
 async function placeSiteLogo(url, token) {
-  const r = await fetch('/api/brand?logo=' + encodeURIComponent(url), { headers: token ? { Authorization: `Bearer ${token}` } : {} });
+  const r = await fetch('/api/brand?img=' + encodeURIComponent(url), { headers: token ? { Authorization: `Bearer ${token}` } : {} });
   if (!r.ok) return;
   const blob = await r.blob(), ext = (blob.type.split('/')[1] || 'png').replace('svg+xml', 'svg').replace('x-icon', 'ico').replace('vnd.microsoft.icon', 'ico');
   const dt = new DataTransfer(); dt.items.add(new File([blob], `website-logo.${ext}`, { type: blob.type }));
   artUploadKind = 'logo'; const inp = document.getElementById('art-input'); inp.files = dt.files; inp.dispatchEvent(new Event('change', { bubbles: true }));
+}
+// Pictures found on the website. Each loads through /api/brand; small ones are dropped. Clicking one puts it on a booth wall as artwork.
+async function showSitePics(list, token) {
+  const box = document.getElementById('site-pics'); if (!box) return;
+  box.textContent = ''; box.hidden = true;
+  const grid = document.createElement('div'); grid.className = 'site-pic-grid';
+  const head = document.createElement('div'); head.className = 'site-pic-head'; head.textContent = 'Pictures from your site. Click one to put it on a wall.';
+  box.append(head, grid);
+  let shown = 0;
+  await Promise.all(list.slice(0, 12).map(async p => {
+    try {
+      const r = await fetch('/api/brand?img=' + encodeURIComponent(p.url), { headers: token ? { Authorization: `Bearer ${token}` } : {} }); if (!r.ok) return;
+      const blob = await r.blob(), src = URL.createObjectURL(blob);
+      const img = await new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = src; });
+      if (img.naturalWidth < 400 || img.naturalHeight < 240 || shown >= 8) { URL.revokeObjectURL(src); return; }
+      shown++;
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'site-pic'; b.title = (p.alt || 'Picture from your site') + ` (${img.naturalWidth} × ${img.naturalHeight})`;
+      b.setAttribute('aria-label', 'Add to a wall: ' + (p.alt || 'picture from your site'));
+      b.append(img);
+      b.onclick = () => {
+        if (b.classList.contains('used')) return;
+        const ext = (blob.type.split('/')[1] || 'jpg').replace('jpeg', 'jpg'), dt = new DataTransfer();
+        dt.items.add(new File([blob], `website-picture-${shown}.${ext}`, { type: blob.type }));
+        artUploadKind = 'artwork'; const inp = document.getElementById('art-input'); inp.files = dt.files; inp.dispatchEvent(new Event('change', { bubbles: true }));
+        b.classList.add('used');
+      };
+      grid.append(b); box.hidden = false;
+    } catch {}
+  }));
 }
 // One line for the AI prompts when the brand came from a website.
 function siteBrandLine() {
@@ -1641,7 +1671,8 @@ function placeAtViewCenter(a) {
   // use the biggest clear panel that faces the camera instead, and say where it went.
   const wantM = (ART_WIDTH_FT[a.kind] || 2) * FT;
   let where = s.obj && a.face ? (s.obj.userData.label || '') : '';
-  if (!a.face || a.face.w < wantM * .6 || /video|screen|monitor|display|tv/i.test(where)) {
+  const taken = a.face && artItems.some(t => t !== a && t.pos && t.normal && t.normal.dot(a.face.n) > .8 && Math.abs(t.pos.clone().sub(a.face.c).dot(a.face.n)) < .2 && t.pos.distanceTo(a.face.c) < Math.max(a.face.w, a.face.h) / 2);
+  if (!a.face || taken || a.face.w < wantM * .6 || /video|screen|monitor|display|tv/i.test(where)) {
     const b = bestPanel(wantM * .6);
     if (b) {
       a.pos = b.c.clone(); a.normal = b.n.clone(); a.face = { c: b.c.clone(), n: b.n.clone(), w: b.w, h: b.h };
@@ -1671,6 +1702,7 @@ function bestPanel(minW) {
       if (!hit || hit.distance < dist - .25) return;                       // something stands in front of this face
       let top = hit.object; while (top.parent && top.parent !== boothG) top = top.parent;
       if (top !== o) return;
+      if (artItems.some(t => t.pos && t.normal && t.normal.dot(n) > .8 && Math.abs(t.pos.clone().sub(p).dot(n)) < .2 && t.pos.distanceTo(p) < Math.max(w, sz.y) / 2)) return;   // this face already has artwork
       const score = w * sz.y * facing;
       if (!best || score > best.score) best = { c: p, n, w, h: sz.y, score, label: (o.userData.label || 'booth').toLowerCase() };
     });

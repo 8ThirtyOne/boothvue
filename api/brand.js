@@ -1,7 +1,8 @@
 // Brand from a website.
 //   POST /api/brand { url }      -> { site, company, tagline, primary, secondary, accent, bg, graphicStyle, lightStyle, tone, style, logo }
 //                                   Reads the public page and its stylesheets, then asks Claude to pick the brand values. Uses 1 AI Build action.
-//   GET  /api/brand?logo=<url>   -> the logo image bytes (so the studio can place it; other sites rarely allow direct loading).
+//   GET  /api/brand?img=<url>    -> that image's bytes (the logo, or a site picture the customer picked), so the studio can place it;
+//                                   other sites rarely allow direct loading. The reply also lists "images": larger pictures found on the page.
 // Only public http(s) addresses are fetched: local and private network addresses are refused at every redirect hop.
 import Anthropic from "@anthropic-ai/sdk";
 import dns from "node:dns/promises";
@@ -73,6 +74,21 @@ function readSite(html, css, base) {
   const icons = links.filter(l => /icon/i.test(attr(l, "rel"))).map(l => ({ url: abs(attr(l, "href"), base), rel: attr(l, "rel").toLowerCase(), sizes: attr(l, "sizes") })).filter(i => i.url);
   const imgs = (html.match(/<img\b[^>]*>/gi) || []).slice(0, 80).map(t => ({ url: abs(attr(t, "src") || attr(t, "data-src"), base), alt: attr(t, "alt"), cls: attr(t, "class") + " " + attr(t, "id") })).filter(i => i.url);
   const logos = imgs.filter(i => /logo|brand|wordmark/i.test(i.url + " " + i.alt + " " + i.cls)).slice(0, 6);
+  // Pictures a customer might want on a booth wall: the share image, large <img> files and CSS background photos.
+  // Logos, icons, tracking pixels and tiny or vector files are left out; the studio drops anything that loads small.
+  const pics = [];
+  const addPic = (url, alt = "") => { if (url && !pics.some(p => p.url === url) && pics.length < 14 && !/\.(svg|gif|ico)(\?|$)/i.test(url) && !/logo|icon|sprite|pixel|avatar|badge|favicon|spacer|tracking/i.test(url)) pics.push({ url, alt: alt.slice(0, 80) }); };
+  addPic(abs(meta(head, "og:image"), base), "Share image");
+  (html.match(/<img\b[^>]*>/gi) || []).slice(0, 120).forEach(t => {
+    const w = +attr(t, "width") || 0, hgt = +attr(t, "height") || 0;
+    if ((w && w < 240) || (hgt && hgt < 160)) return;
+    const set = attr(t, "srcset") || attr(t, "data-srcset");
+    const best = set ? set.split(",").map(x => x.trim().split(/\s+/)).sort((p, q) => (parseFloat(q[1]) || 0) - (parseFloat(p[1]) || 0))[0]?.[0] : "";
+    if (/logo|icon|avatar|badge/i.test(attr(t, "class") + " " + attr(t, "alt") + " " + attr(t, "id"))) return;
+    addPic(abs(best || attr(t, "src") || attr(t, "data-src"), base), attr(t, "alt"));
+  });
+  for (const m of (css + html).matchAll(/url\(\s*["']?([^"')]+\.(?:jpe?g|png|webp|avif)[^"')]*)["']?\s*\)/gi)) addPic(abs(decode(m[1]), base));
+  (html.match(/<video\b[^>]*>/gi) || []).forEach(t => addPic(abs(attr(t, "poster"), base), "Video still"));
   // Colors: how often each appears, plus named CSS variables, which usually spell out the brand palette.
   const all = css + "\n" + (html.match(/style\s*=\s*"[^"]*"/gi) || []).join("\n");
   const count = new Map();
@@ -88,7 +104,7 @@ function readSite(html, css, base) {
   return {
     title, siteName: meta(head, "og:site_name"), ogTitle: meta(head, "og:title"), description: meta(head, "description") || meta(head, "og:description"),
     themeColor: normHex(meta(head, "theme-color")), ogImage: abs(meta(head, "og:image"), base),
-    icons, logos, colors, vars, fonts: [...fonts].sort((a, b) => b[1] - a[1]).slice(0, 5).map(f => f[0]), heads, text,
+    icons, logos, pics, colors, vars, fonts: [...fonts].sort((a, b) => b[1] - a[1]).slice(0, 5).map(f => f[0]), heads, text,
   };
 }
 
@@ -110,9 +126,9 @@ export default async function handler(req, res) {
   // The logo image, passed through so the studio can place it on the booth.
   if (req.method === "GET") {
     try {
-      const f = await safeFetch(String(req.query?.logo || ""), { maxBytes: 3_000_000, accept: "image/*" });
+      const f = await safeFetch(String(req.query?.img || req.query?.logo || ""), { maxBytes: 6_000_000, accept: "image/*" });
       const type = f.type.split(";")[0] || (/\.svg(\?|$)/i.test(f.url) ? "image/svg+xml" : "");
-      if (!/^image\/(png|jpeg|webp|gif|svg\+xml|x-icon|vnd\.microsoft\.icon)$/.test(type)) return res.status(415).json({ code: "not_image", message: "That isn't an image." });
+      if (!/^image\/(png|jpeg|webp|avif|gif|svg\+xml|x-icon|vnd\.microsoft\.icon)$/.test(type)) return res.status(415).json({ code: "not_image", message: "That isn't an image." });
       res.setHeader("Content-Type", type); res.setHeader("Cache-Control", "private, max-age=600"); res.setHeader("X-Content-Type-Options", "nosniff");
       res.setHeader("Content-Security-Policy", "default-src 'none'; style-src 'unsafe-inline'; sandbox");
       return res.status(200).send(f.bytes);
@@ -194,7 +210,7 @@ Use colors that really appear on the site. Ignore plain greys used only for body
       primary: hex(d.primary, "#1f2937"), secondary: hex(d.secondary, "#374151"), accent: hex(d.accent, "#ffffff"), bg: hex(d.bg, "#101820"),
       graphicStyle: pick(d.graphicStyle, ["solid", "gradient", "geometric", "diagonal"], "solid"),
       lightStyle: pick(d.lightStyle, ["warm", "cool", "daylight", "accent", "rgb"], "warm"),
-      tone: str(d.tone, 120), style: str(d.style, 260), fonts: site.fonts.slice(0, 3), logo,
+      tone: str(d.tone, 120), style: str(d.style, 260), fonts: site.fonts.slice(0, 3), logo, images: site.pics.slice(0, 12),
     });
   } catch (err) {
     if (err instanceof Anthropic.RateLimitError) return res.status(429).json({ code: "rate_limited", message: "The AI is busy. Try again in a moment." });

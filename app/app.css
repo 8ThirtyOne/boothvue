@@ -681,3 +681,14 @@ html.embed #art-note { display: none; }
 #site-card p { margin: 0; font-size: 11px; line-height: 1.45; color: var(--fg); }
 #site-card p i { font-style: normal; font-weight: 700; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-right: 2px; }
 #site-card .site-note { font-size: 10px; color: var(--fg-muted); }
+
+/* Brand From Your Website: picture picker */
+#site-pics { margin-top: 8px; display: grid; gap: 6px; }
+.site-pic-head { font-size: 10px; color: var(--fg-muted); line-height: 1.4; }
+.site-pic-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.site-pic { position: relative; padding: 0; border: 2px solid var(--border); border-radius: 8px; overflow: hidden; cursor: pointer; background: var(--panel2); aspect-ratio: 16 / 10; transition: border-color .15s, transform .15s; }
+.site-pic img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.site-pic:hover { border-color: var(--accent); transform: translateY(-1px); }
+.site-pic:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.site-pic.used { border-color: var(--accent); cursor: default; }
+.site-pic.used::after { content: "✓ On the booth"; position: absolute; inset: auto 0 0 0; padding: 3px 6px; background: var(--accent); color: #fff; font: 700 10px var(--font-ui); text-align: center; }
