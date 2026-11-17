@@ -26,7 +26,7 @@
   }
 
   async function saveToAccount(name, { asNew = false } = {}) {
-    const data = serializeDesign(), thumb = await thumbnail(), now = new Date().toISOString();
+    const data = serializeDesign(), thumb = S.aiThumb || await thumbnail(), now = new Date().toISOString();   // the AI image when there is one, else the 3D view
     if (cloud.id && !asNew) {
       const { error } = await table().update({ name, data, thumb, updated_at: now }).eq('id', cloud.id);
       if (error) throw error;

@@ -63,6 +63,7 @@
       try {
         const { render } = await api(`/api/render?id=${encodeURIComponent(id)}`);
         upsert(render);
+        if (render.status === 'done' && render.kind === 'image' && render.result_url) { S.aiThumb = render.result_url; try { markDirty(); } catch {} }   // becomes the design's picture in Your Designs
         if (render.status === 'done' || render.status === 'failed') { live.polling.delete(id); auth.refresh(); draw(); return; }
       } catch { /* try again next tick */ }
       live.polling.set(id, setTimeout(tick, POLL_MS[kind] || 6000));

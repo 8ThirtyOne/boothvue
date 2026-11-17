@@ -3342,6 +3342,7 @@ function serializeDesign() {
   const d = { v: 1, env: currentEnv };
   DESIGN_KEYS.forEach(k => { d[k] = S[k]; });
   d.els = { ...S.els }; d.brand = { ...S.brand }; d.furn = [...S.furn];
+  d.aiThumb = S.aiThumb || null;   // the latest AI Render image of this design; shown as its picture in Your Designs
   d.placed = JSON.parse(JSON.stringify(S.placed || [])); d.added = JSON.parse(JSON.stringify(S.added || []));
   d.edits = JSON.parse(JSON.stringify(S.edits || {})); d.drags = JSON.parse(JSON.stringify(S.drags || {}));
   if (S.recon) d.recon = S.recon;
@@ -3355,6 +3356,7 @@ function blankDesign() {
 }
 function applyDesign(raw) {
   const d = { ...blankDesign(), ...raw };
+  S.aiThumb = typeof raw?.aiThumb === 'string' && /^https:\/\//.test(raw.aiThumb) ? raw.aiThumb : null;   // a new or rebuilt booth has no AI image yet
   DESIGN_KEYS.forEach(k => { if (d[k] !== undefined) S[k] = d[k]; });
   S.els = { ...blankDesign().els, ...(d.els || {}) };
   S.brand = { ...blankDesign().brand, ...(d.brand || {}) };
