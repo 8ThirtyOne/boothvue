@@ -8,7 +8,22 @@
   const brandInfo = () => {
     let size = '', type = '';
     try { size = getSZ().lbl; type = (BOOTH_TYPES[S.boothType] || '').toString(); } catch {}
-    return { company: S.brand.company || '', tagline: S.brand.tagline || '', colors: [S.brand.primary, S.brand.secondary, S.brand.accent].filter(Boolean), size, type, tone: S.brand.tone || '', style: S.brand.style || '' };
+    let font = ''; try { font = (typeof activeFont !== 'undefined' && activeFont && (fontList.find(f => f.family === activeFont)?.name || activeFont)) || ''; } catch {}
+    return { company: S.brand.company || '', tagline: S.brand.tagline || '', colors: [S.brand.primary, S.brand.secondary, S.brand.accent].filter(Boolean), bg: S.brand.bg || '', font, size, type, tone: S.brand.tone || '', style: S.brand.style || '' };
+  };
+  // The uploaded logo artwork, sent alongside the view so AI Render copies the real logo instead of drawing its own.
+  const brandLogos = () => {
+    const out = [];
+    try {
+      artItems.filter(a => a.kind === 'logo' || a.kind === 'icon').slice(0, 2).forEach(a => {
+        const iw = a.img.naturalWidth || 300, ih = a.img.naturalHeight || 300, k = Math.min(3, 640 / Math.max(iw, ih));
+        const cv = document.createElement('canvas'); cv.width = Math.max(2, Math.round(iw * k)); cv.height = Math.max(2, Math.round(ih * k));
+        const x = cv.getContext('2d'); x.fillStyle = '#8a8f98'; x.fillRect(0, 0, cv.width, cv.height);   // mid-grey so both light and dark logos show
+        x.drawImage(a.img, 0, 0, cv.width, cv.height);
+        const data = cv.toDataURL('image/jpeg', .9).split(',')[1]; if (data && data.length < 500000) out.push(data);
+      });
+    } catch {}
+    return out;
   };
   const latestImage = () => live.items.find(r => r.kind === 'image' && r.status === 'done' && r.result_url);
   const POLL_MS = { image: 4000, video: 10000 };
@@ -116,7 +131,7 @@
       const image = src ? undefined : await captureView();
       st.textContent = 'Sending to AI Render…';
       const direction = (document.getElementById('gen-dir')?.value || '').trim();
-      const { id } = await api('/api/render', { method: 'POST', body: JSON.stringify({ kind, mode: live.mode, image, sourceUrl: src || undefined, direction, brand: brandInfo() }) });
+      const { id } = await api('/api/render', { method: 'POST', body: JSON.stringify({ kind, mode: live.mode, image, sourceUrl: src || undefined, direction, brand: brandInfo(), logos: kind === 'image' ? brandLogos() : undefined }) });
       upsert({ id, kind, status: 'queued', created_at: new Date().toISOString() });
       poll(id, kind); auth.refresh();
       st.textContent = kind === 'image' ? 'Creating your image. It appears below in about 30 seconds.' : 'Creating your video. It appears below in 2–4 minutes; you can close this window and keep working.';
