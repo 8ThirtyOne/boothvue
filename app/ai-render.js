@@ -76,7 +76,7 @@
     }
     const c = credits();
     if (!c) {
-      w.innerHTML = `<p class="gen-note">AI Render is included with every pass: photo-realistic images and 10-second videos of your booth. Your account doesn't have an active pass yet.</p><a class="btn btn-primary" href="/#pricing" style="text-align:center">See passes and pricing</a>`;
+      w.innerHTML = `<p class="gen-note">AI Render is included with every pass: photo-realistic images and 10-second videos of your booth. Your account doesn't have an active pass yet.</p><a class="btn btn-primary" href="/pricing/" style="text-align:center">See passes and pricing</a>`;
       return;
     }
     w.innerHTML = `<div class="gen-top"><p style="margin:0;font-size:13px;color:var(--fg-muted);max-width:52ch;line-height:1.5"><b style="color:var(--fg)">AI Render photographs your finished design.</b> Frame the view you want in 3D, choose a style, then generate a photo-realistic image (1 image credit) or a 10-second video (1 video credit). To change the design itself, use <b style="color:var(--fg)">AI Build</b> or edit it by hand.</p>
@@ -136,7 +136,7 @@
     const w = el('div', 'extras'); body.append(w);
     if (!acct.signedIn || !credits()) {
       w.innerHTML = `<p class="gen-note">Extras are added to an active pass. ${acct.signedIn ? 'Buy a pass first' : 'Sign in with the email you bought your pass with'}, then come back here.</p>`;
-      const b = el('a', 'btn btn-primary', acct.signedIn ? 'See passes and pricing' : 'Sign in'); if (acct.signedIn) b.href = '/#pricing'; else b.onclick = () => openAccount(); w.append(b); return;
+      const b = el('a', 'btn btn-primary', acct.signedIn ? 'See passes and pricing' : 'Sign in'); if (acct.signedIn) b.href = '/pricing/'; else b.onclick = () => openAccount(); w.append(b); return;
     }
     const msg = el('div', 'gen-status'); msg.setAttribute('aria-live', 'polite');
     if (focus === 'ai') msg.textContent = "You've used all the AI Build actions on your pass. Add a pack of 10 to keep building.", msg.classList.add('extra-alert'), w.append(msg);

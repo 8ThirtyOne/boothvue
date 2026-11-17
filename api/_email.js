@@ -90,7 +90,7 @@ export function emailFooter({ note = "", links = [] } = {}) {
       <td style="vertical-align:middle;padding-left:11px"><a href="${site}" style="font:700 26px/1 ${HF};color:#ffffff;letter-spacing:-.02em;text-decoration:none">Booth<span style="color:${VUE}">Vue</span></a></td>
     </tr></table>
     <p style="margin:11px 0 18px;font:400 17px/1.3 ${HF};color:#ffffff;letter-spacing:-.01em">See your booth <b>before it&rsquo;s built</b></p>
-    <table role="presentation" align="center" cellpadding="0" cellspacing="0" style="margin:0 auto 35px"><tr>${btn(site + "/app/", "OPEN THE STUDIO")}${btn(share, "SHARE BOOTHVUE")}${btn(site + "/#contact", "CONTACT US")}</tr></table>
+    <table role="presentation" align="center" cellpadding="0" cellspacing="0" style="margin:0 auto 35px"><tr>${btn(site + "/app/", "OPEN THE STUDIO")}${btn(share, "SHARE BOOTHVUE")}${btn(site + "/contact/", "CONTACT US")}</tr></table>
     ${note ? `<p style="margin:0 0 3px;font:11.5px/1.6 ${FF};color:#cfd6e3">${esc(note)}</p>` : ""}
     <p style="margin:0 0 3px;font:11.5px/1.6 ${FF};color:#cfd6e3">Questions? <a href="mailto:support@boothvue.co" style="color:#ffffff;text-decoration:none">support@boothvue.co</a> &middot; <a href="${site}" style="color:#ffffff;text-decoration:none">${host === "staging.boothvue.co" ? "boothvue.co" : host}</a></p>
     <p style="margin:15px 0 6px;font:11.5px/1.6 ${FF};color:#cfd6e3">${all.map(a).join(" &nbsp;|&nbsp; ")}</p>

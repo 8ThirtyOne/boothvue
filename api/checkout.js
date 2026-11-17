@@ -60,7 +60,7 @@ export default async function handler(req, res) {
       "metadata[plan]": planId,
       "payment_intent_data[metadata][plan]": planId,
       success_url: `${origin}/thanks/?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/#pricing`,
+      cancel_url: `${origin}/pricing/`,
     });
   }
 

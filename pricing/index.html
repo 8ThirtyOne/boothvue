@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pricing · BoothVue</title>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}
+  /* Logo icon sits in a rounded blue square */
+  .vue { color: #4f8cff; }
+  .logo-sq { display: inline-grid; place-items: center; flex: none; width: var(--sq, 34px); height: var(--sq, 34px); border-radius: 24%; background: #2563eb; }
+  .logo-sq > svg { width: 64% !important; height: 64% !important; fill: #fff !important; color: #fff !important; }
+  .logo-sq > svg path { fill: #fff !important; }
+  .foot-brand .logo-sq { --sq: 26px; }
+</style>
+<script src="/js/claude-shim.js"></script>
+</head>
+<body>
+
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="BoothVue pricing: one-time passes for a week, a month or a year. No subscription.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display&family=IBM+Plex+Mono:wght@500&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="/css/site.css?v=1">
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="BoothVue home">
+      <span class="logo-sq" aria-hidden="true"><svg class="logo" viewBox="13 16 156 150" aria-hidden="true"><path class="lg-b" d="M128.6 61 81.6 45.8V23.5l73.5 27z"/><path class="lg-b" d="M71.9,141.9V23.5L25.8,58.3l-9.5,104,1.5-.5c15.2-9.9,33.5-16.8,53.6-19.6l.6-.2Z"/><path class="lg-b" d="M160,56.6l-34.9,12.9v73.8c15.6,3,30,8.5,42.5,15.9l-7.6-102.6Z"/></svg></span>
+
+
+
+
+
+      <span>Booth<span class="vue">Vue</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="/workflow/">Workflow</a>
+      <a href="/features/">Features</a>
+      <a href="/booth-types/">Booth Types</a>
+      <a href="/pricing/" aria-current="page">Pricing</a>
+      <a href="/faq/">FAQ</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+    <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <a class="nav-signin" href="/app/#signin">Sign In</a>
+    <a class="btn btn-primary" href="/app/"><span>Design<span class="nav-cta-long"> Your Booth</span></span></a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="page-hero solo" aria-labelledby="page-title">
+    <div class="wrap">
+      <div class="page-hero-copy">
+        <div class="crumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>Pricing</span></div>
+        <h1 id="page-title">One-time passes. <em>No subscription.</em></h1>
+        <p class="lede">Buy a week to pitch a single booth, or a year if you design for every show on the calendar. Every pass includes AI image and video credits.</p>
+        <div class="hero-ctas"><a class="btn btn-primary" href="/app/">Start Designing</a><a class="btn btn-ghost" href="/faq/">Read The FAQ</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="wrap">
+      <div class="plans">
+        <article class="plan">
+          <div><h3>1 Week Pass</h3><p class="plan-for">One booth, one pitch</p></div>
+          <div class="plan-price"><b>$99</b><span>one time</span></div>
+          <div class="plan-unit">7 days of full access</div>
+          <div class="plan-credits"><div class="credit credit-build"><b>50</b><span>AI Build actions</span></div><div class="credit"><b>4</b><span>AI Render images</span></div><div class="credit"><b>2</b><span>10-sec AI Render videos</span></div></div>
+          <ul>
+            <li>50 AI Build actions to create and change your 3D booth with AI</li>
+            <li>Every booth type, size and construction system</li>
+            <li>AI Build and photo reconstruction</li>
+            <li>Photo-realistic images and video, generated in the app</li>
+            <li>Unlimited saved designs</li>
+          </ul>
+          <a class="btn btn-line" href="/pricing/" data-plan="week">Buy 1 Week</a>
+          <p class="plan-note" aria-live="polite"></p>
+        </article>
+        <article class="plan featured">
+          <span class="plan-badge">Most Popular</span>
+          <div><h3>1 Month Pass</h3><p class="plan-for">A full show cycle</p></div>
+          <div class="plan-price"><b>$199</b><span>one time</span></div>
+          <div class="plan-unit">30 days · about $6.63 / day</div>
+          <div class="plan-credits"><div class="credit credit-build"><b>150</b><span>AI Build actions</span></div><div class="credit"><b>8</b><span>AI Render images</span></div><div class="credit"><b>4</b><span>10-sec AI Render videos</span></div></div>
+          <ul>
+            <li>150 AI Build actions</li>
+            <li>Everything in the week pass</li>
+            <li>Time for client revisions and sign-off</li>
+            <li>AI art direction for variations</li>
+            <li>Full library for every design</li>
+          </ul>
+          <a class="btn btn-primary" href="/pricing/" data-plan="month">Buy 1 Month</a>
+          <p class="plan-note" aria-live="polite"></p>
+        </article>
+        <article class="plan">
+          <div><h3>1 Year Pass</h3><p class="plan-for">For teams presenting all year</p></div>
+          <div class="plan-price"><b>$399</b><span>one time</span></div>
+          <div class="plan-unit">365 days · about $33 / month</div>
+          <div class="plan-credits"><div class="credit credit-build"><b>450</b><span>AI Build actions</span></div><div class="credit"><b>30</b><span>AI Render images</span></div><div class="credit"><b>10</b><span>10-sec AI Render videos</span></div></div>
+          <ul>
+            <li>450 AI Build actions</li>
+            <li>Everything in the month pass</li>
+            <li>Design for every show of the year</li>
+            <li>New features as they ship</li>
+            <li>Priority email support</li>
+          </ul>
+          <a class="btn btn-line" href="/pricing/" data-plan="year">Buy 1 Year</a>
+          <p class="plan-note" aria-live="polite"></p>
+        </article>
+      </div>
+      <div class="ai-compare" id="build-vs-render">
+        <article class="ai-kind ai-kind-build">
+          <div class="ai-kind-head"><span class="ai-kind-icon" aria-hidden="true">✦</span><div><h3>AI Build</h3><p>Creates and changes your 3D design</p></div></div>
+          <dl>
+            <dt>What it does</dt><dd>Turns a sentence or a photo into an editable 3D booth: size, booth type, walls, flooring, colors and furniture. It also writes art direction for you.</dd>
+            <dt>What you get</dt><dd>A 3D design in the studio that you keep editing, branding and rendering.</dd>
+            <dt>What it uses</dt><dd>1 AI Build action per request.</dd>
+            <dt>Included</dt><dd><b>50</b> (week) · <b>150</b> (month) · <b>450</b> (year). Extra: 10 for $5.</dd>
+          </dl>
+        </article>
+        <article class="ai-kind ai-kind-render">
+          <div class="ai-kind-head"><span class="ai-kind-icon" aria-hidden="true">◉</span><div><h3>AI Render</h3><p>Photographs your finished design</p></div></div>
+          <dl>
+            <dt>What it does</dt><dd>Turns your current 3D view into an ultra-realistic photo of the booth on a real show floor, then can animate that photo into a 10-second video.</dd>
+            <dt>What you get</dt><dd>An image or video file for decks, pitches and social. It&rsquo;s a picture, not an editable 3D design.</dd>
+            <dt>What it uses</dt><dd>1 image credit per image, 1 video credit per video.</dd>
+            <dt>Included</dt><dd><b>4 / 8 / 30</b> images and <b>2 / 4 / 10</b> videos. Extra: $5 per image, $10 per video.</dd>
+          </dl>
+        </article>
+      </div>
+      <p class="plans-foot">After checkout, sign in to the app with the same email to unlock your pass and credits. No password needed: we email you a sign-in link.</p>
+      <p class="plans-foot">Passes don't renew automatically. Prices in USD. Full refunds within 48 hours only if no AI Build or AI Render has been used. By purchasing you agree to our <a href="/terms/">Terms of Service</a> and <a href="/refunds/">Refund Policy</a>.</p>
+      <p class="plans-topup">Need more? Buy extras anytime in the app: <b>10 AI Build actions for $5</b>, <b>$5 per AI Render image</b>, <b>$10 per 10-sec video</b>. They&rsquo;re added to your pass and last as long as it does.</p>
+    </div>
+  </section>
+  <script>
+    // Buy buttons open Stripe Checkout through /api/checkout
+    document.querySelectorAll('[data-plan]').forEach(a => {
+      a.addEventListener('click', async e => {
+        e.preventDefault();
+        const note = a.nextElementSibling, label = a.textContent;
+        if (a.dataset.busy) return;
+        a.dataset.busy = '1'; a.textContent = 'Opening checkout…'; note.textContent = '';
+        try {
+          const r = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ plan: a.dataset.plan }) });
+          const d = await r.json().catch(() => ({}));
+          if (r.ok && d.url) { location.href = d.url; return; }
+          note.textContent = d.message || 'Checkout opens soon.';
+        } catch { note.textContent = "Couldn't open checkout. Please try again."; }
+        a.textContent = label; delete a.dataset.busy;
+      });
+    });
+  </script>
+
+  <section>
+    <div class="wrap">
+      <div class="cta">
+        <div>
+          <h2>Show them your vision, not a sketch.</h2>
+          <p>Start from an idea and end with an ultra-realistic image or video, ready for your next presentation. Nothing to install.</p>
+        </div>
+        <div class="btns">
+          <a class="btn btn-white" href="/app/">Open BoothVue</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="foot-brand"><span class="logo-sq" aria-hidden="true"><svg class="logo" viewBox="13 16 156 150" aria-hidden="true"><path class="lg-b" d="M128.6 61 81.6 45.8V23.5l73.5 27z"/><path class="lg-b" d="M71.9,141.9V23.5L25.8,58.3l-9.5,104,1.5-.5c15.2-9.9,33.5-16.8,53.6-19.6l.6-.2Z"/><path class="lg-b" d="M160,56.6l-34.9,12.9v73.8c15.6,3,30,8.5,42.5,15.9l-7.6-102.6Z"/></svg></span>
+
+
+
+
+<span>© BoothVue – Built by 8ThirtyOne Creative</span></span>
+    <span class="foot-links"><a href="/terms/">Terms</a><a href="/privacy/">Privacy</a><a href="/refunds/">Refunds</a><a href="/contact/">Contact</a></span>
+    <span>Dimensions, weights and power figures are planning estimates. Confirm with your exhibit house and show services.</span>
+  </div>
+</footer>
+
+<script>
+  // Backup for browsers that skip autoplay: start muted background videos once they can play and are visible
+  document.querySelectorAll('video[autoplay]').forEach(v => {
+    const go = () => { if (v.paused && !document.hidden) v.play().catch(() => {}); };
+    v.addEventListener('canplay', go); document.addEventListener('visibilitychange', go); go();
+  });
+</script>
+<script>
+  // Phone menu
+  (() => { const nav = document.querySelector("header.nav"), b = nav && nav.querySelector(".nav-toggle"); if (!b) return;
+    b.addEventListener("click", () => { const o = nav.classList.toggle("open"); b.setAttribute("aria-expanded", o); });
+    nav.querySelectorAll(".nav-links a").forEach(a => a.addEventListener("click", () => nav.classList.remove("open"))); })();
+</script>
+</body>
+</html>

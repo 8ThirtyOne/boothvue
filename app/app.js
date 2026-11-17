@@ -3350,7 +3350,7 @@ function openAccountLive() {
       <div class="acct-field"><label for="acct-email">Email</label><input id="acct-email" type="email" autocomplete="email" placeholder="you@company.com"></div>
       <button class="btn btn-primary" id="acct-send">Email me a sign-in link</button>
       <div class="acct-msg" id="acct-msg" aria-live="polite"></div>
-      <p style="font-size:12px;color:var(--fg-muted)">No pass yet? <a href="/#pricing" style="color:var(--accent)">See passes and pricing</a></p>`;
+      <p style="font-size:12px;color:var(--fg-muted)">No pass yet? <a href="/pricing/" style="color:var(--accent)">See passes and pricing</a></p>`;
     const msg = document.getElementById('acct-msg'), btn = document.getElementById('acct-send'), input = document.getElementById('acct-email');
     const send = async () => {
       const v = input.value.trim();
@@ -3398,7 +3398,7 @@ function openAccountLive() {
       ${r ? `<div class="acct-row"><span>Active until</span><b>${fmtDate(r.ends_at)}</b></div>` : ''}
     </div>
     ${r ? `<div class="gen-credits">${r.ai_total ? `<div class="gen-chip"><b>${r.ai_total - r.ai_used} / ${r.ai_total}</b><span>AI Build actions left</span></div>` : ''}<div class="gen-chip"><b>${r.images_total - r.images_used} / ${r.images_total}</b><span>Images left</span></div><div class="gen-chip"><b>${r.videos_total - r.videos_used} / ${r.videos_total}</b><span>Videos left</span></div></div><button class="btn btn-primary" id="acct-more">Buy extras: AI Build actions, images, videos</button>` : '<p style="font-size:13px;color:var(--fg-muted);line-height:1.5">Buy a pass with this email to unlock AI features and image and video credits. It shows up here a few seconds after checkout.</p>'}
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${r ? '<button class="btn" id="acct-refresh">Refresh</button>' : '<a class="btn btn-primary" href="/#pricing" style="text-align:center">See passes</a>'}<button class="btn" id="acct-out">Sign out</button></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${r ? '<button class="btn" id="acct-refresh">Refresh</button>' : '<a class="btn btn-primary" href="/pricing/" style="text-align:center">See passes</a>'}<button class="btn" id="acct-out">Sign out</button></div>
     <div class="acct-msg" id="acct-msg" aria-live="polite"></div>`;
   document.getElementById('acct-who').textContent = acct.email;
   const more = document.getElementById('acct-more'); if (more) more.onclick = () => (window.openBuyExtras || window.openGenerate)();

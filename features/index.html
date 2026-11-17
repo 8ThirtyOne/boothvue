@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Features · BoothVue</title>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}
+  /* Logo icon sits in a rounded blue square */
+  .vue { color: #4f8cff; }
+  .logo-sq { display: inline-grid; place-items: center; flex: none; width: var(--sq, 34px); height: var(--sq, 34px); border-radius: 24%; background: #2563eb; }
+  .logo-sq > svg { width: 64% !important; height: 64% !important; fill: #fff !important; color: #fff !important; }
+  .logo-sq > svg path { fill: #fff !important; }
+  .foot-brand .logo-sq { --sq: 26px; }
+</style>
+<script src="/js/claude-shim.js"></script>
+</head>
+<body>
+
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="BoothVue features: AI Build, a 3D editor with a real-size item library, branding, lighting, 4K renders and AI Render images and video.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display&family=IBM+Plex+Mono:wght@500&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="/css/site.css?v=1">
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="BoothVue home">
+      <span class="logo-sq" aria-hidden="true"><svg class="logo" viewBox="13 16 156 150" aria-hidden="true"><path class="lg-b" d="M128.6 61 81.6 45.8V23.5l73.5 27z"/><path class="lg-b" d="M71.9,141.9V23.5L25.8,58.3l-9.5,104,1.5-.5c15.2-9.9,33.5-16.8,53.6-19.6l.6-.2Z"/><path class="lg-b" d="M160,56.6l-34.9,12.9v73.8c15.6,3,30,8.5,42.5,15.9l-7.6-102.6Z"/></svg></span>
+
+
+
+
+
+      <span>Booth<span class="vue">Vue</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="/workflow/">Workflow</a>
+      <a href="/features/" aria-current="page">Features</a>
+      <a href="/booth-types/">Booth Types</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/faq/">FAQ</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+    <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <a class="nav-signin" href="/app/#signin">Sign In</a>
+    <a class="btn btn-primary" href="/app/"><span>Design<span class="nav-cta-long"> Your Booth</span></span></a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="page-hero" aria-labelledby="page-title">
+    <div class="wrap">
+      <div class="page-hero-copy">
+        <div class="crumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>Features</span></div>
+        <h1 id="page-title">AI at every step, and <em>easy enough for anyone.</em></h1>
+        <p class="lede">No CAD skills, no 3D artist, no installs. Get from idea to a visual you can put in front of decision-makers, without waiting weeks on concept renderings.</p>
+        <div class="hero-ctas"><a class="btn btn-primary" href="/app/">Start Designing</a><a class="btn btn-ghost" href="/workflow/">See The Workflow</a></div>
+      </div>
+      <div class="page-hero-art"><img src="/img/app-ui.jpg" alt="The BoothVue studio with a booth design open" width="1600" height="1000"></div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="features">
+        <article class="feature ai">
+          <div class="icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></div>
+          <h3>AI build from a sentence</h3>
+          <p>Describe the booth, drop in up to four reference images, and Claude picks the size, walls, floor, colors and furniture for you.</p>
+          <div class="spec">“A 20×30 corner booth for a coffee brand”</div>
+        </article>
+        <article class="feature ai">
+          <div class="icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 16l-5-5-9 8"/></svg></div>
+          <h3>Photo to 3D</h3>
+          <p>Upload a photo of an existing booth. Claude reads the layout and rebuilds it as editable 3D geometry at the size you choose.</p>
+          <div class="spec">Then refine it against the photo</div>
+        </article>
+        <article class="feature">
+          <div class="icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"/></svg></div>
+          <h3>A library of 53 items</h3>
+          <p>Counters, podiums, stools, screens, video walls, lighting, plants, a display car, stages, meeting rooms and hanging signs, all at real size.</p>
+          <div class="spec">11 categories · searchable</div>
+        </article>
+        <article class="feature">
+          <div class="icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 19l4-1 10-10-3-3L6 15z"/><path d="M14 6l3 3"/></svg></div>
+          <h3>Edit anything you click</h3>
+          <p>Select any wall or piece to move, resize, rotate or recolor it, cut a walk-through opening, add an overhang or place your own artwork and fonts.</p>
+          <div class="spec">Drag on the floor · double-click to rotate</div>
+        </article>
+        <article class="feature">
+          <div class="icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17L17 3l4 4L7 21H3z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/></svg></div>
+          <h3>Measure and estimate it</h3>
+          <p>Show sizes on every item, measure between any two points, and get ballpark weight, power and setup estimates to start the conversation.</p>
+          <div class="spec">Feet or meters · plan, side and eye-level views</div>
+        </article>
+        <article class="feature">
+          <div class="icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/></svg></div>
+          <h3>Photo-realistic images and video</h3>
+          <p>Turn your render into an ultra-realistic image or video clip without leaving the app. Every pass includes AI image and video credits.</p>
+          <div class="spec">Also exports 4K PNG · GLB model · specs</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta">
+        <div>
+          <h2>Show them your vision, not a sketch.</h2>
+          <p>Start from an idea and end with an ultra-realistic image or video, ready for your next presentation. Nothing to install.</p>
+        </div>
+        <div class="btns">
+          <a class="btn btn-white" href="/app/">Open BoothVue</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="foot-brand"><span class="logo-sq" aria-hidden="true"><svg class="logo" viewBox="13 16 156 150" aria-hidden="true"><path class="lg-b" d="M128.6 61 81.6 45.8V23.5l73.5 27z"/><path class="lg-b" d="M71.9,141.9V23.5L25.8,58.3l-9.5,104,1.5-.5c15.2-9.9,33.5-16.8,53.6-19.6l.6-.2Z"/><path class="lg-b" d="M160,56.6l-34.9,12.9v73.8c15.6,3,30,8.5,42.5,15.9l-7.6-102.6Z"/></svg></span>
+
+
+
+
+<span>© BoothVue – Built by 8ThirtyOne Creative</span></span>
+    <span class="foot-links"><a href="/terms/">Terms</a><a href="/privacy/">Privacy</a><a href="/refunds/">Refunds</a><a href="/contact/">Contact</a></span>
+    <span>Dimensions, weights and power figures are planning estimates. Confirm with your exhibit house and show services.</span>
+  </div>
+</footer>
+
+<script>
+  // Backup for browsers that skip autoplay: start muted background videos once they can play and are visible
+  document.querySelectorAll('video[autoplay]').forEach(v => {
+    const go = () => { if (v.paused && !document.hidden) v.play().catch(() => {}); };
+    v.addEventListener('canplay', go); document.addEventListener('visibilitychange', go); go();
+  });
+</script>
+<script>
+  // Phone menu
+  (() => { const nav = document.querySelector("header.nav"), b = nav && nav.querySelector(".nav-toggle"); if (!b) return;
+    b.addEventListener("click", () => { const o = nav.classList.toggle("open"); b.setAttribute("aria-expanded", o); });
+    nav.querySelectorAll(".nav-links a").forEach(a => a.addEventListener("click", () => nav.classList.remove("open"))); })();
+</script>
+</body>
+</html>

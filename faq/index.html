@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>FAQ · BoothVue</title>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}
+  /* Logo icon sits in a rounded blue square */
+  .vue { color: #4f8cff; }
+  .logo-sq { display: inline-grid; place-items: center; flex: none; width: var(--sq, 34px); height: var(--sq, 34px); border-radius: 24%; background: #2563eb; }
+  .logo-sq > svg { width: 64% !important; height: 64% !important; fill: #fff !important; color: #fff !important; }
+  .logo-sq > svg path { fill: #fff !important; }
+  .foot-brand .logo-sq { --sq: 26px; }
+</style>
+<script src="/js/claude-shim.js"></script>
+</head>
+<body>
+
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Answers to common questions about BoothVue: AI Build, AI Render, passes, credits and what you can do with your images.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display&family=IBM+Plex+Mono:wght@500&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="/css/site.css?v=1">
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="BoothVue home">
+      <span class="logo-sq" aria-hidden="true"><svg class="logo" viewBox="13 16 156 150" aria-hidden="true"><path class="lg-b" d="M128.6 61 81.6 45.8V23.5l73.5 27z"/><path class="lg-b" d="M71.9,141.9V23.5L25.8,58.3l-9.5,104,1.5-.5c15.2-9.9,33.5-16.8,53.6-19.6l.6-.2Z"/><path class="lg-b" d="M160,56.6l-34.9,12.9v73.8c15.6,3,30,8.5,42.5,15.9l-7.6-102.6Z"/></svg></span>
+
+
+
+
+
+      <span>Booth<span class="vue">Vue</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="/workflow/">Workflow</a>
+      <a href="/features/">Features</a>
+      <a href="/booth-types/">Booth Types</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/faq/" aria-current="page">FAQ</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+    <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <a class="nav-signin" href="/app/#signin">Sign In</a>
+    <a class="btn btn-primary" href="/app/"><span>Design<span class="nav-cta-long"> Your Booth</span></span></a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="page-hero solo" aria-labelledby="page-title">
+    <div class="wrap">
+      <div class="page-hero-copy">
+        <div class="crumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>FAQ</span></div>
+        <h1 id="page-title">Questions, <em>answered.</em></h1>
+        <p class="lede">How AI Build and AI Render work, what a pass includes, and what you can do with the images and video you make.</p>
+        <div class="hero-ctas"><a class="btn btn-primary" href="/app/">Start Designing</a><a class="btn btn-ghost" href="/contact/">Ask Us Anything</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="faq">
+        <details><summary>Do I need to install anything?</summary><p>No. BoothVue runs in your web browser on a laptop or desktop. A large desktop or laptop screen is highly recommended. On a phone or small tablet, the 3D view and controls are too small to design comfortably.</p></details>
+        <details><summary>How do the AI features work?</summary><p>AI is built in and included with every pass, with nothing extra to sign up for. There are two kinds. <b>AI Build</b> creates and changes your editable 3D booth from a sentence or a photo, and uses one AI Build action per request: 50 with a week pass, 150 with a month, 450 with a year. <b>AI Render</b> turns your finished 3D view into a photo-realistic image or a 10-second video, and uses image and video credits. Need more AI Build? Add 10 actions for $5 under Buy extras.</p></details>
+        <details><summary>What&rsquo;s the difference between AI Build and AI Render?</summary><p><b>AI Build designs; AI Render photographs.</b> AI Build gives you an editable 3D booth in the studio. You can move, resize, brand and change everything it makes. AI Render takes the view you framed and creates a finished, ultra-realistic picture or video of it for presentations. That picture isn&rsquo;t editable 3D, so make your changes with AI Build or by hand first, then render. With Concept Upgrade on, AI Render also enhances the design well beyond your 3D model, like a professional exhibit designer would.</p></details>
+        <details><summary>How do I get the ultra-realistic image or video?</summary><p>Once your booth is designed, click Generate. AI uses your render and your art direction to create a photo-realistic image or a 10-second video clip of your booth concept, right in the app. Each pass includes credits: 4 images and 2 videos for a week, 8 images and 4 videos for a month, or 30 images and 10 videos for a year. Need more? Buy extra images for $5 each or videos for $10 each under Buy extras. They&rsquo;re added to your pass and can be used until it ends.</p></details>
+        <details><summary>Do I need design or 3D experience?</summary><p>No. You can start from a sentence or a photo, and change anything by clicking it. Every step is guided, from the first layout to the final photo-realistic visual.</p></details>
+        <details><summary>Is this a CAD or fabrication tool?</summary><p>No. BoothVue is for concept visualization: showing what your trade show presence could look like, for investors, presentations, pitches and internal sign-off. It doesn't produce CAD drawings, engineering or manufacturing details. When you're ready to build, share your visuals with an exhibit house as a starting point. You can also give them a 4K render, a GLB 3D model and a summary of approximate sizes, and they will produce the construction drawings.</p></details>
+        <details><summary>Do I need an account?</summary><p>Yes, once you buy a pass. Sign in with the email you used at checkout and we'll send you a one-time sign-in link, so there's no password to remember. Your account holds your pass, your remaining image and video credits, and your generated images and videos.</p></details>
+        <details><summary>Where are my designs saved?</summary><p>When you're signed in, your designs save to your account automatically, so you can open them on any computer. You can also send a view-only share link to a colleague or investor.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta">
+        <div>
+          <h2>Show them your vision, not a sketch.</h2>
+          <p>Start from an idea and end with an ultra-realistic image or video, ready for your next presentation. Nothing to install.</p>
+        </div>
+        <div class="btns">
+          <a class="btn btn-white" href="/app/">Open BoothVue</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="foot-brand"><span class="logo-sq" aria-hidden="true"><svg class="logo" viewBox="13 16 156 150" aria-hidden="true"><path class="lg-b" d="M128.6 61 81.6 45.8V23.5l73.5 27z"/><path class="lg-b" d="M71.9,141.9V23.5L25.8,58.3l-9.5,104,1.5-.5c15.2-9.9,33.5-16.8,53.6-19.6l.6-.2Z"/><path class="lg-b" d="M160,56.6l-34.9,12.9v73.8c15.6,3,30,8.5,42.5,15.9l-7.6-102.6Z"/></svg></span>
+
+
+
+
+<span>© BoothVue – Built by 8ThirtyOne Creative</span></span>
+    <span class="foot-links"><a href="/terms/">Terms</a><a href="/privacy/">Privacy</a><a href="/refunds/">Refunds</a><a href="/contact/">Contact</a></span>
+    <span>Dimensions, weights and power figures are planning estimates. Confirm with your exhibit house and show services.</span>
+  </div>
+</footer>
+
+<script>
+  // Backup for browsers that skip autoplay: start muted background videos once they can play and are visible
+  document.querySelectorAll('video[autoplay]').forEach(v => {
+    const go = () => { if (v.paused && !document.hidden) v.play().catch(() => {}); };
+    v.addEventListener('canplay', go); document.addEventListener('visibilitychange', go); go();
+  });
+</script>
+<script>
+  // Phone menu
+  (() => { const nav = document.querySelector("header.nav"), b = nav && nav.querySelector(".nav-toggle"); if (!b) return;
+    b.addEventListener("click", () => { const o = nav.classList.toggle("open"); b.setAttribute("aria-expanded", o); });
+    nav.querySelectorAll(".nav-links a").forEach(a => a.addEventListener("click", () => nav.classList.remove("open"))); })();
+</script>
+</body>
+</html>

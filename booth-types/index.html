@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Booth Types · BoothVue</title>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}
+  /* Logo icon sits in a rounded blue square */
+  .vue { color: #4f8cff; }
+  .logo-sq { display: inline-grid; place-items: center; flex: none; width: var(--sq, 34px); height: var(--sq, 34px); border-radius: 24%; background: #2563eb; }
+  .logo-sq > svg { width: 64% !important; height: 64% !important; fill: #fff !important; color: #fff !important; }
+  .logo-sq > svg path { fill: #fff !important; }
+  .foot-brand .logo-sq { --sq: 26px; }
+</style>
+<script src="/js/claude-shim.js"></script>
+</head>
+<body>
+
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Design inline, corner, peninsula and island booths in US and international stand sizes with BoothVue.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display&family=IBM+Plex+Mono:wght@500&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="/css/site.css?v=1">
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="BoothVue home">
+      <span class="logo-sq" aria-hidden="true"><svg class="logo" viewBox="13 16 156 150" aria-hidden="true"><path class="lg-b" d="M128.6 61 81.6 45.8V23.5l73.5 27z"/><path class="lg-b" d="M71.9,141.9V23.5L25.8,58.3l-9.5,104,1.5-.5c15.2-9.9,33.5-16.8,53.6-19.6l.6-.2Z"/><path class="lg-b" d="M160,56.6l-34.9,12.9v73.8c15.6,3,30,8.5,42.5,15.9l-7.6-102.6Z"/></svg></span>
+
+
+
+
+
+      <span>Booth<span class="vue">Vue</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="/workflow/">Workflow</a>
+      <a href="/features/">Features</a>
+      <a href="/booth-types/" aria-current="page">Booth Types</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/faq/">FAQ</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+    <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <a class="nav-signin" href="/app/#signin">Sign In</a>
+    <a class="btn btn-primary" href="/app/"><span>Design<span class="nav-cta-long"> Your Booth</span></span></a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="page-hero" aria-labelledby="page-title">
+    <div class="wrap">
+      <div class="page-hero-copy">
+        <div class="crumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>Booth Types</span></div>
+        <h1 id="page-title">Every floor plot, <em>from inline to island.</em></h1>
+        <p class="lede">The app adds the right walls for each type, in US and international stand sizes. Corner booths let you choose which side gets the partition.</p>
+        <div class="hero-ctas"><a class="btn btn-primary" href="/app/">Start Designing</a><a class="btn btn-ghost" href="/features/">See Features</a></div>
+      </div>
+      <div class="page-hero-art"><img src="/img/g-island.jpg" alt="An island booth designed in BoothVue" width="1600" height="1000"></div>
+    </div>
+  </section>
+
+  <section id="types" class="band-blue">
+    <div class="wrap">
+      <div class="types">
+        <a class="type" href="/app/#type-inline" aria-label="Open a 10 × 10 ft inline booth in the studio">
+          <svg viewBox="0 0 160 110" aria-hidden="true"><rect x="12" y="12" width="136" height="86" rx="4" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="4 4"/><path d="M12 98V12h136v86" fill="none" stroke="currentColor" stroke-width="7"/></svg>
+          <h3>Inline</h3><div class="meta">1 open side · back + 2 partitions</div>
+          <p>The classic 10 × 10 or 10 × 20 in a row of exhibitors.</p>
+        <span class="type-go">Open in the studio <span aria-hidden="true">→</span></span></a>
+        <a class="type" href="/app/#type-corner" aria-label="Open a 10 × 20 ft corner booth in the studio">
+          <svg viewBox="0 0 160 110" aria-hidden="true"><rect x="12" y="12" width="136" height="86" rx="4" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="4 4"/><path d="M12 98V12h136" fill="none" stroke="currentColor" stroke-width="7"/></svg>
+          <h3>Corner</h3><div class="meta">2 open sides · left or right partition</div>
+          <p>End of a row, open to two aisles.</p>
+        <span class="type-go">Open in the studio <span aria-hidden="true">→</span></span></a>
+        <a class="type" href="/app/#type-peninsula" aria-label="Open a 20 × 20 ft peninsula booth in the studio">
+          <svg viewBox="0 0 160 110" aria-hidden="true"><rect x="12" y="12" width="136" height="86" rx="4" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="4 4"/><path d="M12 12h136" fill="none" stroke="currentColor" stroke-width="7"/></svg>
+          <h3>Peninsula</h3><div class="meta">3 open sides · back wall only</div>
+          <p>Backs onto one neighbor, open to three aisles.</p>
+        <span class="type-go">Open in the studio <span aria-hidden="true">→</span></span></a>
+        <a class="type" href="/app/#type-island" aria-label="Open a 20 × 20 ft island booth in the studio">
+          <svg viewBox="0 0 160 110" aria-hidden="true"><rect x="12" y="12" width="136" height="86" rx="4" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="4 4"/><path d="M58 55h44" fill="none" stroke="currentColor" stroke-width="7"/><circle cx="80" cy="55" r="22" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3"/></svg>
+          <h3>Island</h3><div class="meta">4 open sides · center wall + hanging sign</div>
+          <p>Free-standing, visible from every aisle.</p>
+        <span class="type-go">Open in the studio <span aria-hidden="true">→</span></span></a>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface);border-block:1px solid var(--line)">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">Standard sizes</div>
+        <h2>US and international stand sizes built in.</h2>
+        <p>Switch to meters and the size options change to European and Asian stand standards. Any custom size works too.</p>
+      </div>
+      <div class="sizes">
+        <div class="size-card">
+          <h3>Feet</h3><p class="sub">Depth × width, as US shows list them. Select a size to open its starter design.</p>
+          <div class="size-grid">
+            <a class="size-chip" href="/app/#size-10x10" aria-label="Design a 10 × 10 feet booth">10 × 10<small>100 ft²</small></a><a class="size-chip" href="/app/#size-10x20" aria-label="Design a 10 × 20 feet booth">10 × 20<small>200 ft²</small></a><a class="size-chip" href="/app/#size-10x30" aria-label="Design a 10 × 30 feet booth">10 × 30<small>300 ft²</small></a>
+            <a class="size-chip" href="/app/#size-20x20" aria-label="Design a 20 × 20 feet booth">20 × 20<small>400 ft²</small></a><a class="size-chip" href="/app/#size-20x30" aria-label="Design a 20 × 30 feet booth">20 × 30<small>600 ft²</small></a><a class="size-chip" href="/app/#size-20x40" aria-label="Design a 20 × 40 feet booth">20 × 40<small>800 ft²</small></a>
+            <a class="size-chip" href="/app/#size-30x30" aria-label="Design a 30 × 30 feet booth">30 × 30<small>900 ft²</small></a><a class="size-chip" href="/app/#size-30x40" aria-label="Design a 30 × 40 feet booth">30 × 40<small>1,200 ft²</small></a><a class="size-chip" href="/app/#size-40x40" aria-label="Design a 40 × 40 feet booth">40 × 40<small>1,600 ft²</small></a>
+            <a class="size-chip size-custom" href="/app/#size-custom" aria-label="Design a custom size booth in feet">Custom size<small>Enter any depth × width in feet</small></a>
+          </div>
+        </div>
+        <div class="size-card">
+          <h3>Meters</h3><p class="sub">Shell scheme and raw space, depth × width. Select a size to open its starter design.</p>
+          <div class="size-grid">
+            <a class="size-chip" href="/app/#size-m2x3" aria-label="Design a 2 × 3 meters booth">2 × 3<small>6 m²</small></a><a class="size-chip" href="/app/#size-m3x3" aria-label="Design a 3 × 3 meters booth">3 × 3<small>9 m²</small></a><a class="size-chip" href="/app/#size-m3x4" aria-label="Design a 3 × 4 meters booth">3 × 4<small>12 m²</small></a>
+            <a class="size-chip" href="/app/#size-m3x5" aria-label="Design a 3 × 5 meters booth">3 × 5<small>15 m²</small></a><a class="size-chip" href="/app/#size-m3x6" aria-label="Design a 3 × 6 meters booth">3 × 6<small>18 m²</small></a><a class="size-chip" href="/app/#size-m3x9" aria-label="Design a 3 × 9 meters booth">3 × 9<small>27 m²</small></a>
+            <a class="size-chip" href="/app/#size-m4x6" aria-label="Design a 4 × 6 meters booth">4 × 6<small>24 m²</small></a><a class="size-chip" href="/app/#size-m6x6" aria-label="Design a 6 × 6 meters booth">6 × 6<small>36 m²</small></a><a class="size-chip" href="/app/#size-m6x9" aria-label="Design a 6 × 9 meters booth">6 × 9<small>54 m²</small></a>
+            <a class="size-chip" href="/app/#size-m6x12" aria-label="Design a 6 × 12 meters booth">6 × 12<small>72 m²</small></a><a class="size-chip" href="/app/#size-m9x9" aria-label="Design a 9 × 9 meters booth">9 × 9<small>81 m²</small></a><a class="size-chip" href="/app/#size-m9x12" aria-label="Design a 9 × 12 meters booth">9 × 12<small>108 m²</small></a>
+            <a class="size-chip" href="/app/#size-m12x12" aria-label="Design a 12 × 12 meters booth">12 × 12<small>144 m²</small></a>
+            <a class="size-chip size-custom" href="/app/#size-mcustom" aria-label="Design a custom size booth in meters">Custom size<small>Enter any depth × width in meters</small></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta">
+        <div>
+          <h2>Show them your vision, not a sketch.</h2>
+          <p>Start from an idea and end with an ultra-realistic image or video, ready for your next presentation. Nothing to install.</p>
+        </div>
+        <div class="btns">
+          <a class="btn btn-white" href="/app/">Open BoothVue</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="foot-brand"><span class="logo-sq" aria-hidden="true"><svg class="logo" viewBox="13 16 156 150" aria-hidden="true"><path class="lg-b" d="M128.6 61 81.6 45.8V23.5l73.5 27z"/><path class="lg-b" d="M71.9,141.9V23.5L25.8,58.3l-9.5,104,1.5-.5c15.2-9.9,33.5-16.8,53.6-19.6l.6-.2Z"/><path class="lg-b" d="M160,56.6l-34.9,12.9v73.8c15.6,3,30,8.5,42.5,15.9l-7.6-102.6Z"/></svg></span>
+
+
+
+
+<span>© BoothVue – Built by 8ThirtyOne Creative</span></span>
+    <span class="foot-links"><a href="/terms/">Terms</a><a href="/privacy/">Privacy</a><a href="/refunds/">Refunds</a><a href="/contact/">Contact</a></span>
+    <span>Dimensions, weights and power figures are planning estimates. Confirm with your exhibit house and show services.</span>
+  </div>
+</footer>
+
+<script>
+  // Backup for browsers that skip autoplay: start muted background videos once they can play and are visible
+  document.querySelectorAll('video[autoplay]').forEach(v => {
+    const go = () => { if (v.paused && !document.hidden) v.play().catch(() => {}); };
+    v.addEventListener('canplay', go); document.addEventListener('visibilitychange', go); go();
+  });
+</script>
+<script>
+  // Phone menu
+  (() => { const nav = document.querySelector("header.nav"), b = nav && nav.querySelector(".nav-toggle"); if (!b) return;
+    b.addEventListener("click", () => { const o = nav.classList.toggle("open"); b.setAttribute("aria-expanded", o); });
+    nav.querySelectorAll(".nav-links a").forEach(a => a.addEventListener("click", () => nav.classList.remove("open"))); })();
+</script>
+</body>
+</html>

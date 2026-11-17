@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Workflow · BoothVue</title>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}
+  /* Logo icon sits in a rounded blue square */
+  .vue { color: #4f8cff; }
+  .logo-sq { display: inline-grid; place-items: center; flex: none; width: var(--sq, 34px); height: var(--sq, 34px); border-radius: 24%; background: #2563eb; }
+  .logo-sq > svg { width: 64% !important; height: 64% !important; fill: #fff !important; color: #fff !important; }
+  .logo-sq > svg path { fill: #fff !important; }
+  .foot-brand .logo-sq { --sq: 26px; }
+</style>
+<script src="/js/claude-shim.js"></script>
+</head>
+<body>
+
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="The five-step BoothVue workflow: describe your booth, shape it in 3D, brand it, render it and picture it on the show floor.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display&family=IBM+Plex+Mono:wght@500&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="/css/site.css?v=1">
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="BoothVue home">
+      <span class="logo-sq" aria-hidden="true"><svg class="logo" viewBox="13 16 156 150" aria-hidden="true"><path class="lg-b" d="M128.6 61 81.6 45.8V23.5l73.5 27z"/><path class="lg-b" d="M71.9,141.9V23.5L25.8,58.3l-9.5,104,1.5-.5c15.2-9.9,33.5-16.8,53.6-19.6l.6-.2Z"/><path class="lg-b" d="M160,56.6l-34.9,12.9v73.8c15.6,3,30,8.5,42.5,15.9l-7.6-102.6Z"/></svg></span>
+
+
+
+
+
+      <span>Booth<span class="vue">Vue</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="/workflow/" aria-current="page">Workflow</a>
+      <a href="/features/">Features</a>
+      <a href="/booth-types/">Booth Types</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/faq/">FAQ</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+    <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <a class="nav-signin" href="/app/#signin">Sign In</a>
+    <a class="btn btn-primary" href="/app/"><span>Design<span class="nav-cta-long"> Your Booth</span></span></a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="page-hero" aria-labelledby="page-title">
+    <div class="wrap">
+      <div class="page-hero-copy">
+        <div class="crumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>Workflow</span></div>
+        <h1 id="page-title">From a sentence to a <em>show-floor vision</em>, in five steps.</h1>
+        <p class="lede">Describe the booth, shape it in 3D, add your brand, render it, then picture it on the show floor. Here&rsquo;s each step up close.</p>
+        <div class="hero-ctas"><a class="btn btn-primary" href="/app/">Start Designing</a><a class="btn btn-ghost" href="/pricing/">See Pricing</a></div>
+      </div>
+      <div class="page-hero-art"><img src="/img/step1-booth.jpg" alt="A 3D booth design in the BoothVue studio" width="1600" height="1000"></div>
+    </div>
+  </section>
+
+  <!-- Step-by-step walkthrough: one section per workflow step -->
+  <div class="walkthrough" id="walkthrough">
+    <nav class="walk-nav" aria-label="Workflow steps">
+      <div class="wrap">
+        <a href="#step-1" data-step="1"><b>1</b><span>Describe</span></a>
+        <a href="#step-2" data-step="2"><b>2</b><span>Shape</span></a>
+        <a href="#step-3" data-step="3"><b>3</b><span>Brand</span></a>
+        <a href="#step-4" data-step="4"><b>4</b><span>Render</span></a>
+        <a href="#step-5" data-step="5"><b>5</b><span>Picture it</span></a>
+      </div>
+    </nav>
+
+    <section class="walk" id="step-1">
+      <div class="wrap walk-row">
+        <div class="walk-media">
+          <div class="browser"><div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+            <img src="/img/step1-booth.jpg?v=2" width="1600" height="960" loading="lazy" alt="A 20 × 20 peninsula lounge booth built by AI from one sentence: back wall with a sign, sofa, café table, counter, kiosk and potted plants">
+          </div>
+          <div class="ui-card ui-prompt" aria-hidden="true">
+            <div class="ui-card-head"><span class="ui-spark">✦</span>AI Build</div>
+            <div class="ui-field">A 20×20 peninsula lounge for a coffee brand: sofa, café table, a counter, a kiosk and plenty of plants<span class="ui-caret"></span></div>
+            <div class="ui-btn">Build my booth</div>
+          </div>
+        </div>
+        <div class="walk-copy">
+          <div class="walk-num" aria-hidden="true">01</div>
+          <div class="eyebrow">Step 1 · Describe it</div>
+          <h2>Start with a sentence, or a photo.</h2>
+          <p>Tell AI what you have in mind. It picks the size, booth type, walls, flooring, colors and furniture, and builds it in 3D in seconds.</p>
+          <ol class="howto">
+            <li>Click <b>AI Build</b> at the top of the studio.</li>
+            <li>Describe the booth in a sentence, or add a photo of one you like.</li>
+            <li>Click <b>Build my booth</b>. The design is ready to edit.</li>
+          </ol>
+          <p class="walk-tip">Prefer to start from scratch? Pick a size and booth type instead.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="walk walk-alt" id="step-2">
+      <div class="wrap walk-row walk-flip">
+        <div class="walk-media">
+          <div class="browser"><div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+            <img src="/img/app-ui.jpg?v=2" width="800" height="500" loading="lazy" alt="The BoothVue editor, with booth setup options on the left and a selected podium showing its size in the 3D view">
+          </div>
+        </div>
+        <div class="walk-copy">
+          <div class="walk-num" aria-hidden="true">02</div>
+          <div class="eyebrow">Step 2 · Shape it in 3D</div>
+          <h2>Click, drag and adjust anything.</h2>
+          <p>Fine-tune the layout like moving furniture in a room. Every piece has real-world sizes, and you can walk the aisle at eye level to see it the way visitors will.</p>
+          <ol class="howto">
+            <li>Choose the booth type (inline, corner, peninsula or island) and a size.</li>
+            <li>Click any item to select it, then drag it across the floor. Double-click to rotate.</li>
+            <li>Add counters, screens, seating, plants and signs from the 53-item library.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="walk" id="step-3">
+      <div class="wrap walk-row">
+        <div class="walk-media">
+          <div class="browser"><div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+            <img src="/img/step3-booth.jpg" width="1600" height="960" loading="lazy" alt="The same lounge booth branded for a sample coffee company, with warm brown walls, a gold accent and the company name on the back wall">
+          </div>
+          <div class="ui-card ui-brand" aria-hidden="true">
+            <div class="ui-card-head">Brand</div>
+            <div class="ui-row"><span>Company</span><b>SUMMIT COFFEE CO.</b></div>
+            <div class="ui-row"><span>Tagline</span><b>Roasted for the road</b></div>
+            <div class="ui-row"><span>Colors</span><i style="background:#7a3b1f"></i><i style="background:#e8b04b"></i><i style="background:#fff8ee"></i></div>
+            <div class="ui-row"><span>Lighting</span><b>Warm</b></div>
+          </div>
+        </div>
+        <div class="walk-copy">
+          <div class="walk-num" aria-hidden="true">03</div>
+          <div class="eyebrow">Step 3 · Brand it</div>
+          <h2>Make it unmistakably yours.</h2>
+          <p>Your logo, colors, fonts and artwork go straight onto the walls, counters and signs, so the booth looks like your company, not a template.</p>
+          <ol class="howto">
+            <li>Open the <b>Brand</b> tab and upload your logo and artwork.</li>
+            <li>Set your company name, tagline and brand colors.</li>
+            <li>Pick materials and lighting to match the mood of your show.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="walk walk-alt" id="step-4">
+      <div class="wrap">
+        <div class="walk-head">
+          <div class="walk-num" aria-hidden="true">04</div>
+          <div>
+            <div class="eyebrow">Step 4 · Render it</div>
+            <h2>Frame the shot and save a 4K render.</h2>
+            <p>Orbit around the booth, step into the aisle at eye level, and save a crisp render from any angle. These were rendered straight out of the app without retouching. Select one to open that design and make it your own.</p>
+          </div>
+        </div>
+        <ol class="howto howto-row">
+          <li>Pick a view: 3D, front, side, plan or eye level.</li>
+          <li>Turn on lights and visitors for a show-day look.</li>
+          <li>Click <b>Export Render</b> to save a 4K image.</li>
+        </ol>
+        <div class="gallery">
+        <a class="shot" href="/app/#size-10x10" aria-label="Open the 10 × 10 ft starter design in the app"><img src="/img/g-10x10.jpg?v=3" width="1200" height="857" loading="lazy" alt="10 × 10 ft starter booth: one back wall, counter, bar table and stools, brochure rack"><span class="shot-cap">10 × 10 ft starter</span><span class="shot-go">Open this design →</span></a>
+        <a class="shot" href="/app/#design-demo" aria-label="Open the product demo design in the app"><img src="/img/g-demo.jpg" width="1200" height="857" loading="lazy" alt="Inline product demo booth with a video wall, demo desk, plinths and a light truss"><span class="shot-cap">Product demo · video wall · 10 × 20 ft</span><span class="shot-go">Open this design →</span></a>
+        <a class="shot" href="/app/#design-island" aria-label="Open the island tower design in the app"><img src="/img/g-island.jpg" width="1200" height="857" loading="lazy" alt="Purple island booth with a center wall, ring sign overhead, coffee bar, stools and a digital totem"><span class="shot-cap">Island tower · coffee bar · 20 × 20 ft</span><span class="shot-go">Open this design →</span></a>
+        <a class="shot" href="/app/#design-flagship" aria-label="Open the flagship island design in the app"><img src="/img/g-flagship.jpg" width="1200" height="857" loading="lazy" alt="Large island booth with a display car, stage, meeting room and hanging sign"><span class="shot-cap">Flagship island · display car · 30 × 30 ft</span><span class="shot-go">Open this design →</span></a>
+      </div>
+
+      </div>
+    </section>
+
+    <section class="walk" id="step-5">
+      <div class="wrap">
+        <div class="walk-head">
+          <div class="walk-num" aria-hidden="true">05</div>
+          <div>
+            <div class="eyebrow">Step 5 · Picture it</div>
+            <h2>Your booth, imagined on the show floor.</h2>
+            <p>AI Render turns your design into a photo-realistic concept image or 10-second video clip, imagined on a show floor. It&rsquo;s an AI visualization of where your booth could go, not a build plan, so your exhibit house will confirm what can actually be built. Drop it into investor decks, board presentations and pitches, win sign-off on your concept, and promote your booth before the doors open.</p>
+          </div>
+        </div>
+        <ol class="money">
+          <li><span class="money-n" aria-hidden="true">1</span><h3>Frame your shot</h3><p>Pick the angle you want in the 3D editor, the way a photographer would.</p></li>
+          <li><span class="money-n" aria-hidden="true">2</span><h3>Click AI Render</h3><p>Choose a style, or write your own art direction.</p></li>
+          <li><span class="money-n" aria-hidden="true">3</span><h3>Get your image and video</h3><p>A photo-realistic concept image, then one click to animate it into a 10-second video.</p></li>
+        </ol>
+        <div class="real">
+        <figure class="real-item real-img">
+          <img src="/img/step5.jpg" width="1672" height="941" loading="lazy" alt="Photo-realistic corner booth in white and green with an LED-edged canopy, a backlit lab graphic wall, a side tower with a screen and an illuminated reception counter">
+          <figcaption><span class="real-tag">Photo-realistic image · Life science</span><span>Lighting, materials and show-floor context, ready for a client deck.</span></figcaption>
+        </figure>
+        <figure class="real-item real-vid">
+          <video src="/img/hero.mp4" poster="/img/hero-concept.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Video clip of a photo-realistic booth with visitors walking past"></video>
+          <figcaption><span class="real-tag">Video clip · Life science</span><span>A 10-second walk-by with visitors, for social posts and pitches.</span></figcaption>
+        </figure>
+      </div>
+      <div class="real real-more">
+        <figure class="real-item real-img">
+          <img src="/img/step5-island.jpg" width="1672" height="912" loading="lazy" alt="Photo-realistic wellness brand booth in lavender and white: a backlit HALCYON logo wall with a lifestyle photo, white lounge chairs, a glowing reception counter, a side tower with a screen, and purple LED edge lighting on the floor">
+          <figcaption><span class="real-tag">Photo-realistic image · Wellness</span><span>A lounge-style brand experience, built from the Halcyon island design.</span></figcaption>
+        </figure>
+        <figure class="real-item real-vid">
+          <video src="/img/step5-island.mp4" poster="/img/step5-island.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Video clip of the photo-realistic Halcyon booth"></video>
+          <figcaption><span class="real-tag">Video clip · Wellness</span><span>The same image animated with one click, ready for social and pitch decks.</span></figcaption>
+        </figure>
+      </div>
+      <div class="real real-more">
+        <figure class="real-item real-img">
+          <img src="/img/step5-flagship.jpg" width="1672" height="1188" loading="lazy" alt="Photo-realistic technology booth in navy and electric blue: a raised white floor with glowing cyan LED edges, a circuit-board graphic wall reading See it run live, an illuminated VOLTEDGE sign, a digital kiosk, bar stools and a lit reception counter">
+          <figcaption><span class="real-tag">Photo-realistic image · Technology</span><span>A product-demo booth with glowing LED edges, from the VoltEdge design.</span></figcaption>
+        </figure>
+        <figure class="real-item real-vid">
+          <video src="/img/step5-flagship.mp4" poster="/img/step5-flagship.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Video clip of the photo-realistic VoltEdge booth"></video>
+          <figcaption><span class="real-tag">Video clip · Technology</span><span>A walk-by with visitors, made from the image with one click.</span></figcaption>
+        </figure>
+      </div>
+
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Walkthrough tracker: highlights the step being read; earlier steps show as done.
+    (() => {
+      const root = document.documentElement, header = document.querySelector("header.nav");
+      const setNavH = () => root.style.setProperty("--nav-h", (header ? header.offsetHeight : 66) + "px");
+      setNavH(); addEventListener("resize", setNavH);
+      const links = [...document.querySelectorAll(".walk-nav a")], secs = [...document.querySelectorAll(".walk")];
+      let current = 0;
+      const mark = n => { if (n === current) return; current = n; links.forEach(a => { const k = +a.dataset.step; a.classList.toggle("on", k === n); a.classList.toggle("done", k < n); if (k === n) { a.setAttribute("aria-current", "step"); const c = a.parentElement; if (c.scrollWidth > c.clientWidth) c.scrollTo({ left: a.offsetLeft - (c.clientWidth - a.offsetWidth) / 2 }); } else a.removeAttribute("aria-current"); }); };
+      const pick = () => { const y = innerHeight * 0.4; let n = 1; secs.forEach((s, i) => { if (s.getBoundingClientRect().top <= y) n = i + 1; }); mark(n); };
+      addEventListener("scroll", pick, { passive: true }); pick();
+    })();
+  </script>
+
+  <section>
+    <div class="wrap">
+      <div class="cta">
+        <div>
+          <h2>Show them your vision, not a sketch.</h2>
+          <p>Start from an idea and end with an ultra-realistic image or video, ready for your next presentation. Nothing to install.</p>
+        </div>
+        <div class="btns">
+          <a class="btn btn-white" href="/app/">Open BoothVue</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="foot-brand"><span class="logo-sq" aria-hidden="true"><svg class="logo" viewBox="13 16 156 150" aria-hidden="true"><path class="lg-b" d="M128.6 61 81.6 45.8V23.5l73.5 27z"/><path class="lg-b" d="M71.9,141.9V23.5L25.8,58.3l-9.5,104,1.5-.5c15.2-9.9,33.5-16.8,53.6-19.6l.6-.2Z"/><path class="lg-b" d="M160,56.6l-34.9,12.9v73.8c15.6,3,30,8.5,42.5,15.9l-7.6-102.6Z"/></svg></span>
+
+
+
+
+<span>© BoothVue – Built by 8ThirtyOne Creative</span></span>
+    <span class="foot-links"><a href="/terms/">Terms</a><a href="/privacy/">Privacy</a><a href="/refunds/">Refunds</a><a href="/contact/">Contact</a></span>
+    <span>Dimensions, weights and power figures are planning estimates. Confirm with your exhibit house and show services.</span>
+  </div>
+</footer>
+
+<script>
+  // Backup for browsers that skip autoplay: start muted background videos once they can play and are visible
+  document.querySelectorAll('video[autoplay]').forEach(v => {
+    const go = () => { if (v.paused && !document.hidden) v.play().catch(() => {}); };
+    v.addEventListener('canplay', go); document.addEventListener('visibilitychange', go); go();
+  });
+</script>
+<script>
+  // Phone menu
+  (() => { const nav = document.querySelector("header.nav"), b = nav && nav.querySelector(".nav-toggle"); if (!b) return;
+    b.addEventListener("click", () => { const o = nav.classList.toggle("open"); b.setAttribute("aria-expanded", o); });
+    nav.querySelectorAll(".nav-links a").forEach(a => a.addEventListener("click", () => nav.classList.remove("open"))); })();
+</script>
+</body>
+</html>
