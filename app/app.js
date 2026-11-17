@@ -1631,6 +1631,41 @@ const artItems = [];
 let artSeq = 0, artSelected = null, artUploadKind = 'artwork';
 const ART_WIDTH_FT = { logo: 4, icon: 1, artwork: 6 };
 
+// ── Artwork saved with a design ──
+// Each upload is kept as a compact copy of its picture (longest side 1600px) so a saved design opens with its logos and wall art.
+function artImageData(img, type) {
+  try {
+    const iw = img.naturalWidth || 300, ih = img.naturalHeight || 300, k = Math.min(1, 1600 / Math.max(iw, ih)) * (Math.max(iw, ih) < 600 ? 600 / Math.max(iw, ih) : 1);
+    const c = document.createElement('canvas'); c.width = Math.max(2, Math.round(iw * k)); c.height = Math.max(2, Math.round(ih * k));
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    if (type !== 'image/jpeg') { const png = c.toDataURL('image/png'); if (png.length < 1200000) return png; }   // keeps see-through backgrounds
+    return c.toDataURL('image/jpeg', .86);
+  } catch { return null; }
+}
+// The design plus its artwork: what goes to the account, to a share link and into a saved file. (Undo keeps artwork separately.)
+function designForSave() {
+  const d = serializeDesign(), v = p => (p ? [p.x, p.y, p.z] : null);
+  let budget = 3500000;   // keeps one design well under the storage row limit
+  d.art = artItems.filter(a => a.data && a.pos && a.normal).slice(0, 12).filter(a => (budget -= a.data.length) > 0).map(a => ({
+    kind: a.kind, name: a.name, src: a.data, widthFt: a.widthFt, rot: a.rot, fit: a.fit || 'fit', aspect: a.aspect, host: a.host || null,
+    pos: v(a.pos), normal: v(a.normal), face: a.face ? { c: v(a.face.c), n: v(a.face.n), w: a.face.w, h: a.face.h } : null }));
+  return d;
+}
+// Puts a saved design's artwork back on the booth. Runs after the booth is rebuilt.
+function loadSavedArt(list) {
+  const v = p => (Array.isArray(p) && p.length === 3 ? new THREE.Vector3(+p[0] || 0, +p[1] || 0, +p[2] || 0) : null);
+  (Array.isArray(list) ? list : []).slice(0, 12).forEach(s => {
+    if (!s || typeof s.src !== 'string' || !/^data:image\/(png|jpeg|webp|gif|svg\+xml)[;,]/.test(s.src) || !v(s.pos) || !v(s.normal)) return;
+    const img = new Image();
+    img.onload = () => {
+      const a = { id: ++artSeq, kind: ['logo', 'icon', 'artwork'].includes(s.kind) ? s.kind : 'artwork', name: String(s.name || 'Artwork').slice(0, 80), url: s.src, img, data: s.src,
+        widthFt: Math.max(.1, Math.min(60, +s.widthFt || 2)), rot: +s.rot || 0, fit: s.fit === 'fill' ? 'fill' : 'fit', aspect: +s.aspect || (img.naturalHeight || 1) / (img.naturalWidth || 1), host: s.host || null,
+        pos: v(s.pos), normal: v(s.normal), face: s.face && v(s.face.c) && v(s.face.n) ? { c: v(s.face.c), n: v(s.face.n), w: +s.face.w || 1, h: +s.face.h || 1 } : null, mesh: null };
+      artItems.push(a); addArtMesh(a); renderArtList();
+    };
+    img.src = s.src;
+  });
+}
 function pickArtFile(kind) {
   artUploadKind = kind;
   document.getElementById('art-input').click();
@@ -1640,6 +1675,9 @@ function onArtFiles(e) {
     const url = URL.createObjectURL(file), img = new Image();
     img.onload = () => {
       const a = { id: ++artSeq, kind: artUploadKind, name: file.name, url, img, widthFt: ART_WIDTH_FT[artUploadKind], rot: 0, fit: 'fit', face: null, aspect: (img.naturalHeight || 1) / (img.naturalWidth || 1), mesh: null };
+      a.data = artImageData(img, file.type);
+      // A small SVG is kept as the original vector file, so it stays sharp at any size.
+      if (file.type === 'image/svg+xml' && file.size < 400000) file.text().then(t => { a.data = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(t); }).catch(() => {});
       if (!placeOnPanel(a)) placeAtViewCenter(a);
       artItems.push(a);
       artSelected = a.id;
@@ -3366,8 +3404,11 @@ function applyDesign(raw) {
   S.added = d.added || []; S.edits = d.edits || {}; S.drags = d.drags || {};
   S.recon = d.recon || null; S.measures = []; selKey = null; selObj = null;
   addSeq = Math.max(0, ...S.added.map(a => num(a.id)));
+  const savedArt = Array.isArray(raw?.art) ? raw.art : null;   // only saved designs carry this; AI Build and templates keep the artwork that's there
+  if (savedArt) { artItems.length = 0; artSelected = null; }
   syncControls();
   rebuildBooth();
+  if (savedArt) { loadSavedArt(savedArt); renderArtList(); }
   const envBtn = document.getElementById('env-' + (d.env || 'none'));
   setEnv(envBtn ? d.env : 'none', envBtn || document.getElementById('env-none'));
   setView('perspective', document.querySelector('.view-controls .vbtn'));
@@ -3735,7 +3776,7 @@ async function exportDesignFile() {
   if (!downloads) { dsMsg('Saving files is unavailable in this view. Open the page on claude.ai.'); return; }
   const name = (document.getElementById('ds-name').value.trim() || 'booth-design').replace(/[^\w\- ]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 50) || 'booth-design';
   try {
-    await downloads.save({ filename: name + '.json', data: JSON.stringify({ boothStudioDesign: 1, name, design: serializeDesign() }, null, 1) });
+    await downloads.save({ filename: name + '.json', data: JSON.stringify({ boothStudioDesign: 1, name, design: designForSave() }, null, 1) });
     dsMsg('Saved ' + name + '.json.');
   } catch (e) { dsMsg(e?.code === 'declined' ? 'Save cancelled.' : 'The file could not be saved.'); }
 }

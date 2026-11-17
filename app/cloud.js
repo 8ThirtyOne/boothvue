@@ -26,7 +26,7 @@
   }
 
   async function saveToAccount(name, { asNew = false } = {}) {
-    const data = serializeDesign(), thumb = S.aiThumb || await thumbnail(), now = new Date().toISOString();   // the AI image when there is one, else the 3D view
+    const data = designForSave(), thumb = S.aiThumb || await thumbnail(), now = new Date().toISOString();   // the AI image when there is one, else the 3D view
     if (cloud.id && !asNew) {
       const { error } = await table().update({ name, data, thumb, updated_at: now }).eq('id', cloud.id);
       if (error) throw error;
@@ -44,7 +44,7 @@
     clearInterval(cloud.timer);
     cloud.timer = setInterval(async () => {
       if (!cloud.id || !signedIn() || cloud.viewing) return;
-      const data = serializeDesign(), s = JSON.stringify(data);
+      const data = designForSave(), s = JSON.stringify(data);
       if (s === cloud.lastSaved) return;
       setStatus('Saving…', 'busy');
       const { error } = await table().update({ data, updated_at: new Date().toISOString() }).eq('id', cloud.id);
@@ -58,7 +58,7 @@
     const { data, error } = await table().select('id, name, data').eq('id', id).single();
     if (error) throw error;
     closeModal(); applyDesign(data.data);
-    cloud.id = data.id; cloud.name = data.name; cloud.lastSaved = JSON.stringify(serializeDesign());
+    cloud.id = data.id; cloud.name = data.name; cloud.lastSaved = JSON.stringify(designForSave());
     startAutosave(); setStatus('Saved', 'ok');
   }
 
