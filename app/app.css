@@ -650,3 +650,10 @@ a.logo:hover { opacity: .8; }
   .cv-bottom .view-controls, .cv-bottom .tool-controls { flex-wrap: nowrap; flex: none; }
   .cv-bottom .vbtn { flex: none; white-space: nowrap; padding: 7px 8px; }
 }
+
+/* Home button in the sidebar brand row */
+.side-brand .ver { margin-left: auto; }
+.home-pill { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px 0 10px; border-radius: 999px; background: var(--panel2); color: var(--fg); font: 600 12px var(--font-ui); text-decoration: none; border: 1px solid var(--border); transition: background .15s, color .15s, border-color .15s, transform .15s; }
+.home-pill svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.home-pill:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: translateY(-1px); }
+.home-pill:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
