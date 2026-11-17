@@ -1667,8 +1667,18 @@ function poseArt(a) {
   }
   markDirty();
 }
+// Uploads are drawn onto a canvas first. An SVG saved without a fixed width and height (how Illustrator exports them)
+// shows fine in a list but comes out blank when handed straight to the 3D view; drawing it at a set size fixes that
+// and keeps logos sharp.
+function artCanvas(img) {
+  const iw = img.naturalWidth || 300, ih = img.naturalHeight || 300, k = Math.min(4, 2048 / Math.max(iw, ih)) || 1;
+  const scale = Math.max(1, Math.min(k, 1024 / Math.min(iw, ih)));       // small files (and size-less SVGs) are drawn larger
+  const c = document.createElement('canvas'); c.width = Math.max(2, Math.round(iw * scale)); c.height = Math.max(2, Math.round(ih * scale));
+  try { c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); } catch { return img; }
+  return c;
+}
 function addArtMesh(a) {
-  const t = new THREE.Texture(a.img); t.colorSpace = THREE.SRGBColorSpace; t.needsUpdate = true;
+  const t = new THREE.Texture(artCanvas(a.img)); t.colorSpace = THREE.SRGBColorSpace; t.needsUpdate = true;
   t.anisotropy = renderer.capabilities.getMaxAnisotropy();
   const m = new THREE.MeshStandardMaterial({ map: t, transparent: true, alphaTest: .02, roughness: .6, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 });
   a.mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), m);
