@@ -24,3 +24,10 @@
   b.addEventListener("click", () => { on = !on; draw(); frame.contentWindow && frame.contentWindow.postMessage({ boothvue: "spin", on }, location.origin); });
   addEventListener("message", e => { if (e.origin === location.origin && e.data && e.data.boothvue === "spin-state") { on = !!e.data.on; draw(); } });
 })();
+
+// The 3D studio is heavy, so it starts loading only after the rest of the page has finished.
+(() => {
+  const frame = document.querySelector(".page-hero.hero-3d .hero-3d-frame[data-src]"); if (!frame) return;
+  const go = () => { if (!frame.src) frame.src = frame.dataset.src; };
+  if (document.readyState === "complete") setTimeout(go, 50); else addEventListener("load", () => setTimeout(go, 50));
+})();

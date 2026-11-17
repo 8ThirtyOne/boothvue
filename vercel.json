@@ -6,6 +6,10 @@
     { "source": "/models/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }] },
     { "source": "/app/(.*)", "headers": [{ "key": "Cache-Control", "value": "no-cache, must-revalidate" }] },
     { "source": "/js/(.*)", "headers": [{ "key": "Cache-Control", "value": "no-cache, must-revalidate" }] },
-    { "source": "/(.*)", "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }] }
+    { "source": "/css/(.*)", "headers": [{ "key": "Cache-Control", "value": "no-cache, must-revalidate" }] },
+    { "source": "/(.*)", "has": [{ "type": "host", "value": "staging.boothvue.co" }], "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }] },
+    { "source": "/(.*)", "has": [{ "type": "host", "value": ".*\\.vercel\\.app" }], "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }] },
+    { "source": "/review/(.*)", "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }] },
+    { "source": "/thanks/(.*)", "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }] }
   ]
 }

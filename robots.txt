@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /review/
+Disallow: /thanks/
+Disallow: /app/?embed=1
+
+Sitemap: https://boothvue.co/sitemap.xml
