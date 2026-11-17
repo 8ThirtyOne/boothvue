@@ -313,6 +313,18 @@ a.step:hover h3 { color: var(--accent); }
 #step-5 { --ink: #f3f6fc; --muted: #b7c3da; --line: rgba(160,190,255,.18); --bg: #0d1a36; --surface: rgba(255,255,255,.06); --tint: rgba(102,157,255,.16); --eyebrow: #8fb6ff; --accent: #4f8cff;
   position: relative; color: var(--ink); padding-block: clamp(64px, 9vw, 112px); margin-block: 24px 0;
   background: radial-gradient(900px 480px at 85% -10%, rgba(79,140,255,.13), transparent 60%), radial-gradient(700px 420px at -5% 105%, rgba(37,99,235,.10), transparent 60%), linear-gradient(160deg, #02050e 0%, #050c1f 55%, #030814 100%); }
+/* Slow-drifting aurora glow and a faint show-floor grid behind the content */
+#step-5 { overflow: hidden; isolation: isolate; }
+#step-5 > .wrap { position: relative; z-index: 1; }
+#step-5::before { content: ""; position: absolute; inset: -30%; z-index: 0; pointer-events: none; filter: blur(70px); opacity: .85;
+  background: radial-gradient(38% 30% at 22% 28%, rgba(37,99,235,.55), transparent 70%), radial-gradient(30% 26% at 78% 18%, rgba(124,77,255,.42), transparent 70%), radial-gradient(34% 30% at 68% 78%, rgba(34,211,238,.28), transparent 70%), radial-gradient(30% 28% at 18% 82%, rgba(79,140,255,.38), transparent 70%); }
+#step-5::after { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image: linear-gradient(rgba(143,182,255,.09) 1px, transparent 1px), linear-gradient(90deg, rgba(143,182,255,.09) 1px, transparent 1px); background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 60% at 50% 0%, #000 0%, transparent 75%); mask-image: radial-gradient(ellipse 75% 60% at 50% 0%, #000 0%, transparent 75%); }
+@media (prefers-reduced-motion: no-preference) {
+  #step-5::before { animation: s5-aurora 26s ease-in-out infinite alternate; }
+  @keyframes s5-aurora { 0% { transform: translate3d(-4%, -3%, 0) rotate(0deg) scale(1); } 50% { transform: translate3d(5%, 4%, 0) rotate(14deg) scale(1.12); } 100% { transform: translate3d(-3%, 6%, 0) rotate(-10deg) scale(1.05); } }
+}
 #step-5 h2, #step-5 h3, #step-5 b { color: var(--ink); }
 #step-5 .walk-num { -webkit-text-stroke-color: rgba(143,182,255,.7); }
 #step-5 .howto-row li { background: var(--surface); border-color: var(--line); color: var(--muted); }
@@ -621,7 +633,7 @@ a.step:hover h3 { color: var(--accent); }
           <div class="walk-num" aria-hidden="true">05</div>
           <div>
             <div class="eyebrow">Step 5 · Picture it</div>
-            <h2>See what your booth could be.</h2>
+            <h2>Your booth, imagined on the show floor.</h2>
             <p>AI Render turns your design into a photo-realistic concept image or 10-second video clip, imagined on a show floor. It&rsquo;s an AI visualization of where your booth could go, not a build plan, so your exhibit house will confirm what can actually be built. Drop it into investor decks, board presentations and pitches, win sign-off on your concept, and promote your booth before the doors open.</p>
           </div>
         </div>
