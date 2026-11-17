@@ -664,3 +664,20 @@ button.nav-acct:hover { background: rgba(255,255,255,.12); color: #fff; }
 .hero-3d-spin:hover { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.6); transform: translateY(-1px); }
 .hero-3d-spin svg { width: 16px; height: 16px; fill: currentColor; }
 .hero-3d-spin svg.turn { fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Workflow step bar v2: bigger type, connected steps, solid active pill */
+.walk-nav { background: color-mix(in srgb, var(--surface) 92%, transparent); box-shadow: 0 10px 30px -22px rgba(17,23,34,.5); }
+.walk-nav .wrap { gap: 0; padding-block: 14px; align-items: center; }
+.walk-nav a { position: relative; flex: 1 0 auto; gap: 12px; padding: 10px 20px 10px 10px; font: 700 17px/1 var(--font-display); letter-spacing: -.01em; color: var(--muted); border-radius: 999px; transition: background .25s, color .25s, box-shadow .25s; }
+.walk-nav a b { width: 34px; height: 34px; font: 800 15px var(--font-display); background: var(--surface); color: var(--accent); border: 2px solid color-mix(in srgb, var(--accent) 35%, var(--line)); transition: background .25s, color .25s, border-color .25s, transform .25s; }
+.walk-nav a + a { margin-left: clamp(14px, 3vw, 44px); }
+.walk-nav a + a::before { content: ""; position: absolute; right: calc(100% + 4px); top: 50%; width: clamp(6px, 3vw - 8px, 36px); height: 2px; border-radius: 2px; background: var(--line); transition: background .25s; }
+.walk-nav a.on::before, .walk-nav a.done::before { background: var(--accent); }
+.walk-nav a:hover { color: var(--ink); }
+.walk-nav a:hover b { transform: scale(1.08); }
+.walk-nav a.on { background: var(--accent); color: #fff; box-shadow: 0 10px 26px -10px rgba(37,99,235,.7); }
+.walk-nav a.on b { background: #fff; color: var(--accent); border-color: #fff; }
+.walk-nav a.done { color: var(--ink); }
+.walk-nav a.done b { background: var(--accent); border-color: var(--accent); color: transparent; position: relative; }
+.walk-nav a.done b::after { content: "✓"; position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font: 800 15px var(--font-body); }
+@media (max-width: 860px) { .walk-nav a { font-size: 15px; padding: 8px 14px 8px 8px; gap: 9px; } .walk-nav a b { width: 30px; height: 30px; font-size: 13px; } .walk-nav a + a { margin-left: 14px; } .walk-nav a + a::before { width: 8px; right: calc(100% + 3px); } .walk-nav a:not(.on) { padding-right: 8px; } }
