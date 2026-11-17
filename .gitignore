@@ -9,3 +9,6 @@ shots/
 *key*.rtf
 *key*.txt
 *.rtf
+
+# Tutorial footage and renders (large files, kept out of the repo)
+tutorial/
