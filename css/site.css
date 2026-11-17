@@ -681,3 +681,8 @@ button.nav-acct:hover { background: rgba(255,255,255,.12); color: #fff; }
 .walk-nav a.done b { background: var(--accent); border-color: var(--accent); color: transparent; position: relative; }
 .walk-nav a.done b::after { content: "✓"; position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font: 800 15px var(--font-body); }
 @media (max-width: 860px) { .walk-nav a { font-size: 15px; padding: 8px 14px 8px 8px; gap: 9px; } .walk-nav a b { width: 30px; height: 30px; font-size: 13px; } .walk-nav a + a { margin-left: 14px; } .walk-nav a + a::before { width: 8px; right: calc(100% + 3px); } .walk-nav a:not(.on) { padding-right: 8px; } }
+
+/* Home hero button ring: thinner, slower, quieter */
+.hero .hero-ctas .btn-primary::before { inset: -1px; padding: 1px; opacity: .85; background: conic-gradient(from var(--ga), rgba(79,140,255,0) 0deg, rgba(143,182,255,.25) 120deg, #cfe0ff 200deg, #ffffff 230deg, rgba(143,182,255,.25) 290deg, rgba(79,140,255,0) 360deg); }
+.hero .hero-ctas .btn-primary::after { inset: -2px; padding: 2px; filter: blur(5px); opacity: .35; background: conic-gradient(from var(--ga), transparent 0deg, transparent 150deg, #8fb6ff 220deg, transparent 300deg); }
+@media (prefers-reduced-motion: no-preference) { .hero .hero-ctas .btn-primary::before, .hero .hero-ctas .btn-primary::after { animation-duration: 9s; } }
