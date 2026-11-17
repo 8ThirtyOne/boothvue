@@ -532,3 +532,8 @@ a.step:hover h3 { color: var(--accent); }
 .pre-steps-lead i { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(143,182,255,.45)); }
 .pre-steps-lead i:last-child { transform: scaleX(-1); }
 @media (max-width: 860px) { .pre-steps { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; } .pre-steps a { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 10px; } .pre-steps span { font-size: 0; } .pre-steps strong { font-size: 13px; } .pre-steps b { font-size: 22px; } .pre-steps a + a::before { display: none; } }
+
+/* Pricing: the three pass boxes stay light on the dark section */
+#pricing .plan { --ink: #111722; --muted: #5b6474; --line: #e1e5ec; --bg: #f5f6f8; --surface: #ffffff; --tint: #e9f0fd; --eyebrow: #2563eb; --accent: #2563eb; color: var(--ink); background: #fff; box-shadow: 0 30px 70px -30px rgba(0,0,0,.6); }
+#pricing .plan h2, #pricing .plan h3, #pricing .plan b, #pricing .plan strong { color: var(--ink); }
+#pricing .plan.featured { box-shadow: 0 30px 80px -24px rgba(37,99,235,.7); }
