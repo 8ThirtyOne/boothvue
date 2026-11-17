@@ -309,6 +309,15 @@ a.step:hover h3 { color: var(--accent); }
   .walk-head { grid-template-columns: minmax(0, 1fr); }
   .walk-nav a span { display: none; } .walk-nav a.on span { display: inline; }
 }
+/* Step 5 is the money section: dark blue gradient, light text, in both themes */
+#step-5 { --ink: #f3f6fc; --muted: #b7c3da; --line: rgba(160,190,255,.18); --bg: #0d1a36; --surface: rgba(255,255,255,.06); --tint: rgba(102,157,255,.16); --eyebrow: #8fb6ff; --accent: #4f8cff;
+  position: relative; color: var(--ink); padding-block: clamp(64px, 9vw, 112px); margin-block: 24px 0;
+  background: radial-gradient(900px 480px at 85% -10%, rgba(79,140,255,.35), transparent 60%), radial-gradient(700px 420px at -5% 105%, rgba(37,99,235,.30), transparent 60%), linear-gradient(160deg, #0a1430 0%, #0f2252 55%, #0a1838 100%); }
+#step-5 h2, #step-5 h3, #step-5 b { color: var(--ink); }
+#step-5 .walk-num { -webkit-text-stroke-color: rgba(143,182,255,.7); }
+#step-5 .howto-row li { background: var(--surface); border-color: var(--line); color: var(--muted); }
+#step-5 .real-item { border-color: var(--line); box-shadow: 0 24px 60px rgba(0,0,0,.35); }
+#step-5 .real-item figcaption { background: rgba(8,16,36,.85); }
 @media (prefers-reduced-motion: reduce) { .ui-caret { animation: none; } }
 .step-link { font: inherit; font-weight: 600; color: var(--accent); text-decoration: none; }
 .step-link:hover { text-decoration: underline; }
