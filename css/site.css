@@ -566,3 +566,12 @@ a.step:hover h3 { color: var(--accent); }
   .hero .hero-ctas .btn-primary::before, .hero .hero-ctas .btn-primary::after { animation: glow-turn 3.2s linear infinite; }
   @keyframes glow-turn { to { --ga: 360deg; } }
 }
+
+/* Interactive hero background (js/hero-fx.js) */
+.page-hero .hero-fx { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+.page-hero[data-fx] { background: radial-gradient(60% 50% at 50% 115%, rgba(79,140,255,.42), transparent 70%), linear-gradient(160deg, #02050e 0%, #06102a 55%, #030814 100%); cursor: crosshair; }
+.page-hero[data-fx] a, .page-hero[data-fx] .btn { cursor: pointer; }
+.page-hero[data-fx] .page-hero-art img { transition: transform .25s ease-out; }
+.page-hero .fx-hint { font: 500 11px var(--font-mono); letter-spacing: .2em; text-transform: uppercase; color: rgba(143,182,255,.7); margin-top: 6px; }
+@media (hover: none) { .page-hero .fx-hint span.m { display: none; } }
+@media (hover: hover) { .page-hero .fx-hint span.t { display: none; } }
