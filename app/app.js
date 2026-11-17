@@ -4023,7 +4023,8 @@ function resize(){
 window.addEventListener('resize',resize);
 resize();
 
-(function animate(){ requestAnimationFrame(animate); if (embedSpin && !matchMedia('(prefers-reduced-motion: reduce)').matches) { oTh += 0.0016; camUpdate(); } renderFrame(); drawOverlay(); })();
+let embedFrames = 0;
+(function animate(){ requestAnimationFrame(animate); if (EMBED && ++embedFrames === 4 && parent !== window) parent.postMessage({ boothvue: 'embed-ready' }, location.origin); if (embedSpin && !matchMedia('(prefers-reduced-motion: reduce)').matches) { oTh += 0.0016; camUpdate(); } renderFrame(); drawOverlay(); })();
 
 // INIT
 loadStartupScene();
