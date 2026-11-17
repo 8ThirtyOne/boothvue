@@ -249,6 +249,18 @@
 
     <!-- BRANDING TAB -->
     <div id="tab-branding" hidden>
+      <div class="ss">
+        <div class="ss-label">Brand From Your Website</div>
+        <div class="field"><label for="site-url">Website</label>
+          <div style="display:grid;grid-template-columns:1fr auto;gap:5px">
+            <input type="url" id="site-url" placeholder="yourcompany.com" autocomplete="url" inputmode="url" onkeydown="if(event.key==='Enter')brandFromSite()">
+            <button class="btn btn-sm btn-primary" id="site-go" onclick="brandFromSite()">Get Brand</button>
+          </div>
+        </div>
+        <div id="site-msg" aria-live="polite" style="font-size:10px;color:var(--fg-muted);line-height:1.5">Reads your site and fills in your name, tagline, colors, logo and brand style. Uses 1 AI Build action.</div>
+        <div id="site-card" hidden></div>
+      </div>
+
       <!-- Image Upload -->
       <div class="ss">
         <div class="ss-label">Reference / Logo Upload</div>
@@ -306,18 +318,6 @@
         <input type="file" id="art-input" hidden multiple accept="image/png,image/jpeg,image/webp,image/svg+xml,image/gif" onchange="onArtFiles(event)">
         <p id="art-empty" style="font-size:10px;color:var(--fg-muted);line-height:1.5">Upload PNG, JPG, WebP or SVG. Each file lands where the view is centered. Drag it onto any surface in 3D, double-click to rotate 45°.</p>
         <div id="art-list" style="display:grid;gap:6px"></div>
-      </div>
-
-      <div class="ss">
-        <div class="ss-label">Brand From Your Website</div>
-        <div class="field"><label for="site-url">Website</label>
-          <div style="display:grid;grid-template-columns:1fr auto;gap:5px">
-            <input type="url" id="site-url" placeholder="yourcompany.com" autocomplete="url" inputmode="url" onkeydown="if(event.key==='Enter')brandFromSite()">
-            <button class="btn btn-sm btn-primary" id="site-go" onclick="brandFromSite()">Get Brand</button>
-          </div>
-        </div>
-        <div id="site-msg" aria-live="polite" style="font-size:10px;color:var(--fg-muted);line-height:1.5">Reads your site and fills in your name, tagline, colors, logo and brand style. Uses 1 AI Build action.</div>
-        <div id="site-card" hidden></div>
       </div>
 
       <div class="ss">
