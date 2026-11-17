@@ -542,3 +542,14 @@ a.step:hover h3 { color: var(--accent); }
 .plan ul { font-family: "Bricolage Grotesque", var(--font-body); }
 .plan-price b { font-family: "Bricolage Grotesque", var(--font-body); font-weight: 800; letter-spacing: -.03em; }
 .hp b { font-family: "Bricolage Grotesque", var(--font-body); font-weight: 800; letter-spacing: -.03em; }
+
+/* Home steps 1–4 row: brighter cards, Bricolage sub-text */
+.pre-steps { gap: 16px; }
+.pre-steps a { padding: 20px 22px; background: linear-gradient(160deg, rgba(79,140,255,.34), rgba(255,255,255,.07) 70%); border: 1px solid rgba(143,182,255,.6); box-shadow: 0 0 0 1px rgba(255,255,255,.05) inset, 0 18px 50px rgba(37,99,235,.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.pre-steps a:hover { background: linear-gradient(160deg, rgba(79,140,255,.55), rgba(255,255,255,.1) 70%); border-color: #a9c6ff; box-shadow: 0 0 0 1px rgba(255,255,255,.08) inset, 0 24px 70px rgba(79,140,255,.6); }
+.pre-steps b { font-size: 36px; -webkit-text-stroke: 0; background: linear-gradient(180deg, #fff, #7fb0ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.pre-steps strong { font-size: 18px; }
+.pre-steps span { font-family: "Bricolage Grotesque", var(--font-body); font-size: 14px; color: #d3def2; }
+.pre-steps strong { font-family: var(--font-display); }
+.pre-steps a + a::before { left: -8px; width: 26px; height: 26px; background: #2563eb; border-color: #a9c6ff; color: #fff; }
+@media (max-width: 860px) { .pre-steps { gap: 8px; } .pre-steps a { padding: 12px 10px; } .pre-steps span { font-size: 0; } .pre-steps strong { font-size: 13px; } .pre-steps b { font-size: 24px; } }
