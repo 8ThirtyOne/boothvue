@@ -657,6 +657,56 @@ function updateColors(){
   rebuildBooth();
 }
 function syncHex(k){ const v=document.getElementById('hex-'+k).value; if(/^#[0-9a-fA-F]{6}$/.test(v)){S.brand[k]=v;document.getElementById('col-'+k).value=v;rebuildBooth();} }
+// Brand from a website: /api/brand reads the public site and returns name, tagline, colors, logo and a style summary.
+async function brandFromSite() {
+  const inp = document.getElementById('site-url'), msg = document.getElementById('site-msg'), go = document.getElementById('site-go');
+  const url = inp.value.trim(); if (!url) { msg.textContent = 'Enter your website address first.'; inp.focus(); return; }
+  go.disabled = true; go.textContent = 'Reading…'; msg.textContent = 'Reading your site and picking out the brand. About 20 seconds.';
+  const headers = { 'Content-Type': 'application/json' };
+  const token = window.bvAuth ? await window.bvAuth.token().catch(() => null) : null; if (token) headers.Authorization = `Bearer ${token}`;
+  try {
+    const r = await fetch('/api/brand', { method: 'POST', headers, body: JSON.stringify({ url }) });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(d.message || "We couldn't read that website.");
+    applySiteBrand(d);
+    msg.textContent = `Brand set from ${d.site}. Adjust anything below.`;
+    if (d.logo) placeSiteLogo(d.logo, token).catch(() => {});
+    window.bvAuth?.refresh?.().catch(() => {});
+  } catch (e) { msg.textContent = e.message || "We couldn't read that website."; }
+  go.disabled = false; go.textContent = 'Get Brand';
+}
+function applySiteBrand(d) {
+  const set = (id, v) => { const e = document.getElementById(id); if (e && v != null) e.value = v; };
+  Object.assign(S.brand, { company: d.company, tagline: d.tagline, primary: d.primary, secondary: d.secondary, accent: d.accent, bg: d.bg, graphicStyle: d.graphicStyle, lightStyle: d.lightStyle, site: d.site, tone: d.tone || '', style: d.style || '' });
+  set('company-name', d.company); set('tagline', d.tagline); set('graphic-style', d.graphicStyle); set('light-style', d.lightStyle);
+  ['primary', 'secondary', 'accent', 'bg'].forEach(k => { set('col-' + k, d[k]); set('hex-' + k, d[k]); });
+  drawSiteCard(); rebuildBooth(); if (typeof markDirty === 'function') markDirty();
+}
+// The summary under the website field: swatches, tone and style. Shown whenever the design carries a site brand.
+function drawSiteCard() {
+  const card = document.getElementById('site-card'); if (!card) return;
+  const b = S.brand; card.hidden = !b.site; if (!b.site) return;
+  card.textContent = '';
+  const row = document.createElement('div'); row.className = 'site-sw';
+  [['Primary', b.primary], ['Secondary', b.secondary], ['Accent', b.accent], ['Base', b.bg]].forEach(([n, c]) => { const s = document.createElement('span'); s.title = `${n} ${c}`; s.style.background = c; row.append(s); });
+  const from = document.createElement('b'); from.textContent = b.site; row.append(from);
+  card.append(row);
+  [['Tone', b.tone], ['Style', b.style]].forEach(([k, v]) => { if (!v) return; const p = document.createElement('p'); const l = document.createElement('i'); l.textContent = k; p.append(l, ' ' + v); card.append(p); });
+  const note = document.createElement('p'); note.className = 'site-note'; note.textContent = 'AI Build and AI Render follow this style.'; card.append(note);
+}
+// The site's logo goes on the booth the same way an uploaded logo does.
+async function placeSiteLogo(url, token) {
+  const r = await fetch('/api/brand?logo=' + encodeURIComponent(url), { headers: token ? { Authorization: `Bearer ${token}` } : {} });
+  if (!r.ok) return;
+  const blob = await r.blob(), ext = (blob.type.split('/')[1] || 'png').replace('svg+xml', 'svg').replace('x-icon', 'ico').replace('vnd.microsoft.icon', 'ico');
+  const dt = new DataTransfer(); dt.items.add(new File([blob], `website-logo.${ext}`, { type: blob.type }));
+  artUploadKind = 'logo'; const inp = document.getElementById('art-input'); inp.files = dt.files; inp.dispatchEvent(new Event('change', { bubbles: true }));
+}
+// One line for the AI prompts when the brand came from a website.
+function siteBrandLine() {
+  const b = S.brand; if (!b.site) return '';
+  return `Brand read from ${b.site}: company "${b.company}", tagline "${b.tagline}", colors primary ${b.primary}, secondary ${b.secondary}, accent ${b.accent}, base ${b.bg}.${b.tone ? ` Tone: ${b.tone}.` : ''}${b.style ? ` Visual style: ${b.style}.` : ''}`;
+}
 function onLogoScale(v){ S.brand.logoScale=+v; document.getElementById('logo-scale-v').textContent=(+v).toFixed(1)+'×'; rebuildBooth(); }
 function onLightInt(v){ S.brand.lightInt=v/100; document.getElementById('light-int-v').textContent=v+'%'; rebuildBooth(); }
 function toggleFurn(id,btn){
@@ -3291,6 +3341,7 @@ function applyDesign(raw) {
 function syncControls() {
   const set = (id, v) => { const e = document.getElementById(id); if (!e) return; if (e.type === 'checkbox') e.checked = !!v; else e.value = v; };
   Object.keys(S.els).forEach(k => set('el-' + k, S.els[k]));
+  if (typeof drawSiteCard === 'function') drawSiteCard();
   set('company-name', S.brand.company); set('tagline', S.brand.tagline); set('graphic-style', S.brand.graphicStyle);
   set('light-style', S.brand.lightStyle); set('light-int', Math.round(S.brand.lightInt * 100)); document.getElementById('light-int-v').textContent = Math.round(S.brand.lightInt * 100) + '%';
   set('logo-scale', S.brand.logoScale); document.getElementById('logo-scale-v').textContent = (+S.brand.logoScale).toFixed(1) + '×';
@@ -3553,7 +3604,8 @@ Reply with only JSON:
 "placed":[{"item":catalog id,"x":feet,"z":feet,"rotDeg":number}] (2 to 14 items),
 "env":"showfloor|convention|openfloor|drama|studio|tent"}
 Catalog ids: ${catalog}.
-Coordinates: feet from the booth floor center, x to the right, z toward the aisle (+z is the open front), the back wall sits at z = -depth/2. Keep every item inside the footprint and clear of each other; leave a walkway from the front. Hanging signs go at the center. Use the company and colors from the request if given.${aiRefs.length ? `
+Coordinates: feet from the booth floor center, x to the right, z toward the aisle (+z is the open front), the back wall sits at z = -depth/2. Keep every item inside the footprint and clear of each other; leave a walkway from the front. Hanging signs go at the center. Use the company and colors from the request if given.${siteBrandLine() ? `
+BRAND: ${siteBrandLine()} Use exactly this company, tagline and these colors in "brand", and let the tone and visual style guide the layout, materials, lighting and items.` : ''}${aiRefs.length ? `
 REFERENCE IMAGES: ${aiRefs.length} image(s) are attached. Use them as the main visual reference: match the layout, structures, materials, colors, lighting mood and style they show as closely as the catalog and options allow, while still following the written request.` : ""}`;
   aiCtl = new AbortController();
   document.getElementById('ai-run').disabled = true; document.getElementById('ai-stop').hidden = false; msg.textContent = 'Claude is designing… usually under a minute.';
@@ -3574,6 +3626,7 @@ REFERENCE IMAGES: ${aiRefs.length} image(s) are attached. Use them as the main v
       brand: { ...blankDesign().brand, ...(d.brand || {}), company: String(d.brand?.company || 'BOOTHVUE').slice(0, 40), tagline: String(d.brand?.tagline || '').slice(0, 80), lightInt: Math.max(.3, Math.min(1, num(d.brand?.lightInt, .8))) },
       env: enumOk(d.env, ['showfloor', 'convention', 'openfloor', 'drama', 'studio', 'tent'], 'showfloor'),
     };
+    if (S.brand.site) { const k = S.brand; Object.assign(design.brand, { company: k.company, tagline: k.tagline, primary: k.primary, secondary: k.secondary, accent: k.accent, bg: k.bg, site: k.site, tone: k.tone, style: k.style }); }   // a brand read from the website stays as read
     if (design.size === 'custom' && !design.custom) design.size = '20x20';
     const [D, W] = design.size === 'custom' ? [design.custom.d, design.custom.w] : design.size.split('x').map(Number);
     design.placed = (Array.isArray(d.placed) ? d.placed : []).filter(p => CAT_INDEX[p?.item]).slice(0, 24).map((p, i) => ({
@@ -3707,7 +3760,7 @@ async function importDesignFile(e) {
   order.forEach(l => { const s = byLabel(l); if (s) design.append(s); });
   const g = document.createElement('div'); g.className = 'side-group'; g.textContent = 'Output'; design.append(g);
   out.forEach(l => { const s = byLabel(l); if (s) design.append(s); });
-  const OPEN = ['Booth Setup', 'Build & Edit', 'Seating', 'Logos, Icons & Artwork', 'Company', 'Reference / Logo Upload'];
+  const OPEN = ['Brand From Your Website', 'Booth Setup', 'Build & Edit', 'Seating', 'Logos, Icons & Artwork', 'Company', 'Reference / Logo Upload'];
   let saved = {}; try { saved = JSON.parse(localStorage.getItem('bs-sections') || '{}'); } catch {}
   document.querySelectorAll('#sidebar .ss').forEach(s => {
     const lab = s.querySelector(':scope > .ss-label'); if (!lab) return;

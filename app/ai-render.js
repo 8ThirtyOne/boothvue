@@ -8,7 +8,7 @@
   const brandInfo = () => {
     let size = '', type = '';
     try { size = getSZ().lbl; type = (BOOTH_TYPES[S.boothType] || '').toString(); } catch {}
-    return { company: S.brand.company || '', tagline: S.brand.tagline || '', colors: [S.brand.primary, S.brand.secondary, S.brand.accent].filter(Boolean), size, type };
+    return { company: S.brand.company || '', tagline: S.brand.tagline || '', colors: [S.brand.primary, S.brand.secondary, S.brand.accent].filter(Boolean), size, type, tone: S.brand.tone || '', style: S.brand.style || '' };
   };
   const latestImage = () => live.items.find(r => r.kind === 'image' && r.status === 'done' && r.result_url);
   const POLL_MS = { image: 4000, video: 10000 };

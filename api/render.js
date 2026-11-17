@@ -22,7 +22,7 @@ const clean = (v, n) => String(v || "").replace(/[\r\n"]+/g, " ").trim().slice(0
 function brandLine(b = {}) {
   const company = clean(b.company, 60), tagline = clean(b.tagline, 100);
   const colors = (Array.isArray(b.colors) ? b.colors : []).map(c => clean(c, 9)).filter(c => /^#[0-9a-f]{6}$/i.test(c)).slice(0, 4);
-  return { company, tagline, colors, size: clean(b.size, 30), type: clean(b.type, 20).toLowerCase() };
+  return { company, tagline, colors, size: clean(b.size, 30), type: clean(b.type, 20).toLowerCase(), tone: clean(b.tone, 120), style: clean(b.style, 260) };
 }
 
 const PROMPTS = {
@@ -37,6 +37,7 @@ const PROMPTS = {
     "Make it an ultra photo-realistic, magazine-quality professional photograph from a three-quarter view close to the reference angle, in a real convention center with a high ceiling, truss lighting and neighboring exhibits softly out of focus, with realistic materials, reflections, shadows and depth of field.",
     "The result must look dramatically more enhanced, premium and ambitious than the blockout: a bold design upgrade by a top exhibit house, never a faithful copy of the rough 3D model. Keep the brand name, colors, footprint and camera angle.",
     "Absolutely no 3D-render or CGI look, no mannequins or placeholder figures, no distorted or misspelled text.",
+    b.style || b.tone ? `Match this brand's real look${b.tone ? ` (tone: ${b.tone})` : ""}${b.style ? `: ${b.style}` : ""}.` : "",
     dir ? `Photo style: ${dir}` : "",
   ].filter(Boolean).join(" "),
   faithful: (dir) => [
