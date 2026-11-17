@@ -10,3 +10,17 @@
   addEventListener("message", e => { if (e.origin === location.origin && e.data && e.data.boothvue === "embed-ready") finish(); });
   setTimeout(finish, 20000);
 })();
+
+// Spin / Stop button: starts and stops the booth's slow turn inside the embedded studio.
+(() => {
+  const hero = document.querySelector(".page-hero.hero-3d"), frame = hero && hero.querySelector(".hero-3d-frame"); if (!frame) return;
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const b = document.createElement("button"); b.type = "button"; b.className = "hero-3d-spin";
+  let on = !still;
+  const draw = () => { b.setAttribute("aria-pressed", on); b.innerHTML = on
+    ? '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg><span>Stop</span>'
+    : '<svg class="turn" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v5h-5"/></svg><span>Spin</span>'; b.title = on ? "Stop the booth turning" : "Turn the booth slowly"; };
+  draw(); hero.append(b);
+  b.addEventListener("click", () => { on = !on; draw(); frame.contentWindow && frame.contentWindow.postMessage({ boothvue: "spin", on }, location.origin); });
+  addEventListener("message", e => { if (e.origin === location.origin && e.data && e.data.boothvue === "spin-state") { on = !!e.data.on; draw(); } });
+})();

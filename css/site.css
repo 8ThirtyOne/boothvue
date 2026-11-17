@@ -658,3 +658,9 @@ button.nav-acct:hover { background: rgba(255,255,255,.12); color: #fff; }
 }
 @media (max-width: 960px) and (prefers-reduced-motion: reduce) { .nav.open .nav-links .nav-menu > a { animation: none; opacity: 1; transform: none; } }
 @media (max-width: 960px) { .nav.open .nav-links { align-items: stretch; } .nav.open .nav-links .nav-menu { visibility: visible; opacity: 1; } }
+
+/* Spin / Stop button on the 3D heroes */
+.hero-3d-spin { position: absolute; z-index: 3; right: max(20px, env(safe-area-inset-right, 0px)); bottom: 20px; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px 0 13px; border-radius: 999px; cursor: pointer; color: #fff; font: 700 13px var(--font-body); background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: background .2s, border-color .2s, transform .15s; }
+.hero-3d-spin:hover { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.6); transform: translateY(-1px); }
+.hero-3d-spin svg { width: 16px; height: 16px; fill: currentColor; }
+.hero-3d-spin svg.turn { fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
