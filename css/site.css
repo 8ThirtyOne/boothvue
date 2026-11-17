@@ -537,3 +537,8 @@ a.step:hover h3 { color: var(--accent); }
 #pricing .plan { --ink: #111722; --muted: #5b6474; --line: #e1e5ec; --bg: #f5f6f8; --surface: #ffffff; --tint: #e9f0fd; --eyebrow: #2563eb; --accent: #2563eb; color: var(--ink); background: #fff; box-shadow: 0 30px 70px -30px rgba(0,0,0,.6); }
 #pricing .plan h2, #pricing .plan h3, #pricing .plan b, #pricing .plan strong { color: var(--ink); }
 #pricing .plan.featured { box-shadow: 0 30px 80px -24px rgba(37,99,235,.7); }
+
+/* Pricing: check-list text in Bricolage, bolder prices */
+.plan ul { font-family: "Bricolage Grotesque", var(--font-body); }
+.plan-price b { font-family: "Bricolage Grotesque", var(--font-body); font-weight: 800; letter-spacing: -.03em; }
+.hp b { font-family: "Bricolage Grotesque", var(--font-body); font-weight: 800; letter-spacing: -.03em; }
