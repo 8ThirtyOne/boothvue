@@ -553,3 +553,16 @@ a.step:hover h3 { color: var(--accent); }
 .pre-steps strong { font-family: var(--font-display); }
 .pre-steps a + a::before { left: -8px; width: 26px; height: 26px; background: #2563eb; border-color: #a9c6ff; color: #fff; }
 @media (max-width: 860px) { .pre-steps { gap: 8px; } .pre-steps a { padding: 12px 10px; } .pre-steps span { font-size: 0; } .pre-steps strong { font-size: 13px; } .pre-steps b { font-size: 24px; } }
+
+/* Home hero: more room above the buttons, and a slow-turning 2px glow ring on the main button */
+.hero .hero-ctas { margin-top: 44px; }
+@property --ga { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+.hero .hero-ctas .btn-primary { position: relative; isolation: isolate; overflow: visible; }
+.hero .hero-ctas .btn-primary::before, .hero .hero-ctas .btn-primary::after { content: ""; position: absolute; inset: -2px; border-radius: inherit; padding: 2px; pointer-events: none; z-index: -1;
+  background: conic-gradient(from var(--ga), #4f8cff, #c4aaff, #ffffff, #7dd3ff, #4f8cff);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
+.hero .hero-ctas .btn-primary::after { inset: -4px; padding: 4px; filter: blur(8px); opacity: .9; }
+@media (prefers-reduced-motion: no-preference) {
+  .hero .hero-ctas .btn-primary::before, .hero .hero-ctas .btn-primary::after { animation: glow-turn 3.2s linear infinite; }
+  @keyframes glow-turn { to { --ga: 360deg; } }
+}
