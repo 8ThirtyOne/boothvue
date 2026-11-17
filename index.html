@@ -332,6 +332,15 @@ a.step:hover h3 { color: var(--accent); }
 #step-5 h2, #step-5 h3, #step-5 b { color: var(--ink); }
 #step-5 .walk-num { -webkit-text-stroke-color: rgba(143,182,255,.7); }
 #step-5 .howto-row li { background: var(--surface); border-color: var(--line); color: var(--muted); }
+/* The three money steps: big glowing cards */
+#step-5 .money { list-style: none; margin: clamp(10px, 2vw, 24px) 0 clamp(32px, 5vw, 56px); padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 24px); }
+#step-5 .money li { position: relative; min-width: 0; display: grid; gap: 10px; align-content: start; padding: clamp(22px, 3vw, 34px); border-radius: 22px; background: linear-gradient(160deg, rgba(79,140,255,.22), rgba(255,255,255,.04) 55%); border: 1px solid rgba(143,182,255,.38); box-shadow: 0 0 0 1px rgba(255,255,255,.04) inset, 0 24px 70px rgba(37,99,235,.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: transform .2s, box-shadow .2s, border-color .2s; }
+#step-5 .money li:hover { transform: translateY(-4px); border-color: rgba(143,182,255,.75); box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset, 0 30px 90px rgba(79,140,255,.5); }
+#step-5 .money-n { font: 800 clamp(54px, 7vw, 84px)/.9 var(--font-display); letter-spacing: -.04em; background: linear-gradient(180deg, #fff, #6ea2ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+#step-5 .money h3 { margin: 4px 0 0; font-size: clamp(21px, 2.4vw, 28px); line-height: 1.15; color: #fff; }
+#step-5 .money p { margin: 0; font-size: clamp(15px, 1.4vw, 17px); line-height: 1.5; color: var(--muted); }
+#step-5 .money li + li::before { content: "→"; position: absolute; left: calc(clamp(14px, 2vw, 24px) / -2); top: 50%; transform: translate(-50%, -50%); width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: #2563eb; color: #fff; font: 700 15px var(--font-body); box-shadow: 0 0 0 4px rgba(5,12,31,.9); z-index: 1; }
+@media (max-width: 860px) { #step-5 .money { grid-template-columns: minmax(0, 1fr); } #step-5 .money li + li::before { content: "↓"; left: 50%; top: calc(clamp(14px, 2vw, 24px) / -2); } }
 #step-5 .real-item { border-color: var(--line); box-shadow: 0 24px 60px rgba(0,0,0,.35); }
 #step-5 .real-item figcaption { background: rgba(8,16,36,.85); }
 @media (prefers-reduced-motion: reduce) { .ui-caret { animation: none; } }
@@ -641,10 +650,10 @@ a.step:hover h3 { color: var(--accent); }
             <p>AI Render turns your design into a photo-realistic concept image or 10-second video clip, imagined on a show floor. It&rsquo;s an AI visualization of where your booth could go, not a build plan, so your exhibit house will confirm what can actually be built. Drop it into investor decks, board presentations and pitches, win sign-off on your concept, and promote your booth before the doors open.</p>
           </div>
         </div>
-        <ol class="howto howto-row">
-          <li>Frame the view you want in the 3D editor.</li>
-          <li>Click <b>AI Render</b> and choose a style, or write your own art direction.</li>
-          <li>Generate an image, then <b>Animate</b> it into a 10-second video.</li>
+        <ol class="money">
+          <li><span class="money-n" aria-hidden="true">1</span><h3>Frame your shot</h3><p>Pick the angle you want in the 3D editor, the way a photographer would.</p></li>
+          <li><span class="money-n" aria-hidden="true">2</span><h3>Click AI Render</h3><p>Choose a style, or write your own art direction.</p></li>
+          <li><span class="money-n" aria-hidden="true">3</span><h3>Get your image and video</h3><p>A photo-realistic concept image, then one click to animate it into a 10-second video.</p></li>
         </ol>
         <div class="real">
         <figure class="real-item real-img">
