@@ -1587,7 +1587,52 @@ function placeAtViewCenter(a) {
   const s = surfaceHit() || { p: new THREE.Vector3(0, 1.5, 0), n: new THREE.Vector3(0, 0, 1) };
   a.pos = s.p; a.normal = s.n;
   a.face = s.obj ? panelFace(s.obj, s.n, s.p) : null;
+  // The middle of the view is often a chair, a screen or the floor. If it isn't a flat panel wide enough to show the upload,
+  // use the biggest clear panel that faces the camera instead, and say where it went.
+  const wantM = (ART_WIDTH_FT[a.kind] || 2) * FT;
+  let where = s.obj && a.face ? (s.obj.userData.label || '') : '';
+  if (!a.face || a.face.w < wantM * .6 || /video|screen|monitor|display|tv/i.test(where)) {
+    const b = bestPanel(wantM * .6);
+    if (b) {
+      a.pos = b.c.clone(); a.normal = b.n.clone(); a.face = { c: b.c.clone(), n: b.n.clone(), w: b.w, h: b.h };
+      a.widthFt = Math.max(.5, Math.round(Math.min(wantM, b.w * .8, b.h * .8 / a.aspect) / FT * 4) / 4);
+      where = b.label;
+    }
+  }
   if (a.kind === 'artwork' && a.face) a.fit = 'fill';
+  artNote(`${a.kind === 'artwork' ? 'Artwork' : a.kind === 'icon' ? 'Icon' : 'Logo'} placed${where ? ' on the ' + where : ''}. Drag it onto any surface to move it.`);
+}
+// The largest upright face of a booth part that points toward the camera and has nothing in front of it.
+function bestPanel(minW) {
+  let best = null;
+  boothG.children.forEach(o => {
+    if (o.isLight || o.userData.artId || o.userData.locked || !o.visible) return;
+    const box = new THREE.Box3().setFromObject(o); if (box.isEmpty()) return;
+    const c = box.getCenter(new THREE.Vector3()), sz = box.getSize(new THREE.Vector3());
+    if (sz.y < .9) return;
+    const toCam = camera.position.clone().sub(c).setY(0).normalize();
+    [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([x, z]) => {
+      const n = new THREE.Vector3(x, 0, z), facing = n.dot(toCam); if (facing < .3) return;
+      const w = x ? sz.z : sz.x; if (w < minW) return;
+      const p = c.clone().addScaledVector(n, (x ? sz.x : sz.z) / 2);
+      const dir = p.clone().sub(camera.position), dist = dir.length();
+      const rc = new THREE.Raycaster(camera.position.clone(), dir.normalize());
+      const hit = rc.intersectObjects(boothG.children, true).find(h => { for (let q = h.object; q; q = q.parent) if (q.userData.artId) return false; return true; });
+      if (!hit || hit.distance < dist - .25) return;                       // something stands in front of this face
+      let top = hit.object; while (top.parent && top.parent !== boothG) top = top.parent;
+      if (top !== o) return;
+      const score = w * sz.y * facing;
+      if (!best || score > best.score) best = { c: p, n, w, h: sz.y, score, label: (o.userData.label || 'booth').toLowerCase() };
+    });
+  });
+  return best;
+}
+// A short note over the 3D view, used to say where an upload landed.
+function artNote(text) {
+  const area = document.getElementById('canvas-area'); if (!area) return;
+  let n = document.getElementById('art-note');
+  if (!n) { n = document.createElement('div'); n.id = 'art-note'; n.setAttribute('role', 'status'); area.append(n); }
+  n.textContent = text; n.classList.add('show'); clearTimeout(artNote.t); artNote.t = setTimeout(() => n.classList.remove('show'), 5000);
 }
 // The flat face of a booth part that artwork sits on: its center on the surface, and its width and height in meters.
 // Floors and tiny parts don't count, so artwork there keeps its own size.
@@ -1910,7 +1955,7 @@ function renderInspector() {
   const g2 = fieldGrid(el, 2);
   field(g2, "Raise off floor " + uLabel(), uShowM(num(e.dy)), .25, v => { e.dy = uReadM(v); poseObj(o); syncSelection(); });
   field(g2, 'Rotate °', Math.round(d.r * 180 / Math.PI), 5, v => {
-    S.drags[k] = { ...d, r: v * Math.PI / 180 }; poseObj(o); syncSelection();
+    S.drags[k] = { ...(S.drags[k] || d), r: v * Math.PI / 180 }; poseObj(o); syncSelection(); // read the position fresh: the item may have been dragged since this panel opened
   });
   const row = document.createElement('label'); row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--fg-muted)';
   row.textContent = 'Color';

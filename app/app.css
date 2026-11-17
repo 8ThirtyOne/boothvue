@@ -667,3 +667,8 @@ html.embed .app-body { height: 100vh; display: block; overflow: hidden; }
 html.embed .canvas-split { height: 100vh !important; padding: 0 !important; display: block; }
 html.embed .canvas-split .canvas-area { height: 100vh !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
 html.embed canvas { cursor: grab; } html.embed canvas:active { cursor: grabbing; }
+
+/* Note over the 3D view saying where an upload landed */
+#art-note { position: absolute; left: 50%; top: 64px; transform: translate(-50%, -8px); z-index: 8; max-width: min(520px, calc(100% - 32px)); padding: 10px 16px; border-radius: 999px; background: rgba(17,23,34,.92); color: #fff; font: 600 13px var(--font-ui); box-shadow: 0 10px 30px rgba(0,0,0,.3); opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; text-align: center; }
+#art-note.show { opacity: 1; transform: translate(-50%, 0); }
+html.embed #art-note { display: none; }
