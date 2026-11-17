@@ -4,7 +4,7 @@
   const auth = window.bvAuth;
   if (!auth) return; // not on the hosted site: keep the preview
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-  const live = { items: [], polling: new Map(), loaded: false, mode: 'upgrade' };
+  const live = { items: [], polling: new Map(), posters: new Map(), loaded: false, mode: 'upgrade' };
   const brandInfo = () => {
     let size = '', type = '';
     try { size = getSZ().lbl; type = (BOOTH_TYPES[S.boothType] || '').toString(); } catch {}
@@ -64,6 +64,7 @@
         const { render } = await api(`/api/render?id=${encodeURIComponent(id)}`);
         upsert(render);
         if (render.status === 'done' && render.kind === 'image' && render.result_url) { S.aiThumb = render.result_url; try { markDirty(); } catch {} }   // becomes the design's picture in Your Designs
+        if (render.status === 'done' && render.result_url) { try { designFileAdd({ id: render.id, kind: render.kind, url: render.result_url, poster: live.posters.get(id) || null, at: render.created_at }); } catch {} }
         if (render.status === 'done' || render.status === 'failed') { live.polling.delete(id); auth.refresh(); draw(); return; }
       } catch { /* try again next tick */ }
       live.polling.set(id, setTimeout(tick, POLL_MS[kind] || 6000));
@@ -144,6 +145,7 @@
       st.textContent = 'Sending to AI Render…';
       const direction = (document.getElementById('gen-dir')?.value || '').trim();
       const { id } = await api('/api/render', { method: 'POST', body: JSON.stringify({ kind, mode: live.mode, image, sourceUrl: src || undefined, direction, brand: brandInfo(), logos: kind === 'image' ? brandLogos() : undefined, aspect: kind === 'image' && image ? live.aspect : undefined }) });
+      if (src) live.posters.set(id, src);   // a video's picture in the Files tray is the image it was made from
       upsert({ id, kind, status: 'queued', created_at: new Date().toISOString() });
       poll(id, kind); auth.refresh();
       st.textContent = kind === 'image' ? 'Creating your image. It appears below in about 30 seconds.' : 'Creating your video. It appears below in 2–4 minutes; you can close this window and keep working.';
@@ -211,6 +213,7 @@
 
   // Replace the preview window and point the AI Render button at the live one.
   window.openGenerate = openRender;
+  window.aiAnimate = url => { openRender(); start('video', url); };   // used by the Files tray
   const btn = document.querySelector('.cv-gen'); if (btn) btn.onclick = openRender;
   auth.onChange(st => { if (!st.user) { live.items = []; live.loaded = false; } draw(); });
 })();

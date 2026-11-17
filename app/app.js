@@ -1645,12 +1645,88 @@ function artImageData(img, type) {
 // The design plus its artwork: what goes to the account, to a share link and into a saved file. (Undo keeps artwork separately.)
 function designForSave() {
   const d = serializeDesign(), v = p => (p ? [p.x, p.y, p.z] : null);
+  d.files = cleanFiles(S.files);
   let budget = 3500000;   // keeps one design well under the storage row limit
   d.art = artItems.filter(a => a.data && a.pos && a.normal).slice(0, 12).filter(a => (budget -= a.data.length) > 0).map(a => ({
     kind: a.kind, name: a.name, src: a.data, widthFt: a.widthFt, rot: a.rot, fit: a.fit || 'fit', aspect: a.aspect, host: a.host || null,
     pos: v(a.pos), normal: v(a.normal), face: a.face ? { c: v(a.face.c), n: v(a.face.n), w: a.face.w, h: a.face.h } : null }));
   return d;
 }
+// ── Files tray ──
+// Everything made for the open design, in one place on the right edge of the 3D view: its AI images and videos, and the
+// logos and pictures uploaded to it. The AI files are remembered inside the design (S.files), so they come back when it is opened.
+const FILE_URL = /^https:\/\/[a-z0-9-]+\.supabase\.co\/storage\/v1\/object\/public\/renders\/[\w./-]+$/i;
+function cleanFiles(list) {
+  const seen = new Set();
+  return (Array.isArray(list) ? list : []).filter(f => f && (f.kind === 'image' || f.kind === 'video') && typeof f.url === 'string' && FILE_URL.test(f.url) && !seen.has(f.url) && seen.add(f.url))
+    .slice(0, 60).map(f => ({ id: String(f.id || '').slice(0, 60), kind: f.kind, url: f.url, poster: typeof f.poster === 'string' && FILE_URL.test(f.poster) ? f.poster : null, at: String(f.at || '').slice(0, 40) }));
+}
+// Called by AI Render when an image or video finishes.
+function designFileAdd(f) {
+  const next = cleanFiles([f, ...(S.files || [])]); if (next.length === (S.files || []).length && next[0]?.url === S.files?.[0]?.url) return;
+  S.files = next; drawFilesTray(true); try { markDirty(); } catch {}
+}
+function trayItems() {
+  const ai = (S.files || []).map(f => ({ group: f.kind === 'video' ? 'AI videos' : 'AI images', kind: f.kind, url: f.url, thumb: f.kind === 'video' ? f.poster : f.url, name: f.kind === 'video' ? 'AI video' : 'AI image', ai: true }));
+  const brand = artItems.map(a => ({ group: 'Brand files', kind: 'art', url: a.data || a.img?.src, thumb: a.data || a.img?.src, name: a.name, art: a }));
+  let refs = []; try { refs = aiRefs.map((r, i) => ({ group: 'Reference images', kind: 'ref', url: r.img?.src, thumb: r.img?.src, name: `Reference ${i + 1}` })); } catch {}
+  return [...ai.filter(x => x.kind === 'image'), ...ai.filter(x => x.kind === 'video'), ...brand, ...refs].filter(x => x.url);
+}
+let trayOpen = false;
+function trayThumb(it) {
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'ft-thumb' + (it.kind === 'video' ? ' is-video' : '') + (it.kind === 'art' ? ' is-art' : '');
+  b.title = it.name; b.setAttribute('aria-label', 'Open ' + it.name);
+  if (it.thumb) { const im = document.createElement('img'); im.src = it.thumb; im.alt = ''; im.loading = 'lazy'; b.append(im); }
+  else if (it.kind === 'video') { const v = document.createElement('video'); v.src = it.url + '#t=0.1'; v.muted = true; v.preload = 'metadata'; v.playsInline = true; b.append(v); }
+  b.onclick = () => openFilePreview(it);
+  return b;
+}
+function drawFilesTray(flash) {
+  const area = document.getElementById('canvas-area'); if (!area || document.documentElement.classList.contains('embed')) return;
+  let t = document.getElementById('files-tray');
+  if (!t) { t = document.createElement('aside'); t.id = 'files-tray'; t.setAttribute('aria-label', 'Files for this design'); area.append(t); }
+  const items = trayItems();
+  t.className = trayOpen ? 'open' : ''; t.textContent = '';
+  const head = document.createElement('button'); head.type = 'button'; head.className = 'ft-head'; head.setAttribute('aria-expanded', trayOpen);
+  head.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/></svg><span>Files</span><b>${items.length}</b><i aria-hidden="true">${trayOpen ? '›' : '‹'}</i>`;
+  head.onclick = () => { trayOpen = !trayOpen; try { localStorage.setItem('bs-tray', trayOpen ? '1' : ''); } catch {} drawFilesTray(); };
+  t.append(head);
+  if (!items.length) { const e = document.createElement('p'); e.className = 'ft-empty'; e.textContent = trayOpen ? 'AI images and videos for this design appear here, with the logos and pictures you add.' : ''; if (trayOpen) t.append(e); return; }
+  if (!trayOpen) { const strip = document.createElement('div'); strip.className = 'ft-strip'; items.slice(0, 5).forEach(it => strip.append(trayThumb(it))); if (items.length > 5) { const more = document.createElement('button'); more.type = 'button'; more.className = 'ft-more'; more.textContent = '+' + (items.length - 5); more.onclick = head.onclick; strip.append(more); } t.append(strip); }
+  else { const body = document.createElement('div'); body.className = 'ft-body';
+    [...new Set(items.map(i => i.group))].forEach(g => { const h = document.createElement('div'); h.className = 'ft-group'; h.textContent = g; const grid = document.createElement('div'); grid.className = 'ft-grid'; items.filter(i => i.group === g).forEach(it => grid.append(trayThumb(it))); body.append(h, grid); });
+    t.append(body); }
+  if (flash) { t.classList.add('flash'); setTimeout(() => t.classList.remove('flash'), 1600); }
+}
+try { trayOpen = localStorage.getItem('bs-tray') === '1'; } catch {}
+// The large view of one file, over the 3D view.
+function openFilePreview(it) {
+  closeFilePreview();
+  const o = document.createElement('div'); o.id = 'file-view'; o.setAttribute('role', 'dialog'); o.setAttribute('aria-label', it.name);
+  const box = document.createElement('div'); box.className = 'fv-box';
+  let media;
+  if (it.kind === 'video') { media = document.createElement('video'); media.src = it.url; media.controls = true; media.autoplay = true; media.loop = true; media.playsInline = true; if (it.thumb) media.poster = it.thumb; }
+  else { media = document.createElement('img'); media.src = it.url; media.alt = it.name; }
+  media.className = 'fv-media' + (it.kind === 'art' ? ' on-check' : '');
+  const bar = document.createElement('div'); bar.className = 'fv-bar';
+  const name = document.createElement('span'); name.className = 'fv-name'; name.textContent = it.name; bar.append(name);
+  const btn = (label, fn, primary) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'btn btn-sm' + (primary ? ' btn-primary' : ''); b.textContent = label; b.onclick = fn; bar.append(b); return b; };
+  if (it.ai) { const a = document.createElement('a'); a.className = 'btn btn-sm btn-primary'; a.href = it.url; a.target = '_blank'; a.rel = 'noopener'; a.download = ''; a.textContent = it.kind === 'video' ? 'Open video' : 'Open full size'; bar.append(a); }
+  if (it.kind === 'image' && it.ai) {
+    if (typeof window.aiAnimate === 'function') btn('Animate · 10-sec video', () => { closeFilePreview(); window.aiAnimate(it.url); });
+    const pic = btn(S.aiThumb === it.url ? '✓ Design picture' : 'Use as design picture', () => { S.aiThumb = it.url; try { markDirty(); } catch {} pic.textContent = '✓ Design picture'; pic.disabled = true; });
+    pic.disabled = S.aiThumb === it.url;
+  }
+  if (it.art) btn('Select on booth', () => { closeFilePreview(); try { selectArt(it.art.id); } catch {} });
+  const x = btn('Close', closeFilePreview); x.classList.add('fv-close');
+  box.append(media, bar); o.append(box);
+  o.onclick = e => { if (e.target === o) closeFilePreview(); };
+  document.body.append(o);
+  o._key = e => { if (e.key === 'Escape') closeFilePreview(); }; document.addEventListener('keydown', o._key);
+  x.focus();
+}
+function closeFilePreview() { const o = document.getElementById('file-view'); if (!o) return; document.removeEventListener('keydown', o._key); o.querySelector('video')?.pause(); o.remove(); }
+
 // Puts a saved design's artwork back on the booth. Runs after the booth is rebuilt.
 function loadSavedArt(list) {
   const v = p => (Array.isArray(p) && p.length === 3 ? new THREE.Vector3(+p[0] || 0, +p[1] || 0, +p[2] || 0) : null);
@@ -1858,6 +1934,7 @@ function renderArtList() {
     wrap.append(row);
   });
   document.getElementById('art-empty').hidden = artItems.length > 0;
+  try { drawFilesTray(); } catch {}
 }
 
 // Booth element editor: select, move, scale, recolor, cut openings, delete
@@ -3392,8 +3469,9 @@ function blankDesign() {
     brand: { company: 'BOOTHVUE', tagline: 'Design. Build. Show.', primary: '#0a84ff', secondary: '#ff9f0a', accent: '#ffffff', bg: '#101820', graphicStyle: 'solid', logoScale: 1, lightStyle: 'warm', lightInt: .7 },
     furn: [], placed: [], added: [], edits: {}, drags: {} };
 }
-function applyDesign(raw) {
+function applyDesign(raw, opts = {}) {
   const d = { ...blankDesign(), ...raw };
+  if (!opts.keepFiles) S.files = cleanFiles(raw?.files);   // AI Build reshapes the same design, so its files stay
   S.aiThumb = typeof raw?.aiThumb === 'string' && /^https:\/\//.test(raw.aiThumb) ? raw.aiThumb : null;   // a new or rebuilt booth has no AI image yet
   DESIGN_KEYS.forEach(k => { if (d[k] !== undefined) S[k] = d[k]; });
   S.els = { ...blankDesign().els, ...(d.els || {}) };
@@ -3409,6 +3487,7 @@ function applyDesign(raw) {
   syncControls();
   rebuildBooth();
   if (savedArt) { loadSavedArt(savedArt); renderArtList(); }
+  try { closeFilePreview(); drawFilesTray(); } catch {}
   const envBtn = document.getElementById('env-' + (d.env || 'none'));
   setEnv(envBtn ? d.env : 'none', envBtn || document.getElementById('env-none'));
   setView('perspective', document.querySelector('.view-controls .vbtn'));
@@ -3709,7 +3788,7 @@ REFERENCE IMAGES: ${aiRefs.length} image(s) are attached. Use them as the main v
       x: Math.max(-W / 2, Math.min(W / 2, num(p.x))) * FT, z: Math.max(-D / 2, Math.min(D / 2, num(p.z))) * FT, ry: num(p.rotDeg) * Math.PI / 180,
     }));
     closeModal();
-    applyDesign(design);
+    applyDesign(design, { keepFiles: true });
   } catch (e) {
     msg.textContent = { cancelled: 'Stopped.', not_granted: 'Claude access was declined for this page.', rate_limited: 'Usage limit reached. Try again later.', invalid_json: 'The design came back incomplete. Try again.' }[e?.code] || e?.message || 'Could not build that. Try again.';
   } finally {
