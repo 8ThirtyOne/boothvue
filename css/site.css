@@ -519,3 +519,16 @@ a.step:hover h3 { color: var(--accent); }
 }
 @media (max-width: 960px) and (prefers-reduced-motion: reduce) { .nav.open .nav-links > a, .nav.open .nav-m-foot { animation: none; opacity: 1; transform: none; } }
 @media (max-width: 960px) { .nav.open .nav-m-foot .btn-ghost { border: 1px solid rgba(255,255,255,.28); } .nav.open .nav-m-foot .btn-primary { border: 0; } }
+
+/* Home: steps 1–4 in one row above the step 5 showcase */
+.pre-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.pre-steps a { position: relative; min-width: 0; display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-radius: 16px; background: rgba(255,255,255,.05); border: 1px solid rgba(160,190,255,.2); color: #fff; transition: transform .2s, border-color .2s, background .2s; }
+.pre-steps a:hover { transform: translateY(-3px); border-color: rgba(143,182,255,.75); background: rgba(79,140,255,.16); }
+.pre-steps b { font: 800 30px/1 var(--font-display); letter-spacing: -.03em; color: transparent; -webkit-text-stroke: 1.5px rgba(143,182,255,.8); flex: none; }
+.pre-steps span { display: grid; gap: 2px; min-width: 0; font-size: 13px; color: #b7c3da; }
+.pre-steps strong { font: 700 16px/1.2 var(--font-display); color: #fff; }
+.pre-steps a + a::before { content: "→"; position: absolute; left: -6px; top: 50%; transform: translate(-50%, -50%); width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: #0b1838; border: 1px solid rgba(143,182,255,.45); color: #8fb6ff; font: 700 12px var(--font-body); z-index: 1; }
+.pre-steps-lead { display: flex; align-items: center; gap: 16px; margin: 26px 0 clamp(28px, 4vw, 48px); font: 500 11px var(--font-mono); letter-spacing: .25em; text-transform: uppercase; color: #8fb6ff; }
+.pre-steps-lead i { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(143,182,255,.45)); }
+.pre-steps-lead i:last-child { transform: scaleX(-1); }
+@media (max-width: 860px) { .pre-steps { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; } .pre-steps a { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 10px; } .pre-steps span { font-size: 0; } .pre-steps strong { font-size: 13px; } .pre-steps b { font-size: 22px; } .pre-steps a + a::before { display: none; } }
