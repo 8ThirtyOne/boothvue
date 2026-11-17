@@ -605,3 +605,13 @@ a.step:hover h3 { color: var(--accent); }
 @keyframes h3l-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: no-preference) { .hero-3d-load { animation: h3l-bg 6s ease-in-out infinite alternate; } @keyframes h3l-bg { from { background-position: 0% 0%; } to { background-position: 100% 100%; } } }
 @media (hover: none), (max-width: 860px) { .hero-3d-load { padding-left: 0; align-items: end; padding-bottom: 14vh; } }
+
+/* Top bar when signed in: green check, "<Name>'s Account", Sign out (js/nav-account.js) */
+.nav-acct { display: inline-flex; align-items: center; gap: 9px; margin-left: clamp(4px, 1.4vw, 20px); color: #6ea2ff; font: 700 13px var(--font-body); white-space: nowrap; }
+.nav-acct:hover { color: #a9c6ff; }
+.nav-ok { width: 20px; height: 20px; border-radius: 50%; background: #1f9d55; display: grid; place-items: center; flex: none; box-shadow: 0 0 0 3px rgba(31,157,85,.22); }
+.nav-ok svg { width: 13px; height: 13px; fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.nav-signout { background: none; border: 0; padding: 0; cursor: pointer; color: rgba(244,247,251,.6); font: 700 13px var(--font-body); white-space: nowrap; }
+.nav-signout:hover { color: #fff; }
+@media (max-width: 960px) { .nav-acct { margin-left: auto; } .nav-signout { display: none; } }
+@media (max-width: 480px) { .nav-acct-name { display: none; } }
