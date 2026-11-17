@@ -623,3 +623,15 @@ a.logo:hover { opacity: .8; }
 .extra-foot { margin: 2px 0 0; font-size: 12px; color: var(--fg-muted); }
 @media (max-width: 520px) { .extra-row { flex-wrap: wrap; } .extra-act { width: 100%; justify-content: flex-end; } }
 .extra-alert { color: var(--fg) !important; font-weight: 600; background: var(--accent-lo); border-radius: 9px; padding: 9px 12px; }
+
+/* Phone: the 3D viewer sits in its own box that fills the space under the sidebar, so nothing is cut off */
+@media (max-width: 680px) {
+  html, body { height: 100%; overflow: hidden; }
+  .app-body { height: 100svh; overflow: hidden; display: flex; flex-direction: column; }
+  .sidebar { flex: none; max-height: 46svh; }
+  .canvas-split { flex: 1 1 auto !important; min-height: 0 !important; height: auto !important; padding: 10px max(10px, env(safe-area-inset-right, 0px)) max(10px, env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px)); background: var(--bg); }
+  .canvas-split .canvas-area { flex: 1 1 auto; height: auto; min-height: 0; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); }
+  .canvas-split .ref-pane:not(.open) { display: none; }
+  .canvas-split .ref-pane.open { flex: none; height: 200px; margin-top: 10px; border-radius: 14px; }
+  .cv-top-right { bottom: 12px; }
+}
