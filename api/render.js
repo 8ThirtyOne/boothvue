@@ -19,7 +19,10 @@ const MODELS = {
   video: process.env.FAL_VIDEO_MODEL || "fal-ai/kling-video/v2.1/standard/image-to-video",
   // Faithful mode uses a model built to keep a picture's composition and change only how it looks. The Concept Upgrade
   // model reimagines the scene, which is right for an upgrade and wrong when the customer wants their own design kept.
-  faithful: process.env.FAL_FAITHFUL_MODEL || "fal-ai/flux-pro/kontext",
+  faithful: process.env.FAL_FAITHFUL_MODEL || "fal-ai/flux-pro/kontext/max",
+  // The structure-keeping model returns a picture of about one megapixel, so it is enlarged afterwards. This enlarger
+  // sharpens what is there and does not redraw it, so logos and lettering stay as they are. Set to "off" to skip.
+  upscale: process.env.FAL_UPSCALE_MODEL || "fal-ai/esrgan",
 };
 const IMAGE_RESOLUTION = process.env.FAL_IMAGE_RESOLUTION || "2K";
 
@@ -206,7 +209,22 @@ async function advance(r) {
     return r;
   }
   const out = await fal(job.response).then(async x => ({ ok: x.ok, body: await x.json().catch(() => ({})) })).catch(() => ({ ok: false, body: {} }));
-  const url = r.kind === "image" ? out.body?.images?.[0]?.url : out.body?.video?.url;
+  let url = r.kind === "image" ? (out.body?.images?.[0]?.url || out.body?.image?.url) : out.body?.video?.url;
+  // Second step for Faithful images: enlarge the finished picture. If the enlarger can't start, or fails, the picture is kept as it is.
+  if (r.kind === "image" && /kontext/.test(r.model || "") && MODELS.upscale !== "off") {
+    if (!job.stage && out.ok && url) {
+      const up = await fal(`https://queue.fal.run/${MODELS.upscale}`, { method: "POST", body: JSON.stringify({ image_url: url, scale: 2, output_format: "jpeg" }) }).catch(() => null);
+      const uj = up ? await up.json().catch(() => ({})) : {};
+      if (up && up.ok && uj.request_id) {
+        await updateRender(r.id, { status: "running", fal_request: JSON.stringify({ id: uj.request_id, status: uj.status_url, response: uj.response_url, stage: "up", base: url }) });
+        return { ...r, status: "running" };
+      }
+      console.error("upscale didn't start, keeping the original size", up?.status, JSON.stringify(uj).slice(0, 200));
+    } else if (job.stage === "up" && (!out.ok || !url) && job.base) {
+      console.error("upscale failed, keeping the original size", JSON.stringify(out.body).slice(0, 200));
+      url = job.base; out.ok = true;
+    }
+  }
   if (!out.ok || !url) {
     const error = String(out.body?.detail?.[0]?.msg || out.body?.detail || "The AI service couldn't create this one.").slice(0, 300);
     await updateRender(r.id, { status: "failed", error });
