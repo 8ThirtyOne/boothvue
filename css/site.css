@@ -709,3 +709,20 @@ button.nav-acct:hover { background: rgba(255,255,255,.12); color: #fff; }
 
 /* Home steps 1-4 row: cards line up at the top */
 .pre-steps a { align-items: flex-start; }
+
+/* Workflow step 1: Brand From Your Website demo (js/brand-anim.js) */
+.ba-frames { position: relative; }
+.ba-frames img { display: block; width: 100%; height: auto; }
+.ba-frames .ba-after { position: absolute; inset: 0; opacity: 0; transition: opacity .9s ease; }
+.ba-frames .ba-after.on { opacity: 1; }
+.ba-url { display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 4px 0 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--bg); font: 500 13px "IBM Plex Mono", var(--font-mono); color: var(--ink); }
+.ba-type { white-space: nowrap; overflow: hidden; }
+.ba-caret { width: 1.5px; height: 15px; background: var(--accent); animation: ba-blink 1s steps(1) infinite; }
+.ba-card.done .ba-caret { opacity: 0; animation: none; }
+@keyframes ba-blink { 50% { opacity: 0; } }
+.ba-go { margin-left: auto; padding: 5px 10px; border-radius: 7px; background: var(--accent); color: #fff; font: 700 11.5px var(--font-body); transition: transform .15s, filter .15s; }
+.ba-go.press { transform: scale(.92); filter: brightness(.85); }
+.ba-go.busy { opacity: .7; }
+.ba-r { opacity: 0; transform: translateY(4px); transition: opacity .35s ease, transform .35s ease; }
+.ba-r.on { opacity: 1; transform: none; }
+.ba-card .ui-row i { width: 18px; height: 18px; }
