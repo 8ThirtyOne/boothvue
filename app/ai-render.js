@@ -214,7 +214,7 @@
       <div class="gen-mode" role="radiogroup" aria-label="Render style">
         <div class="gen-mode-btn" data-mode="faithful" role="radio" tabindex="0"><small>Level 1</small><b>Stay True to My Design</b><span>Your booth exactly as designed, made to look like a real photo.</span></div>
         <div class="gen-mode-btn" data-mode="enhance" role="radio" tabindex="0"><small>Level 2</small><b>Enhance My Design</b><span>Same booth and layout, with premium finishes, lighting and graphics.</span></div>
-        <div class="gen-mode-btn" data-mode="upgrade" role="radio" tabindex="0"><small>Level 3</small><b>Wow Me</b><span>AI reimagines it as an award-winning flagship. Expect a big leap from your 3D model.</span></div>
+        <div class="gen-mode-btn" data-mode="upgrade" role="radio" tabindex="0"><small>Level 3</small><b>WOW me!</b><span>AI reimagines it as an award-winning flagship. Expect a big leap from your 3D model.</span></div>
       </div>
       <div class="gen-styles" role="group" aria-label="Art direction styles">${STYLES.map(s => `<div class="gen-style" role="button" tabindex="0" data-style="${s.id}">${s.name}</div>`).join('')}</div>
       <textarea class="gen-dir" id="gen-dir" rows="3" aria-label="Art direction" placeholder="Art direction (optional), e.g. busy show hours, warm evening light"></textarea>
