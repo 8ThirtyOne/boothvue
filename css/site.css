@@ -872,3 +872,7 @@ button.nav-acct:hover { background: rgba(255,255,255,.12); color: #fff; }
 @keyframes s5-sweep { from { background-position: 100% 0; } to { background-position: 0 0; } }
 @media (prefers-reduced-motion: reduce) { #step-5 .s5-head.lit::after { transform: scaleX(1); } #step-5 .s5-head.lit .walk-num { animation: none; filter: drop-shadow(0 0 10px rgba(120,170,255,.8)); } }
 #step-5 .s5-head p { max-width: 72ch; }
+#step-5 .s5-head { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+#step-5 .s5-head > div:last-child { justify-items: start; }
+#step-5 .money-n { font-size: clamp(36px, 4.4vw, 52px); }
+#step-5 .money h3 { font-size: clamp(18px, 1.8vw, 22px); }
