@@ -282,6 +282,7 @@ a.step:hover h3 { color: var(--accent); }
   .walk-flip .walk-media { order: 0; }
   .walk-media { margin-bottom: 60px; }
   .ui-prompt { left: 12px; } .ui-brand { right: 12px; }
+  .ui-prompt, .ui-brand { width: min(300px, calc(100% - 24px)); }
   .howto-row { grid-template-columns: minmax(0, 1fr); }
   .walk-head { grid-template-columns: minmax(0, 1fr); }
   .walk-nav a span { display: none; } .walk-nav a.on span { display: inline; }
@@ -770,3 +771,29 @@ button.nav-acct:hover { background: rgba(255,255,255,.12); color: #fff; }
 .dm-tag { position: absolute; z-index: 2; bottom: 14px; left: 14px; padding: 6px 12px; border-radius: 999px; background: rgba(8,13,28,.85); color: #fff; font: 500 11px "IBM Plex Mono", var(--font-mono); letter-spacing: .14em; text-transform: uppercase; opacity: 0; transition: opacity .4s; }
 .dm-tag.on { opacity: 1; }
 @media (max-width: 700px) { .dm-bar i { padding: 5px 8px; font-size: 11px; } .dm-chip { display: none; } }
+
+/* Workflow page: price line in the hero, passes and objections after step 5, sticky buy bar */
+.hero-proof { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 14px 0 0; font: 500 14px var(--font-display); color: rgba(243,246,252,.78); }
+.hero-proof span { display: inline-flex; align-items: center; gap: 8px; }
+.hero-proof span + span::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: #4f8cff; }
+.hero-proof b { color: #fff; font-weight: 800; }
+.wf-buy { padding-block: clamp(64px, 9vw, 110px); }
+.wf-buy-head { margin-inline: auto; text-align: center; max-width: 760px; }
+.wf-buy-head h2 { text-wrap: balance; }
+.wf-faq { padding-block: clamp(56px, 8vw, 96px); }
+.wf-faq-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.wf-faq-grid > div { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 22px 24px; }
+.wf-faq-grid h3 { font-size: 18px; margin: 0 0 8px; }
+.wf-faq-grid p { margin: 0; color: var(--muted); font-family: var(--font-display); font-size: 15.5px; line-height: 1.55; }
+@media (max-width: 760px) { .wf-faq-grid { grid-template-columns: minmax(0, 1fr); } }
+.wf-bar { position: fixed; z-index: 40; left: 0; right: 0; bottom: 0; padding: 0 max(16px, env(safe-area-inset-right, 0px)) calc(14px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); pointer-events: none; transform: translateY(130%); transition: transform .35s ease; }
+.wf-bar.on { transform: none; }
+.wf-bar-in { pointer-events: auto; max-width: 560px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 10px 10px 20px; border-radius: 999px; background: rgba(8,13,28,.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: rgba(243,246,252,.82); font: 500 14px var(--font-display); box-shadow: 0 18px 40px -12px rgba(0,0,0,.5); border: 1px solid rgba(160,190,255,.2); }
+.wf-bar-in b { color: #fff; font-weight: 800; }
+@media (max-width: 420px) { .wf-bar-in { font-size: 13px; padding-left: 16px; } }
+.wf-bar .btn-sm { padding: 9px 18px; font-size: 14px; min-height: 0; }
+.wf-bar-in i { font-style: normal; }
+.wf-bar-in > span { min-width: 0; }
+.wf-bar-in .btn { flex: none; }
+.wf-bar-short { display: none; }
+@media (max-width: 520px) { .wf-bar-long { display: none; } .wf-bar-short { display: inline; } }
