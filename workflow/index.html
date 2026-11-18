@@ -388,6 +388,7 @@
   </section>
 </main>
 
+<script src="/js/config.js"></script>
 <div class="wf-bar" aria-hidden="true" hidden>
   <div class="wf-bar-in"><span><b>From $99</b><i class="wf-bar-long"> · one-time pass, no subscription</i><i class="wf-bar-short"> · one-time pass</i></span><a class="btn btn-primary btn-sm" href="#pricing" tabindex="-1">See Passes</a></div>
 </div>
@@ -395,6 +396,16 @@
   (() => {
     const bar = document.querySelector('.wf-bar'), start = document.getElementById('step-2'), buy = document.getElementById('pricing'), end = document.querySelector('footer');
     if (!bar || !start || !buy) return;
+    // Signed in with an active pass? Then there's nothing to sell: keep the bar away.
+    let session = null;
+    try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (/^sb-.+-auth-token$/.test(k)) { const v = JSON.parse(localStorage.getItem(k)); if (v && v.access_token && v.user) session = v; } } } catch {}
+    const cfg = window.BV_CONFIG || {};
+    if (session && cfg.supabaseUrl && cfg.supabasePublishableKey) {
+      const url = `${cfg.supabaseUrl}/rest/v1/passes?select=ends_at&ends_at=gt.${encodeURIComponent(new Date().toISOString())}&limit=1`;
+      fetch(url, { headers: { apikey: cfg.supabasePublishableKey, Authorization: `Bearer ${session.access_token}` } })
+        .then(r => r.ok ? r.json() : []).then(rows => { if (Array.isArray(rows) && rows.length) { bar.remove(); removeEventListener('scroll', tick); } })
+        .catch(() => {});
+    }
     bar.hidden = false;
     const tick = () => {
       const h = innerHeight, a = start.getBoundingClientRect().top < h * .6;
