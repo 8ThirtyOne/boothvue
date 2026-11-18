@@ -999,3 +999,17 @@ button.nav-acct:hover { background: rgba(255,255,255,.12); color: #fff; }
 .pre-steps a + a::before { background: #2563eb; border-color: #ffffff; color: #fff; }
 .pre-steps b { background: none; -webkit-text-stroke: 0; color: #2563eb; -webkit-text-fill-color: #2563eb; }
 .pre-steps span { line-height: 1.25; gap: 0; }
+
+/* 404 page */
+.nf { position: relative; overflow: hidden; margin-top: -70px; min-height: var(--hero-h); display: flex; align-items: center; color: #f3f6fc;
+  background: radial-gradient(90% 70% at 80% 10%, rgba(37,99,235,.45), transparent 60%), radial-gradient(60% 60% at 10% 90%, rgba(79,140,255,.18), transparent 60%), #050a18; }
+.nf-in { position: relative; padding-block: calc(70px + 64px) 64px; display: grid; gap: 14px; justify-items: start; max-width: 760px; }
+.nf-code { font: 800 clamp(110px, 20vw, 220px)/.85 "Bricolage Grotesque", var(--font-display); letter-spacing: -.05em; color: transparent; -webkit-text-stroke: 2px rgba(143,182,255,.65); filter: drop-shadow(0 0 24px rgba(79,140,255,.45)); }
+.nf .eyebrow { color: #8fb6ff; }
+.nf h1 { color: #fff; font-size: clamp(32px, 5vw, 56px); line-height: 1.05; margin: 0; text-wrap: balance; }
+.nf p { margin: 0; color: rgba(243,246,252,.8); font: 500 18px/1.55 var(--font-display); }
+.nf-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
+.nf .btn-ghost { background: rgba(255,255,255,.06); color: #fff; border: 1px solid rgba(255,255,255,.28); }
+.nf-links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 18px; }
+.nf-links a { color: #bcd3ff; font: 600 15px var(--font-display); text-decoration: none; }
+.nf-links a:hover { color: #fff; }
