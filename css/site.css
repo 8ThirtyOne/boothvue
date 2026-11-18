@@ -726,3 +726,44 @@ button.nav-acct:hover { background: rgba(255,255,255,.12); color: #fff; }
 .ba-r { opacity: 0; transform: translateY(4px); transition: opacity .35s ease, transform .35s ease; }
 .ba-r.on { opacity: 1; transform: none; }
 .ba-card .ui-row i { width: 18px; height: 18px; }
+
+/* Workflow steps 2–5: looping demos (js/step-demos.js) */
+.dm-stack { position: relative; }
+.dm-stack > img { display: block; width: 100%; height: auto; }
+.dm-stack > img + img { position: absolute; inset: 0; }
+.dm-stack > img { opacity: 0; transition: opacity .5s ease; }
+.dm-stack > img.on, .dm-stack > img:first-child:not(.off) { opacity: 1; }
+.dm-stack > img:first-child { opacity: 1; }
+.dm-stack > img.on { z-index: 1; }
+.demo-build .ui-field { min-height: 62px; }
+.demo-build .dm-btn { transition: transform .15s, filter .15s; }
+.demo-build .dm-btn.press { transform: scale(.94); filter: brightness(.85); }
+.demo-build .dm-status { display: none; font-size: 12px; color: var(--muted); }
+.demo-build.busy .dm-status { display: block; }
+.demo-build.busy .dm-btn { opacity: .6; }
+.demo-build.done .ui-caret { opacity: 0; animation: none; }
+.dm-cursor { position: absolute; z-index: 3; left: 30%; top: 80%; display: flex; align-items: flex-start; gap: 4px; opacity: 0; transform: translate(-3px, -2px); transition: opacity .3s; pointer-events: none; }
+.dm-cursor.on { opacity: 1; }
+.dm-cursor svg { width: 22px; height: 22px; fill: #fff; stroke: #111722; stroke-width: 1.4; stroke-linejoin: round; filter: drop-shadow(0 2px 3px rgba(0,0,0,.4)); transition: transform .15s; }
+.dm-cursor.grab svg { transform: scale(.86); }
+.dm-cursor b { margin-top: 16px; padding: 3px 8px; border-radius: 999px; background: var(--accent); color: #fff; font: 700 11px var(--font-body); white-space: nowrap; opacity: 0; transition: opacity .2s; }
+.dm-cursor.grab b { opacity: 1; }
+.dm-wide { max-width: 940px; margin: 0 auto clamp(24px, 4vw, 40px); }
+.dm-bar { position: absolute; z-index: 2; left: 50%; bottom: 14px; transform: translateX(-50%); display: flex; gap: 2px; padding: 4px; border-radius: 12px; background: rgba(255,255,255,.95); box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+.dm-bar i { font: 600 12.5px var(--font-body); font-style: normal; color: #5b6474; padding: 6px 12px; border-radius: 8px; transition: background .25s, color .25s; }
+.dm-bar i.on { background: #e9f0fd; color: #2563eb; }
+.dm-saved { position: absolute; z-index: 2; top: 14px; right: 14px; padding: 7px 12px; border-radius: 999px; background: #16a34a; color: #fff; font: 700 12.5px var(--font-body); opacity: 0; transform: translateY(-6px); transition: opacity .3s, transform .3s; }
+.dm-saved.on { opacity: 1; transform: none; }
+.dm-render { position: absolute; z-index: 2; top: 14px; left: 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; transition: opacity .4s; }
+.dm-render.gone { opacity: 0; }
+.dm-pill { padding: 8px 14px; border-radius: 999px; background: #2563eb; color: #fff; font: 700 13px var(--font-body); box-shadow: 0 6px 18px rgba(0,0,0,.25); transition: transform .15s, filter .15s; }
+.dm-render.press .dm-pill { transform: scale(.92); filter: brightness(.85); }
+.dm-chip { padding: 6px 11px; border-radius: 999px; background: rgba(255,255,255,.92); color: #111722; font: 600 12px var(--font-body); }
+.dm-render .dm-status { display: none; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: rgba(8,13,28,.85); color: #fff; font: 600 12px var(--font-body); }
+.dm-render.busy .dm-status { display: inline-flex; }
+.dm-render .dm-status i { width: 60px; height: 4px; border-radius: 2px; background: rgba(255,255,255,.2); overflow: hidden; position: relative; }
+.dm-render.busy .dm-status i::after { content: ""; position: absolute; inset: 0; width: 0; background: #4f8cff; animation: dm-fill 2.2s linear forwards; }
+@keyframes dm-fill { to { width: 100%; } }
+.dm-tag { position: absolute; z-index: 2; bottom: 14px; left: 14px; padding: 6px 12px; border-radius: 999px; background: rgba(8,13,28,.85); color: #fff; font: 500 11px "IBM Plex Mono", var(--font-mono); letter-spacing: .14em; text-transform: uppercase; opacity: 0; transition: opacity .4s; }
+.dm-tag.on { opacity: 1; }
+@media (max-width: 700px) { .dm-bar i { padding: 5px 8px; font-size: 11px; } .dm-chip { display: none; } }

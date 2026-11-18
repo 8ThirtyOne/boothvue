@@ -34,7 +34,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display&family=IBM+Plex+Mono:wght@500&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="/css/site.css?v=19">
+<link rel="stylesheet" href="/css/site.css?v=20">
 <link rel="stylesheet" href="/css/footer.css?v=2">
 
 <header class="nav">
@@ -122,12 +122,13 @@
       <div class="wrap walk-row">
         <div class="walk-media">
           <div class="browser"><div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
-            <img src="/img/step1-booth.jpg?v=2" width="1600" height="960" loading="lazy" alt="A 20 × 20 peninsula lounge booth built by AI from one sentence: back wall with a sign, sofa, café table, counter, kiosk and potted plants">
+            <div class="ba-frames"><img src="/img/step2-before.jpg" width="1600" height="1000" loading="lazy" alt="" aria-hidden="true"><img class="ba-after" src="/img/step2-after.jpg" width="1600" height="1000" loading="lazy" alt="An island booth built by AI Build: a purple center wall, a ring sign overhead, a coffee bar with stools, a digital totem and plants"></div>
           </div>
-          <div class="ui-card ui-prompt" aria-hidden="true">
+          <div class="ui-card ui-prompt demo-build" aria-hidden="true">
             <div class="ui-card-head"><span class="ui-spark">✦</span>AI Build</div>
-            <div class="ui-field">A 20×20 peninsula lounge for a coffee brand: sofa, café table, a counter, a kiosk and plenty of plants<span class="ui-caret"></span></div>
-            <div class="ui-btn">Build my booth</div>
+            <div class="ui-field"><span class="dm-type" data-text="A 20×20 island for a wellness brand: a center wall, a ring sign overhead, a coffee bar with stools and a digital totem"></span><span class="ui-caret"></span></div>
+            <div class="ui-btn dm-btn">Build my booth</div>
+            <div class="dm-status">Building your booth…</div>
           </div>
         </div>
         <div class="walk-copy">
@@ -149,7 +150,12 @@
       <div class="wrap walk-row walk-flip">
         <div class="walk-media">
           <div class="browser"><div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
-            <img src="/img/app-ui.jpg?v=2" width="800" height="500" loading="lazy" alt="The BoothVue editor, with booth setup options on the left and a selected podium showing its size in the 3D view">
+            <div class="dm-stack demo-drag" data-pts="0.382,0.698 0.498,0.703 0.587,0.704">
+              <img src="/img/step3-1.jpg" width="1600" height="1000" loading="lazy" alt="The lounge booth in the 3D editor with the sofa selected, being dragged across the floor and turned">
+              <img src="/img/step3-2.jpg" width="1600" height="1000" loading="lazy" alt="" aria-hidden="true">
+              <img src="/img/step3-3.jpg" width="1600" height="1000" loading="lazy" alt="" aria-hidden="true">
+              <span class="dm-cursor" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 3l14 8-6 1.6L10 19z"/></svg><b>Lounge sofa</b></span>
+            </div>
           </div>
         </div>
         <div class="walk-copy">
@@ -174,6 +180,16 @@
             <div class="eyebrow">Step 4 · Render it</div>
             <h2>Frame the shot and save a 4K render.</h2>
             <p>Orbit around the booth, step into the aisle at eye level, and save a crisp render from any angle. These were rendered straight out of the app without retouching. Select one to open that design and make it your own.</p>
+          </div>
+        </div>
+        <div class="browser dm-wide demo-views"><div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="dm-stack">
+            <img src="/img/step4-3d.jpg" width="1600" height="1000" loading="lazy" alt="The 8ThirtyOne island booth in the 3D view">
+            <img src="/img/step4-front.jpg" width="1600" height="1000" loading="lazy" alt="" aria-hidden="true">
+            <img src="/img/step4-plan.jpg" width="1600" height="1000" loading="lazy" alt="" aria-hidden="true">
+            <img src="/img/step4-eye.jpg" width="1600" height="1000" loading="lazy" alt="" aria-hidden="true">
+            <div class="dm-bar" aria-hidden="true"><i>3D</i><i>Front</i><i>Plan</i><i>Eye</i></div>
+            <div class="dm-saved" aria-hidden="true">✓ 4K render saved</div>
           </div>
         </div>
         <ol class="howto howto-row">
@@ -206,6 +222,14 @@
           <li><span class="money-n" aria-hidden="true">2</span><h3>Click AI Render</h3><p>Choose a style, or write your own art direction.</p></li>
           <li><span class="money-n" aria-hidden="true">3</span><h3>Get your image and video</h3><p>A photo-realistic concept image, then one click to animate it into a 10-second video.</p></li>
         </ol>
+        <div class="browser dm-wide demo-render"><div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="ba-frames">
+            <img src="/img/step5-view.jpg" width="1600" height="1000" loading="lazy" alt="" aria-hidden="true">
+            <img class="ba-after" src="/img/step5-ai.jpg" width="1600" height="1000" loading="lazy" alt="The 8ThirtyOne booth from the 3D editor, turned into a photo-realistic AI image of an evening reception">
+            <div class="dm-render" aria-hidden="true"><b class="dm-pill">✦ AI Render</b><span class="dm-chip">Evening reception</span><span class="dm-status">Creating your image…<i></i></span></div>
+            <span class="dm-tag" aria-hidden="true">AI image</span>
+          </div>
+        </div>
         <div class="real">
         <figure class="real-item real-img">
           <img src="/img/step5.jpg" width="1672" height="941" loading="lazy" alt="Photo-realistic corner booth in white and green with an LED-edged canopy, a backlit lab graphic wall, a side tower with a screen and an illuminated reception counter">
@@ -300,6 +324,7 @@
   </div>
 </footer>
 <script src="/js/brand-anim.js?v=1"></script>
+<script src="/js/step-demos.js?v=1"></script>
 <script src="/js/hero-3d.js?v=3"></script>
 <script src="/js/nav-account.js?v=2"></script>
 </body>
