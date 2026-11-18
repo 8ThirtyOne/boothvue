@@ -4,7 +4,7 @@
   const auth = window.bvAuth;
   if (!auth) return; // not on the hosted site: keep the preview
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-  const live = { items: [], polling: new Map(), posters: new Map(), loaded: false, mode: 'upgrade' };
+  const live = { items: [], polling: new Map(), posters: new Map(), stamps: new Map(), loaded: false, mode: 'upgrade' };
   const brandInfo = () => {
     let size = '', type = '';
     try { size = getSZ().lbl; type = (BOOTH_TYPES[S.boothType] || '').toString(); } catch {}
@@ -25,15 +25,100 @@
     } catch {}
     return out;
   };
+  // ── Exact logo ──
+  // An image AI redraws everything, logos included, and cannot be trusted to copy one. So in Faithful mode the studio notes where
+  // each uploaded logo sits in the view when the render starts, and when the picture comes back it puts the real logo file over
+  // that spot, at the same angle. The AI's own version of the picture is kept too.
+  function stampPlan() {
+    try {
+      if (typeof lastRenderBlob !== 'undefined' && lastRenderBlob) return [];   // the picture sent isn't the live view, so positions are unknown
+      camera.updateMatrixWorld(); const out = [];
+      artItems.filter(a => (a.kind === 'logo' || a.kind === 'icon') && a.mesh && a.img).forEach(a => {
+        const m = a.mesh; m.updateMatrixWorld(true);
+        const world = (x, y) => new THREE.Vector3(x, y, 0).applyMatrix4(m.matrixWorld);
+        const pts = [world(-.5, .5), world(.5, .5), world(.5, -.5), world(-.5, -.5)], center = world(0, 0);
+        const n = new THREE.Vector3(0, 0, 1).transformDirection(m.matrixWorld);
+        if (n.dot(camera.position.clone().sub(center).normalize()) < .12) return;                 // facing away or edge-on
+        const quad = pts.map(p => { const v = p.clone().project(camera); return [(v.x + 1) / 2, (1 - v.y) / 2, v.z]; });
+        if (quad.some(q => q[2] > 1 || q[0] < -.01 || q[0] > 1.01 || q[1] < -.01 || q[1] > 1.01)) return;   // partly out of frame
+        let clear = 0;                                                                              // hidden behind something?
+        [center, ...pts.map(p => p.clone().lerp(center, .25))].forEach(p => {
+          const dir = p.clone().sub(camera.position), dist = dir.length();
+          const rc = new THREE.Raycaster(camera.position.clone(), dir.normalize(), 0, Math.max(.01, dist - .06));
+          const hit = rc.intersectObjects(boothG.children, true).find(h => { for (let q = h.object; q; q = q.parent) if (q.userData.artId) return false; return true; });
+          if (!hit) clear++;
+        });
+        if (clear < 5) return;
+        const area = Math.abs(quad.reduce((s, p, i) => { const q = quad[(i + 1) % 4]; return s + p[0] * q[1] - q[0] * p[1]; }, 0)) / 2;
+        if (area < .0008) return;                                                                   // too small in the frame to matter
+        out.push({ quad: quad.map(q => [q[0], q[1]]), img: a.img, name: a.name });
+      });
+      return out;
+    } catch { return []; }
+  }
+  const loadImg = (src, cors) => new Promise((ok, no) => { const i = new Image(); if (cors) i.crossOrigin = 'anonymous'; i.onload = () => ok(i); i.onerror = no; i.src = src; });
+  // Maps the unit square onto a four-corner shape (a perspective warp).
+  function squareToQuad(q) {
+    const [[x0, y0], [x1, y1], [x2, y2], [x3, y3]] = q, dx1 = x1 - x2, dx2 = x3 - x2, dx3 = x0 - x1 + x2 - x3, dy1 = y1 - y2, dy2 = y3 - y2, dy3 = y0 - y1 + y2 - y3;
+    const den = dx1 * dy2 - dx2 * dy1 || 1e-9, g = (dx3 * dy2 - dx2 * dy3) / den, h = (dx1 * dy3 - dx3 * dy1) / den;
+    const a = x1 - x0 + g * x1, b = x3 - x0 + h * x3, d = y1 - y0 + g * y1, e = y3 - y0 + h * y3;
+    return (u, v) => { const w = g * u + h * v + 1; return [(a * u + b * v + x0) / w, (d * u + e * v + y0) / w]; };
+  }
+  async function stampImage(url, plan) {
+    const img = await loadImg(url, true), W = img.naturalWidth, H = img.naturalHeight;
+    const cv = document.createElement('canvas'); cv.width = W; cv.height = H; const x = cv.getContext('2d', { willReadFrequently: true }); x.drawImage(img, 0, 0);
+    for (const s of plan) {
+      const q = s.quad.map(p => [p[0] * W, p[1] * H]), cx = q.reduce((t, p) => t + p[0], 0) / 4, cy = q.reduce((t, p) => t + p[1], 0) / 4;
+      const grow = k => q.map(p => [cx + (p[0] - cx) * k, cy + (p[1] - cy) * k]);
+      const size = Math.max(...q.map(p => Math.hypot(p[0] - cx, p[1] - cy)));
+      // The surface color around the logo, taken from a ring just outside it (the middle value, so stray pixels don't count).
+      const ring = grow(1.3), px = [];
+      for (let e = 0; e < 4; e++) for (let t = 0; t < 12; t++) { const a = ring[e], b = ring[(e + 1) % 4], sx = Math.round(a[0] + (b[0] - a[0]) * t / 12), sy = Math.round(a[1] + (b[1] - a[1]) * t / 12);
+        if (sx >= 0 && sy >= 0 && sx < W && sy < H) px.push(x.getImageData(sx, sy, 1, 1).data); }
+      const mid = ch => { const v = px.map(p => p[ch]).sort((m, n) => m - n); return v.length ? v[v.length >> 1] : 255; };
+      // Cover whatever the AI drew there with that surface color, soft at the edges.
+      x.save(); x.filter = `blur(${Math.max(2, Math.round(size * .035))}px)`; x.fillStyle = `rgb(${mid(0)},${mid(1)},${mid(2)})`;
+      const cover = grow(1.14); x.beginPath(); cover.forEach((p, i) => i ? x.lineTo(p[0], p[1]) : x.moveTo(p[0], p[1])); x.closePath(); x.fill(); x.restore();
+      // The real logo, warped onto the spot in small triangles.
+      const lw = s.img.naturalWidth || 300, lh = s.img.naturalHeight || 300, k = Math.min(4, 1024 / Math.max(lw, lh));
+      const L = document.createElement('canvas'); L.width = Math.max(2, Math.round(lw * k)); L.height = Math.max(2, Math.round(lh * k)); L.getContext('2d').drawImage(s.img, 0, 0, L.width, L.height);
+      const map = squareToQuad(q), N = 14;
+      const tri = (s0, s1, s2, d0, d1, d2) => {
+        const den = (s1[0] - s0[0]) * (s2[1] - s0[1]) - (s2[0] - s0[0]) * (s1[1] - s0[1]); if (!den) return;
+        const a = ((d1[0] - d0[0]) * (s2[1] - s0[1]) - (d2[0] - d0[0]) * (s1[1] - s0[1])) / den, b = ((d1[1] - d0[1]) * (s2[1] - s0[1]) - (d2[1] - d0[1]) * (s1[1] - s0[1])) / den;
+        const c2 = ((d2[0] - d0[0]) * (s1[0] - s0[0]) - (d1[0] - d0[0]) * (s2[0] - s0[0])) / den, d = ((d2[1] - d0[1]) * (s1[0] - s0[0]) - (d1[1] - d0[1]) * (s2[0] - s0[0])) / den;
+        const mx = (d0[0] + d1[0] + d2[0]) / 3, my = (d0[1] + d1[1] + d2[1]) / 3, out = p => [p[0] + Math.sign(p[0] - mx) * .6, p[1] + Math.sign(p[1] - my) * .6];   // tiny overlap hides seams
+        const [o0, o1, o2] = [out(d0), out(d1), out(d2)];
+        x.save(); x.beginPath(); x.moveTo(o0[0], o0[1]); x.lineTo(o1[0], o1[1]); x.lineTo(o2[0], o2[1]); x.closePath(); x.clip();
+        x.transform(a, b, c2, d, d0[0] - a * s0[0] - c2 * s0[1], d0[1] - b * s0[0] - d * s0[1]); x.drawImage(L, 0, 0); x.restore();
+      };
+      for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
+        const u0 = i / N, u1 = (i + 1) / N, v0 = j / N, v1 = (j + 1) / N, S = (u, v) => [u * L.width, v * L.height];
+        tri(S(u0, v0), S(u1, v0), S(u1, v1), map(u0, v0), map(u1, v0), map(u1, v1));
+        tri(S(u0, v0), S(u1, v1), S(u0, v1), map(u0, v0), map(u1, v1), map(u0, v1));
+      }
+    }
+    let data = cv.toDataURL('image/jpeg', .9).split(',')[1]; if (data.length > 3800000) data = cv.toDataURL('image/jpeg', .8).split(',')[1];
+    return data;
+  }
+  // Stamps a finished render and stores the result. Returns the new address, or null when there was nothing to stamp or it failed.
+  async function exactLogo(id, url) {
+    const plan = live.stamps.get(id); if (!plan || !plan.length) return null;
+    try {
+      const image = await stampImage(url, plan);
+      const r = await api('/api/render', { method: 'POST', body: JSON.stringify({ stampFor: id, image }) });
+      return r && r.url ? r.url : null;
+    } catch (e) { console.warn('exact logo skipped', e?.message || e); return null; }
+  }
   const latestImage = () => live.items.find(r => r.kind === 'image' && r.status === 'done' && r.result_url);
   const POLL_MS = { image: 4000, video: 10000 };
   // One-click art direction styles. Picking one fills the box, which stays editable.
   const STYLES = [
     { id: 'flagship', only: 'upgrade', name: 'Award-winning flagship', text: 'Concept upgrade: reimagine this booth as a dramatically enhanced, award-winning flagship exhibit that goes far beyond the 3D model. Premium custom-built finishes, dramatic LED lighting, bold oversized brand graphics and striking architectural forms, shot like a design-award photo.' },
     { id: 'hero', name: 'Clean hero shot', text: 'Professional architectural photograph, wide-angle 24mm lens at eye level, bright even exhibition hall lighting, polished concrete aisle in the foreground, sharp focus, high detail.' },
-    { id: 'minimal', name: 'Premium and minimal', text: 'Sophisticated premium exhibit, minimalist luxury finishes, soft backlit glow, generous open space, high-end corporate feel.' },
-    { id: 'busy', name: 'Busy show day', text: 'Award-winning exhibit on the busiest show day, crowds engaging with staff and screens, energetic atmosphere, dramatic lighting.' },
-    { id: 'evening', name: 'Evening reception', text: 'Evening reception at the show, warm dramatic lighting, glowing backlit graphics and LED accents, guests holding drinks, cinematic mood.' },
+    { id: 'minimal', only: 'upgrade', name: 'Premium and minimal', text: 'Sophisticated premium exhibit, minimalist luxury finishes, soft backlit glow, generous open space, high-end corporate feel.' },
+    { id: 'busy', name: 'Busy show day', text: 'The busiest show day: crowds engaging with staff and screens, energetic atmosphere, bright lively hall lighting.' },
+    { id: 'evening', name: 'Evening reception', text: 'Evening reception at the show: warm, low dramatic lighting, guests holding drinks, cinematic mood.' },
   ];
 
   async function api(path, init = {}) {
@@ -63,8 +148,17 @@
       try {
         const { render } = await api(`/api/render?id=${encodeURIComponent(id)}`);
         upsert(render);
-        if (render.status === 'done' && render.kind === 'image' && render.result_url) { S.aiThumb = render.result_url; try { markDirty(); } catch {} }   // becomes the design's picture in Your Designs
-        if (render.status === 'done' && render.result_url) { try { designFileAdd({ id: render.id, kind: render.kind, url: render.result_url, poster: live.posters.get(id) || null, at: render.created_at }); } catch {} }
+        if (render.status === 'done' && render.result_url) {
+          let orig = null;
+          if (render.kind === 'image' && live.stamps.has(id)) {
+            const st = document.getElementById('gen-status'); if (st) st.textContent = 'Placing your exact logo on the image…';
+            const exact = await exactLogo(id, render.result_url); live.stamps.delete(id);
+            if (exact) { orig = render.result_url; render.result_url = exact; upsert(render); if (st) st.textContent = 'Done. Your uploaded logo was placed on this image exactly as it is.'; }
+            else if (st) st.textContent = 'Done.';
+          }
+          if (render.kind === 'image') { S.aiThumb = render.result_url; try { markDirty(); } catch {} }   // becomes the design's picture in Your Designs
+          try { designFileAdd({ id: render.id, kind: render.kind, url: render.result_url, orig, poster: live.posters.get(id) || null, at: render.created_at }); } catch {}
+        }
         if (render.status === 'done' || render.status === 'failed') { live.polling.delete(id); auth.refresh(); draw(); return; }
       } catch { /* try again next tick */ }
       live.polling.set(id, setTimeout(tick, POLL_MS[kind] || 6000));
@@ -101,7 +195,7 @@
         <div class="gen-credits"><div class="gen-chip"><b id="gen-img-left">${c.img} / ${c.imgTotal}</b><span>Images left</span></div><div class="gen-chip"><b id="gen-vid-left">${c.vid} / ${c.vidTotal}</b><span>Videos left</span></div></div></div>
       <div class="gen-mode" role="radiogroup" aria-label="Render style">
         <div class="gen-mode-btn" data-mode="upgrade" role="radio" tabindex="0"><b>Concept Upgrade</b><span>AI redesigns a much more enhanced, premium version of your booth, then photographs it. Expect a big step up from your 3D model.</span></div>
-        <div class="gen-mode-btn" data-mode="faithful" role="radio" tabindex="0"><b>Faithful to My Design</b><span>Keeps your design exactly and makes it look real</span></div>
+        <div class="gen-mode-btn" data-mode="faithful" role="radio" tabindex="0"><b>Faithful to My Design</b><span>Keeps your design exactly and makes it look real. Your uploaded logo is placed on the image exactly as it is.</span></div>
       </div>
       <div class="gen-styles" role="group" aria-label="Art direction styles">${STYLES.map(s => `<div class="gen-style" role="button" tabindex="0" data-style="${s.id}">${s.name}</div>`).join('')}</div>
       <textarea class="gen-dir" id="gen-dir" rows="3" aria-label="Art direction" placeholder="Art direction (optional), e.g. busy show hours, warm evening light"></textarea>
@@ -142,9 +236,11 @@
       const src = kind === 'video' ? (sourceUrl || latestImage()?.result_url || null) : null;
       st.textContent = src ? 'Animating your latest AI image…' : 'Capturing the current view…';
       const image = src ? undefined : await captureView();
+      const plan = kind === 'image' && live.mode === 'faithful' ? stampPlan() : [];
       st.textContent = 'Sending to AI Render…';
       const direction = (document.getElementById('gen-dir')?.value || '').trim();
       const { id } = await api('/api/render', { method: 'POST', body: JSON.stringify({ kind, mode: live.mode, image, sourceUrl: src || undefined, direction, brand: brandInfo(), logos: kind === 'image' ? brandLogos() : undefined, aspect: kind === 'image' && image ? live.aspect : undefined }) });
+      if (plan.length) live.stamps.set(id, plan);
       if (src) live.posters.set(id, src);   // a video's picture in the Files tray is the image it was made from
       upsert({ id, kind, status: 'queued', created_at: new Date().toISOString() });
       poll(id, kind); auth.refresh();

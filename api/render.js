@@ -76,6 +76,7 @@ const PROMPTS = {
     "The result must not look like a 3D render: replace every flat, synthetic surface with real materials, such as printed tension fabric graphics, brushed aluminum frames, real carpet texture, glossy laminate, wood grain and glass, with real reflections, soft shadows and natural light falloff.",
     "Replace the simple placeholder figures with realistic people in business attire, and make the surrounding booths and hall look like a real, detailed exhibition hall with a ceiling, lights and signage.",
     "Keep this booth exactly as designed: same camera angle, layout, size, structures, furniture positions, colors, logos and all wording.",
+    "Do not add, remove, move, resize or redesign any structure, sign, wall, tower, counter, screen or graphic. Do not add any wording, web address, slogan or logo that is not in the attached booth image, and do not put this booth's name or logo on any neighboring booth.",
     dir ? `Photo style: ${dir}` : "",
     brandLock(b, b.logoCount),
   ].filter(Boolean).join(" "),
@@ -118,6 +119,18 @@ export default async function handler(req, res) {
     }
 
     if (req.method === "POST") {
+      // Exact logo: the studio sends back a finished image with the customer's real logo placed on it. It is stored beside
+      // the AI's own version and becomes the render's picture. Only the render's owner can do this, and only for a finished image.
+      if (req.body?.stampFor) {
+        const r = await getRender(String(req.body.stampFor).slice(0, 60), user.id), data = req.body.image;
+        if (!r || r.kind !== "image" || r.status !== "done" || !r.result_url) return res.status(404).json({ code: "not_found", message: "That image isn't available." });
+        if (typeof data !== "string" || data.length < 1000 || data.length > 4_200_000 || !/^[A-Za-z0-9+/=]+$/.test(data)) return res.status(400).json({ code: "bad_request", message: "The image couldn't be read." });
+        const bytes = Buffer.from(data, "base64");
+        if (bytes[0] !== 0xff || bytes[1] !== 0xd8) return res.status(400).json({ code: "bad_request", message: "The image couldn't be read." });
+        const url = await storeResult(`${user.id}/${r.id}-exact.jpg`, bytes, "image/jpeg");
+        await updateRender(r.id, { result_url: url });
+        return res.status(200).json({ url, original: r.result_url });
+      }
       const { kind, image, sourceUrl, direction, brand } = req.body || {};
       const logos = (Array.isArray(req.body?.logos) ? req.body.logos : []).filter(l => typeof l === "string" && l.length > 200 && l.length < 500_000 && /^[A-Za-z0-9+/=]+$/.test(l)).slice(0, 2);
       const mode = req.body?.mode === "faithful" ? "faithful" : "upgrade";

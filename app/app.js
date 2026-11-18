@@ -1659,7 +1659,7 @@ const FILE_URL = /^https:\/\/[a-z0-9-]+\.supabase\.co\/storage\/v1\/object\/publ
 function cleanFiles(list) {
   const seen = new Set();
   return (Array.isArray(list) ? list : []).filter(f => f && (f.kind === 'image' || f.kind === 'video') && typeof f.url === 'string' && FILE_URL.test(f.url) && !seen.has(f.url) && seen.add(f.url))
-    .slice(0, 60).map(f => ({ id: String(f.id || '').slice(0, 60), kind: f.kind, url: f.url, poster: typeof f.poster === 'string' && FILE_URL.test(f.poster) ? f.poster : null, at: String(f.at || '').slice(0, 40) }));
+    .slice(0, 60).map(f => ({ id: String(f.id || '').slice(0, 60), kind: f.kind, url: f.url, poster: typeof f.poster === 'string' && FILE_URL.test(f.poster) ? f.poster : null, orig: typeof f.orig === 'string' && FILE_URL.test(f.orig) ? f.orig : null, at: String(f.at || '').slice(0, 40) }));
 }
 // Called by AI Render when an image or video finishes.
 function designFileAdd(f) {
@@ -1667,7 +1667,7 @@ function designFileAdd(f) {
   S.files = next; drawFilesTray(true); try { markDirty(); } catch {}
 }
 function trayItems() {
-  const ai = (S.files || []).map(f => ({ group: f.kind === 'video' ? 'AI videos' : 'AI images', kind: f.kind, url: f.url, thumb: f.kind === 'video' ? f.poster : f.url, name: f.kind === 'video' ? 'AI video' : 'AI image', ai: true }));
+  const ai = (S.files || []).map(f => ({ group: f.kind === 'video' ? 'AI videos' : 'AI images', kind: f.kind, url: f.url, thumb: f.kind === 'video' ? f.poster : f.url, name: f.kind === 'video' ? 'AI video' : f.orig ? 'AI image · exact logo' : 'AI image', orig: f.orig || null, ai: true }));
   const brand = artItems.map(a => ({ group: 'Brand files', kind: 'art', url: a.data || a.img?.src, thumb: a.data || a.img?.src, name: a.name, art: a }));
   let refs = []; try { refs = aiRefs.map((r, i) => ({ group: 'Reference images', kind: 'ref', url: r.img?.src, thumb: r.img?.src, name: `Reference ${i + 1}` })); } catch {}
   return [...ai.filter(x => x.kind === 'image'), ...ai.filter(x => x.kind === 'video'), ...brand, ...refs].filter(x => x.url);
@@ -1717,6 +1717,7 @@ function openFilePreview(it) {
     const pic = btn(S.aiThumb === it.url ? '✓ Design picture' : 'Use as design picture', () => { S.aiThumb = it.url; try { markDirty(); } catch {} pic.textContent = '✓ Design picture'; pic.disabled = true; });
     pic.disabled = S.aiThumb === it.url;
   }
+  if (it.orig) { let showing = 'exact'; const sw = btn("Show the AI's own version", () => { showing = showing === 'exact' ? 'ai' : 'exact'; media.src = showing === 'exact' ? it.url : it.orig; sw.textContent = showing === 'exact' ? "Show the AI's own version" : 'Show with my exact logo'; }); }
   if (it.art) btn('Select on booth', () => { closeFilePreview(); try { selectArt(it.art.id); } catch {} });
   const x = btn('Close', closeFilePreview); x.classList.add('fv-close');
   box.append(media, bar); o.append(box);
