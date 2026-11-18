@@ -767,3 +767,7 @@ html.embed #files-tray { display: none; }
 .acct-code label { font: 600 12px var(--font-ui); color: var(--fg-muted); }
 .acct-code > div { display: flex; gap: 8px; }
 .acct-code input { flex: 1; min-width: 0; font: 600 20px/1 ui-monospace, Menlo, monospace; letter-spacing: .3em; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--fg); }
+.acct-btns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.acct-btns .btn { white-space: normal; min-width: 0; }
+.acct-sent, .acct-code { min-width: 0; }
+@media (max-width: 480px) { .acct-btns { grid-template-columns: minmax(0, 1fr); } }

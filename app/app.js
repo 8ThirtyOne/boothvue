@@ -3635,7 +3635,7 @@ function openAccountLive() {
           <p class="acct-sent-small">It can take a minute to arrive. If it isn't in your inbox, check spam or promotions.</p>
         </div>
         <div class="acct-code"><label for="acct-code">Sign-in code</label><div><input id="acct-code" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="12345678"><button class="btn btn-primary" id="acct-code-go">Sign in</button></div></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="btn" id="acct-resend" disabled>Send again</button><button class="btn" id="acct-change">Use a different email</button></div>
+        <div class="acct-btns"><button class="btn" id="acct-resend" disabled>Send again</button><button class="btn" id="acct-change">Use a different email</button></div>
         <div class="acct-msg" id="acct-msg" aria-live="polite"></div>`;
       document.getElementById('acct-sent-to').textContent = email;
       const resend = document.getElementById('acct-resend'), m2 = document.getElementById('acct-msg');
