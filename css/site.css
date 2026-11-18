@@ -706,3 +706,6 @@ button.nav-acct:hover { background: rgba(255,255,255,.12); color: #fff; }
     linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px) 0 0 / 56px 56px; 
   -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 60%, rgba(0,0,0,.55) 100%); mask-image: linear-gradient(180deg, #000 0%, #000 60%, rgba(0,0,0,.55) 100%); }
 .band-blue::after { content: ""; position: absolute; left: -10%; right: -10%; bottom: -1px; height: 38%; z-index: -1; pointer-events: none; background: linear-gradient(0deg, rgba(10,20,60,.55), transparent); }
+
+/* Home steps 1-4 row: cards line up at the top */
+.pre-steps a { align-items: flex-start; }
