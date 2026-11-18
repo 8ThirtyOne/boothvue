@@ -998,3 +998,4 @@ button.nav-acct:hover { background: rgba(255,255,255,.12); color: #fff; }
 .pre-steps span { color: #4a5872; }
 .pre-steps a + a::before { background: #2563eb; border-color: #ffffff; color: #fff; }
 .pre-steps b { background: none; -webkit-text-stroke: 0; color: #2563eb; -webkit-text-fill-color: #2563eb; }
+.pre-steps span { line-height: 1.25; gap: 0; }
