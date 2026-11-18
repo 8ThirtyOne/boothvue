@@ -29,7 +29,12 @@
   // An image AI redraws everything, logos included, and cannot be trusted to copy one. So in Faithful mode the studio notes where
   // each uploaded logo sits in the view when the render starts, and when the picture comes back it puts the real logo file over
   // that spot, at the same angle. The AI's own version of the picture is kept too.
+  // SWITCHED OFF (2026-11-17). The stamp places the logo where it sits in the 3D view, which is only right when the AI keeps
+  // the camera and layout. In testing the AI moved both even in Faithful mode, and the logo landed on the wrong wall. It stays
+  // off until the picture can be checked against the view first.
+  const EXACT_LOGO = false;
   function stampPlan() {
+    if (!EXACT_LOGO) return [];
     try {
       if (typeof lastRenderBlob !== 'undefined' && lastRenderBlob) return [];   // the picture sent isn't the live view, so positions are unknown
       camera.updateMatrixWorld(); const out = [];
@@ -208,7 +213,7 @@
         <div class="gen-credits"><div class="gen-chip"><b id="gen-img-left">${c.img} / ${c.imgTotal}</b><span>Images left</span></div><div class="gen-chip"><b id="gen-vid-left">${c.vid} / ${c.vidTotal}</b><span>Videos left</span></div></div></div>
       <div class="gen-mode" role="radiogroup" aria-label="Render style">
         <div class="gen-mode-btn" data-mode="upgrade" role="radio" tabindex="0"><b>Concept Upgrade</b><span>AI redesigns a much more enhanced, premium version of your booth, then photographs it. Expect a big step up from your 3D model.</span></div>
-        <div class="gen-mode-btn" data-mode="faithful" role="radio" tabindex="0"><b>Faithful to My Design</b><span>Keeps your design exactly and makes it look real. Your uploaded logo is placed on the image exactly as it is.</span></div>
+        <div class="gen-mode-btn" data-mode="faithful" role="radio" tabindex="0"><b>Faithful to My Design</b><span>Keeps your design exactly and makes it look real</span></div>
       </div>
       <div class="gen-styles" role="group" aria-label="Art direction styles">${STYLES.map(s => `<div class="gen-style" role="button" tabindex="0" data-style="${s.id}">${s.name}</div>`).join('')}</div>
       <textarea class="gen-dir" id="gen-dir" rows="3" aria-label="Art direction" placeholder="Art direction (optional), e.g. busy show hours, warm evening light"></textarea>
