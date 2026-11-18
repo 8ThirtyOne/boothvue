@@ -3631,10 +3631,10 @@ function openAccountLive() {
       w.innerHTML = `<div class="acct-sent">
           <div class="acct-sent-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div>
           <div class="acct-sent-title">Check your email</div>
-          <p>We sent a sign-in link and a 6-digit code to <b id="acct-sent-to"></b>. Open the link, or type the code here.</p>
+          <p>We sent a sign-in link and a sign-in code to <b id="acct-sent-to"></b>. Open the link, or type the code here.</p>
           <p class="acct-sent-small">It can take a minute to arrive. If it isn't in your inbox, check spam or promotions.</p>
         </div>
-        <div class="acct-code"><label for="acct-code">Sign-in code</label><div><input id="acct-code" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="123456"><button class="btn btn-primary" id="acct-code-go">Sign in</button></div></div>
+        <div class="acct-code"><label for="acct-code">Sign-in code</label><div><input id="acct-code" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="12345678"><button class="btn btn-primary" id="acct-code-go">Sign in</button></div></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="btn" id="acct-resend" disabled>Send again</button><button class="btn" id="acct-change">Use a different email</button></div>
         <div class="acct-msg" id="acct-msg" aria-live="polite"></div>`;
       document.getElementById('acct-sent-to').textContent = email;
@@ -3655,13 +3655,13 @@ function openAccountLive() {
       document.getElementById('acct-change').onclick = () => openAccountLive();
       const codeIn = document.getElementById('acct-code'), codeGo = document.getElementById('acct-code-go');
       const tryCode = async () => {
-        const c = codeIn.value.replace(/\D/g, ''); if (c.length < 6) { m2.textContent = 'Enter the 6-digit code from the email.'; return; }
+        const c = codeIn.value.replace(/\D/g, ''); if (c.length < 6) { m2.textContent = 'Enter the code from the email.'; return; }
         codeGo.disabled = true; m2.textContent = 'Signing in…';
         try { await window.bvAuth.verifyCode(email, c); m2.textContent = ''; closeModal(); }
         catch (e) { m2.textContent = /expired|invalid/i.test(e?.message || '') ? "That code didn't work or has expired. Check it, or send a new one." : "Couldn't sign in with that code. Try again."; codeGo.disabled = false; }
       };
       codeGo.onclick = tryCode; codeIn.onkeydown = e => { if (e.key === 'Enter') tryCode(); };
-      codeIn.oninput = () => { if (codeIn.value.replace(/\D/g, '').length === 6) tryCode(); };
+      codeIn.oninput = () => { if (codeIn.value.replace(/\D/g, '').length === 8) tryCode(); };
       setTimeout(() => codeIn.focus(), 50);
     };
     btn.onclick = send; input.onkeydown = e => { if (e.key === 'Enter') send(); };

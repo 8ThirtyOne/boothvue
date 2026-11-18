@@ -47,7 +47,7 @@
       });
       if (error) throw error;
     },
-    // The 6-digit code from the same email: signs in on this device without opening the link.
+    // The code from the same email (8 digits, set in Supabase Auth): signs in on this device without opening the link.
     async verifyCode(email, code) {
       const { error } = await client.auth.verifyOtp({ email, token: String(code).replace(/\D/g, ''), type: 'email' });
       if (error) throw error;
