@@ -309,6 +309,7 @@
 
   // Replace the preview window and point the AI Render button at the live one.
   window.openGenerate = openRender;
+  window.__stampDryRun = async () => { const plan = stampPlan(); const view = await captureView(); return { plan: plan.map(p => ({ name: p.name, quad: p.quad.map(q => q.map(v => +v.toFixed(3))) })), view, out: plan.length ? await stampImage('data:image/jpeg;base64,' + view, plan) : null }; };   // TEMP: dry-run check, removed after testing
   window.aiAnimate = url => { openRender(); start('video', url); };   // used by the Files tray
   const btn = document.querySelector('.cv-gen'); if (btn) btn.onclick = openRender;
   auth.onChange(st => { if (!st.user) { live.items = []; live.loaded = false; } draw(); });
