@@ -17,6 +17,9 @@ const MODELS = {
   // Gemini 3 Pro Image: strongest for design upgrades and crisp brand text. $0.15 per image at 1K, $0.30 at 2K.
   image: process.env.FAL_IMAGE_MODEL || "fal-ai/nano-banana-pro/edit",
   video: process.env.FAL_VIDEO_MODEL || "fal-ai/kling-video/v2.1/standard/image-to-video",
+  // Faithful mode uses a model built to keep a picture's composition and change only how it looks. The Concept Upgrade
+  // model reimagines the scene, which is right for an upgrade and wrong when the customer wants their own design kept.
+  faithful: process.env.FAL_FAITHFUL_MODEL || "fal-ai/flux-pro/kontext",
 };
 const IMAGE_RESOLUTION = process.env.FAL_IMAGE_RESOLUTION || "2K";
 
@@ -80,6 +83,14 @@ const PROMPTS = {
     dir ? `Photo style: ${dir}` : "",
     brandLock(b, b.logoCount),
   ].filter(Boolean).join(" "),
+  keep: (dir, b = {}) => [
+    "Turn this 3D render into a real photograph of the same trade show booth, taken at a real convention center.",
+    "Keep the composition exactly: the same camera angle and framing, and every structure, wall, sign, tower, counter, screen and piece of furniture in the same place, at the same size and in the same color.",
+    "Keep every logo and every word exactly as shown: the same shapes, letterforms, typeface, spelling, size and color. Do not redraw, restyle or recolor any logo or lettering, and do not add any wording, web address, slogan, logo or graphic that is not already there.",
+    "Change only how it is rendered: real materials (printed fabric graphics, aluminum, laminate, carpet), realistic lighting, soft shadows and reflections. Replace the simple placeholder figures with realistic people in business attire, and make the surrounding hall look like a real exhibition hall without putting this booth's name or logo on any other booth.",
+    b.colors && b.colors.length ? `The brand colors are ${b.colors.join(", ")}${b.bg ? ` and ${b.bg}` : ""}; keep them exact, and keep dark colors dark.` : "",
+    dir ? `Photo style: ${dir}` : "",
+  ].filter(Boolean).join(" "),
   video: (dir, fromPhoto) => [
     fromPhoto
       ? "Bring this photograph to life as real camera footage: a smooth, slow cinematic camera move toward the trade show booth at a busy convention center."
@@ -142,23 +153,25 @@ export default async function handler(req, res) {
       if (!(await useMediaCredit(pass.id, kind))) return res.status(429).json({ code: "no_credits", message: `You've used all the AI ${kind}s on your pass.` });
 
       const dir = clean(direction, 600), b = brandLine(brand);
-      const multi = kind === "image" && MODELS.image.includes("nano-banana");   // this model takes several reference images
+      const model = kind === "image" && mode === "faithful" ? MODELS.faithful : MODELS[kind];
+      const banana = kind === "image" && model.includes("nano-banana");
+      const multi = banana;   // this model takes several reference images
       // The picture should come back the same shape as the view it was made from; the model takes a fixed list of shapes.
       const RATIOS = [["21:9", 21 / 9], ["16:9", 16 / 9], ["3:2", 1.5], ["4:3", 4 / 3], ["5:4", 1.25], ["1:1", 1], ["4:5", .8], ["3:4", .75], ["2:3", 2 / 3], ["9:16", 9 / 16]];
       const asp = Number(req.body?.aspect), ratio = multi && asp > .4 && asp < 3 ? RATIOS.reduce((p, q) => Math.abs(q[1] - asp) < Math.abs(p[1] - asp) ? q : p)[0] : null;
       b.logoCount = multi ? logos.length : 0;
-      const prompt = kind === "video" ? PROMPTS.video(dir, fromPhoto) : PROMPTS[mode](dir, b);
+      const prompt = kind === "video" ? PROMPTS.video(dir, fromPhoto) : mode === "faithful" && !banana ? PROMPTS.keep(dir, b) : PROMPTS[mode](dir, b);
       const imageUrl = fromPhoto ? sourceUrl : `data:image/jpeg;base64,${image}`;
       const input = kind === "video"
         ? { prompt, image_url: imageUrl, duration: "10" }
-        : MODELS.image.includes("nano-banana")
-          ? { prompt, image_urls: [imageUrl, ...logos.map(l => `data:image/jpeg;base64,${l}`)], num_images: 1, output_format: "jpeg", ...(MODELS.image.includes("pro") ? { resolution: IMAGE_RESOLUTION } : { limit_generations: true }) }
-          : { prompt, image_url: imageUrl, output_format: "jpeg", guidance_scale: 5 };
-      let sub = await fal(`https://queue.fal.run/${MODELS[kind]}`, { method: "POST", body: JSON.stringify(ratio ? { ...input, aspect_ratio: ratio } : input) });
+        : banana
+          ? { prompt, image_urls: [imageUrl, ...logos.map(l => `data:image/jpeg;base64,${l}`)], num_images: 1, output_format: "jpeg", ...(model.includes("pro") ? { resolution: IMAGE_RESOLUTION } : { limit_generations: true }) }
+          : { prompt, image_url: imageUrl, output_format: "jpeg", guidance_scale: 4, num_images: 1 };
+      let sub = await fal(`https://queue.fal.run/${model}`, { method: "POST", body: JSON.stringify(ratio ? { ...input, aspect_ratio: ratio } : input) });
       let job = await sub.json().catch(() => ({}));
       if (ratio && (!sub.ok || !job.request_id)) {   // if the shape setting is refused, send it without rather than fail the render
         console.error("fal refused aspect_ratio", sub.status, JSON.stringify(job).slice(0, 200));
-        sub = await fal(`https://queue.fal.run/${MODELS[kind]}`, { method: "POST", body: JSON.stringify(input) });
+        sub = await fal(`https://queue.fal.run/${model}`, { method: "POST", body: JSON.stringify(input) });
         job = await sub.json().catch(() => ({}));
       }
       if (!sub.ok || !job.request_id) {
@@ -167,7 +180,7 @@ export default async function handler(req, res) {
         return res.status(502).json({ code: "render_failed", message: "AI Render couldn't start. Your credit was not used. Try again." });
       }
       const row = await insertRender({
-        owner: user.id, pass_id: pass.id, kind, model: MODELS[kind], status: "queued",
+        owner: user.id, pass_id: pass.id, kind, model, status: "queued",
         prompt: `${kind === "image" ? mode : fromPhoto ? "from-photo" : "from-view"}: ${dir}`.slice(0, 600),
         fal_request: JSON.stringify({ id: job.request_id, status: job.status_url, response: job.response_url }),
       });
