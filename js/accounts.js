@@ -47,6 +47,12 @@
       });
       if (error) throw error;
     },
+    // The 6-digit code from the same email: signs in on this device without opening the link.
+    async verifyCode(email, code) {
+      const { error } = await client.auth.verifyOtp({ email, token: String(code).replace(/\D/g, ''), type: 'email' });
+      if (error) throw error;
+      await update((await client.auth.getSession()).data.session);
+    },
     async signOut() { await client.auth.signOut(); },
     async refresh() { await update((await client.auth.getSession()).data.session); },
     async token() { return (await client.auth.getSession()).data.session?.access_token || null; },
