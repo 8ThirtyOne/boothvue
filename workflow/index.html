@@ -34,7 +34,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display&family=IBM+Plex+Mono:wght@500&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="/css/site.css?v=30">
+<link rel="stylesheet" href="/css/site.css?v=31">
 <link rel="stylesheet" href="/css/footer.css?v=2">
 
 <header class="nav">
@@ -210,18 +210,18 @@
 
     <section class="walk" id="step-5">
       <div class="wrap">
-        <div class="walk-head">
+        <div class="walk-head s5-head">
           <div class="walk-num" aria-hidden="true">05</div>
           <div>
             <div class="eyebrow">Step 5 · Picture it</div>
-            <h2>Your booth, imagined on the show floor.</h2>
+            <h2 class="s5-title">Your booth, imagined on the show floor.</h2>
             <p>AI Render turns your design into a photo-realistic concept image or 10-second video clip, imagined on a show floor. It&rsquo;s an AI visualization of where your booth could go, not a build plan, so your exhibit house will confirm what can actually be built. Drop it into investor decks, board presentations and pitches, win sign-off on your concept, and promote your booth before the doors open.</p>
           </div>
         </div>
         <ol class="money">
-          <li><span class="money-n" aria-hidden="true">1</span><h3>Frame your shot</h3><p>Pick the angle you want in the 3D editor, the way a photographer would.</p></li>
-          <li><span class="money-n" aria-hidden="true">2</span><h3>Click AI Render</h3><p>Choose a style, or write your own art direction.</p></li>
-          <li><span class="money-n" aria-hidden="true">3</span><h3>Get your image and video</h3><p>A photo-realistic concept image, then one click to animate it into a 10-second video.</p></li>
+          <li><span class="money-n" aria-hidden="true">A</span><h3>Frame your shot</h3><p>Pick the angle you want in the 3D editor, the way a photographer would.</p></li>
+          <li><span class="money-n" aria-hidden="true">B</span><h3>Click AI Render</h3><p>Choose a style, or write your own art direction.</p></li>
+          <li><span class="money-n" aria-hidden="true">C</span><h3>Get your image and video</h3><p>A photo-realistic concept image, then one click to animate it into a 10-second video.</p></li>
         </ol>
         <div class="levels">
           <div class="levels-head"><b>You choose how far the AI goes.</b><span>Three levels, from your exact design to a full reimagining.</span></div>
@@ -396,6 +396,12 @@
     </div>
   </section>
 </main>
+<script>
+  // Step 5 header lights up when it scrolls into view: the 05 glows, a beam draws across, and a light sweep runs through the title.
+  (() => { const h = document.querySelector('.s5-head'); if (!h) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { h.classList.add('lit'); return; }
+    new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { h.classList.add('lit'); o.disconnect(); } }, { threshold: .45 }).observe(h); })();
+</script>
 
 <script src="/js/config.js"></script>
 <div class="wf-bar" aria-hidden="true" hidden>
