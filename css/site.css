@@ -1020,3 +1020,6 @@ button.nav-acct:hover { background: rgba(255,255,255,.12); color: #fff; }
 .concept-note svg { width: 17px; height: 17px; fill: none; stroke: #1a1203; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 .concept-note .cn-title { display: block; font: 700 15px/1.3 var(--font-display); letter-spacing: .01em; margin-bottom: 4px; }
 .concept-note p { margin: 0; font: 500 14.5px/1.55 var(--font-display); opacity: .9; max-width: none; }
+.fx-stats li { align-content: start; }
+.fx-stats b { min-height: 1em; }
+.fx-stats small { font: 500 12px var(--font-display); color: #8fb6ff; margin-top: 2px; }
