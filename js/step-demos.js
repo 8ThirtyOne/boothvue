@@ -59,14 +59,23 @@
   // Step 5: AI Render turns the 3D view into a photo-realistic image.
   const render = document.querySelector('.demo-render');
   if (render) {
-    const box = render.querySelector('.dm-render'), after = render.querySelector('.ba-after'), tag = render.querySelector('.dm-tag');
+    const box = render.querySelector('.dm-render'), after = render.querySelector('img.ba-after'), tag = render.querySelector('.dm-tag');
+    const anim = render.querySelector('.dm-anim'), vid = render.querySelector('.ba-video');
     if (still) { after.classList.add('on'); tag.classList.add('on'); box.classList.add('gone'); }
     else whileVisible(render, async live => {
-      after.classList.remove('on'); tag.classList.remove('on'); box.className = 'dm-render'; await wait(900);
+      vid.classList.remove('on'); vid.pause(); anim.className = 'dm-render dm-anim gone';
+      after.classList.remove('on'); tag.classList.remove('on'); tag.textContent = 'AI image'; box.className = 'dm-render'; await wait(900);
       box.classList.add('press'); await wait(250); box.classList.remove('press'); box.classList.add('busy');
       await wait(2200); if (!live()) return;
       box.classList.remove('busy'); box.classList.add('gone'); after.classList.add('on'); await wait(600); tag.classList.add('on');
-      await wait(4500);
+      vid.preload = 'auto'; await wait(3200); if (!live()) return;
+      // Then one click animates it into the 10-second video.
+      anim.classList.remove('gone'); await wait(700);
+      anim.classList.add('press'); await wait(250); anim.classList.remove('press'); anim.classList.add('busy');
+      await wait(2200); if (!live()) return;
+      anim.classList.add('gone'); vid.currentTime = 0; try { await vid.play(); } catch {}
+      vid.classList.add('on'); tag.textContent = 'AI video · 10 sec';
+      await wait(10000);
     });
   }
 })();

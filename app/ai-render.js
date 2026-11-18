@@ -283,23 +283,36 @@
     }
     const msg = el('div', 'gen-status'); msg.setAttribute('aria-live', 'polite');
     if (focus === 'ai') msg.textContent = "You've used all the AI Build actions on your pass. Add a pack of 10 to keep building.", msg.classList.add('extra-alert'), w.append(msg);
+    // One cart: pick how many of each, then one Buy for everything.
+    const PRICE = { ai: 5, image: 5, video: 10 }, sels = {};
+    const bar = el('div', 'extra-bar'), total = el('div', 'extra-total'), b = el('button', 'btn btn-primary', 'Buy');
+    const update = () => {
+      const picked = EXTRAS.filter(x => +sels[x.kind].value > 0);
+      const sum = picked.reduce((t, x) => t + PRICE[x.kind] * +sels[x.kind].value, 0);
+      total.innerHTML = sum ? `<span>${picked.map(x => x.unit(+sels[x.kind].value)).join(' · ')}</span><b>$${sum}</b>` : '<span>Choose how many of each above.</span><b>$0</b>';
+      b.disabled = !sum;
+      EXTRAS.forEach(x => sels[x.kind].closest('.extra-row').classList.toggle('on', +sels[x.kind].value > 0));
+    };
     EXTRAS.forEach(x => {
-      const row = el('div', 'extra-row' + (focus === x.kind ? ' on' : ''));
+      const row = el('div', 'extra-row');
       row.innerHTML = `<div class="extra-txt"><b>${x.name}</b><span>${x.what}</span><em>${x.price}</em></div>`;
       const act = el('div', 'extra-act');
-      const sel = el('select'); sel.setAttribute('aria-label', `How many: ${x.name}`);
-      [1, 2, 3, 5, 10].forEach(n => { const o = el('option', null, x.kind === 'ai' ? `${n} pack${n === 1 ? '' : 's'} · ${n * 10}` : String(n)); o.value = n; sel.append(o); });
-      const b = el('button', 'btn btn-primary btn-sm', 'Buy');
-      b.onclick = async () => {
-        b.disabled = true; b.textContent = 'Opening checkout…';
-        try { const { url } = await api('/api/checkout', { method: 'POST', body: JSON.stringify({ addon: x.kind, qty: +sel.value }) }); location.href = url; return; }
-        catch (e) { msg.textContent = e?.message || "Couldn't open checkout. Try again."; }
-        b.disabled = false; b.textContent = 'Buy';
-      };
-      act.append(sel, b); row.append(act); w.append(row);
+      const sel = el('select'); sel.setAttribute('aria-label', `How many: ${x.name}`); sels[x.kind] = sel;
+      [0, 1, 2, 3, 5, 10].forEach(n => { const o = el('option', null, n === 0 ? 'None' : x.kind === 'ai' ? `${n} pack${n === 1 ? '' : 's'} · ${n * 10}` : String(n)); o.value = n; sel.append(o); });
+      sel.value = focus === x.kind ? '1' : '0';
+      sel.onchange = update;
+      act.append(sel); row.append(act); w.append(row);
     });
+    b.onclick = async () => {
+      const items = {}; EXTRAS.forEach(x => { if (+sels[x.kind].value > 0) items[x.kind] = +sels[x.kind].value; });
+      b.disabled = true; b.textContent = 'Opening checkout…';
+      try { const { url } = await api('/api/checkout', { method: 'POST', body: JSON.stringify({ items }) }); location.href = url; return; }
+      catch (e) { msg.textContent = e?.message || "Couldn't open checkout. Try again."; }
+      b.textContent = 'Buy'; update();
+    };
+    bar.append(total, b); w.append(bar); update();
     if (!msg.isConnected) w.append(msg);
-    w.append(el('p', 'extra-foot', 'Extras are added to your current pass and can be used until it ends.'));
+    w.append(el('p', 'extra-foot', 'Everything you pick goes into one checkout. Extras are added to your current pass and can be used until it ends.'));
   }
   window.openBuyExtras = openBuyExtras;
 

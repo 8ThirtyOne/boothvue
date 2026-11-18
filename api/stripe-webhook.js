@@ -6,7 +6,7 @@
 import crypto from "node:crypto";
 import { ADDONS, PLANS } from "./_plans.js";
 import { brandedEmail, esc, sendToCustomer, sendToOwner } from "./_email.js";
-import { addAiActions, addMediaCredits, dbConfigured, endPassForRefund, passById, passBySession, recordPass, recordTopup, takeBackTopup, topupBySession } from "./_db.js";
+import { addAiActions, addMediaCredits, dbConfigured, endPassForRefund, passById, passBySession, recordPass, recordTopup, takeBackTopup, topupsBySession } from "./_db.js";
 
 const TOLERANCE_SECONDS = 300;
 
@@ -47,7 +47,7 @@ export default async function handler(req, res) {
 
   if (event.type === "checkout.session.completed") {
     const s = event.data?.object || {};
-    if (s.metadata?.addon) return handleTopup(req, res, event, s);
+    if (s.metadata?.addon || s.metadata?.items) return handleTopup(req, res, event, s);
     const plan = PLANS[s.metadata?.plan];
     const email = s.customer_details?.email || "unknown";
     const paid = s.amount_total != null ? `$${(s.amount_total / 100).toFixed(2)} ${String(s.currency || "").toUpperCase()}` : "unknown";
@@ -126,59 +126,71 @@ export default async function handler(req, res) {
   return res.status(200).json({ received: true });
 }
 
-// Extra credits (AI Render images and videos, or AI Build actions in packs of 10): added to the pass they were bought for, once per Stripe session.
+// Extra credits (AI Render images and videos, AI Build actions in packs of 10), possibly several kinds in one cart:
+// each kind is added to the pass it was bought for, once per Stripe session.
 async function handleTopup(req, res, event, s) {
-  const kind = s.metadata.addon, addon = ADDONS[kind];
-  const qty = Math.floor(Number(s.metadata.qty));
+  const items = (s.metadata.items ? s.metadata.items.split(",").map(x => x.split(":")) : [[s.metadata.addon, s.metadata.qty]])
+    .map(([k, q]) => [k, Math.floor(Number(q))]).filter(([k, q]) => ADDONS[k] && q > 0);
   const passId = String(s.metadata.pass_id || "");
   const email = s.customer_details?.email || s.customer_email || "unknown";
   const paid = s.amount_total != null ? `$${(s.amount_total / 100).toFixed(2)} ${String(s.currency || "").toUpperCase()}` : "unknown";
   const test = !event.livemode;
-  console.log("topup", JSON.stringify({ mode: test ? "TEST" : "LIVE", kind, qty, email, paid, session: s.id, status: s.payment_status }));
-  if (s.payment_status !== "paid" || !addon || !(qty > 0) || !passId || !dbConfigured()) return res.status(200).json({ received: true });
+  console.log("topup", JSON.stringify({ mode: test ? "TEST" : "LIVE", items, email, paid, session: s.id, status: s.payment_status }));
+  if (s.payment_status !== "paid" || !items.length || !passId || !dbConfigured()) return res.status(200).json({ received: true });
 
-  const units = kind === "ai" ? qty * (addon.per || 10) : qty; // AI Build actions are sold in packs
-  const noun = kind === "ai" ? "AI Build action" : kind === "video" ? "10-second AI video" : "AI image";
-  let added = false, row = null, pass = null;
-  try {
-    row = await recordTopup({ stripeSession: s.id, passId, email: email === "unknown" ? "" : email, kind, qty: units, amountCents: s.amount_total ?? null, livemode: !!event.livemode });
-    if (!row) return res.status(200).json({ received: true, duplicate: true }); // already handled
-    added = kind === "ai" ? await addAiActions(passId, units) : await addMediaCredits(passId, kind, qty);
-    pass = await passById(passId).catch(() => null);
-  } catch (err) {
-    console.error("topup failed", err?.message);
-    if (!row) return res.status(500).json({ error: "record_failed" }); // Stripe retries later
+  const noun = k => k === "ai" ? "AI Build action" : k === "video" ? "10-second AI video" : "AI image";
+  const lines = [];
+  let allAdded = true, any = false;
+  for (const [kind, qty] of items) {
+    const units = kind === "ai" ? qty * (ADDONS.ai.per || 10) : qty; // AI Build actions are sold in packs
+    lines.push({ kind, units, what: `${units} extra ${noun(kind)}${units === 1 ? "" : "s"}` });
+    try {
+      // One row per kind. A one-kind cart keeps the plain session id, as before.
+      const key = items.length === 1 ? s.id : `${s.id}#${kind}`;
+      const row = await recordTopup({ stripeSession: key, passId, email: email === "unknown" ? "" : email, kind, qty: units, amountCents: items.length === 1 ? (s.amount_total ?? null) : null, livemode: !!event.livemode });
+      if (!row) continue; // already handled
+      any = true;
+      const ok = kind === "ai" ? await addAiActions(passId, units) : await addMediaCredits(passId, kind, qty);
+      if (!ok) allAdded = false;
+    } catch (err) {
+      console.error("topup failed", kind, err?.message);
+      return res.status(500).json({ error: "record_failed" }); // Stripe retries; kinds already recorded are skipped then
+    }
   }
+  if (!any) return res.status(200).json({ received: true, duplicate: true });
+  const pass = await passById(passId).catch(() => null);
 
-  const what = `${units} extra ${noun}${units === 1 ? "" : "s"}`;
-  const left = pass ? (kind === "ai" ? pass.ai_total - pass.ai_used : kind === "image" ? pass.images_total - pass.images_used : pass.videos_total - pass.videos_used) : null;
+  const what = lines.map(l => l.what).join(", ");
+  const plural = lines.length > 1 || lines[0].units !== 1;
+  const leftOf = k => !pass ? null : k === "ai" ? pass.ai_total - pass.ai_used : k === "image" ? pass.images_total - pass.images_used : pass.videos_total - pass.videos_used;
   const pi = typeof s.payment_intent === "string" ? s.payment_intent : s.payment_intent?.id;
   const dashboard = `https://dashboard.stripe.com/${test ? "test/" : ""}${pi ? `payments/${pi}` : "payments"}`;
   const html = brandedEmail({
     eyebrow: test ? "Payment received · test" : "Payment received",
-    title: `${what} purchased for ${paid}`,
-    rows: [["Credits", esc(what)], ["Amount", esc(paid)], ["Customer", esc(email)], ["Mode", test ? "Test payment" : "Live payment"]],
-    panelHtml: added ? "The credits were added to the customer's pass." : "The credits couldn't be added automatically, so they still need to be added by hand.",
+    title: `Extra credits purchased for ${paid}`,
+    rows: [...lines.map(l => ["Credits", esc(l.what)]), ["Amount", esc(paid)], ["Customer", esc(email)], ["Mode", test ? "Test payment" : "Live payment"]],
+    panelHtml: allAdded ? "The credits were added to the customer's pass." : "Some credits couldn't be added automatically, so they still need to be added by hand.",
     button: { href: dashboard, label: "View in Stripe" },
     footer: `Stripe session ${s.id}`,
   });
-  await sendToOwner({ subject: `${test ? "[Test] " : ""}Extra credits: ${what} (${paid})`, text: `${what} for ${paid} from ${email}. ${added ? "Added to the pass." : "Needs adding by hand."}\n${dashboard}`, html, replyTo: email !== "unknown" ? email : undefined });
+  await sendToOwner({ subject: `${test ? "[Test] " : ""}Extra credits: ${what} (${paid})`, text: `${what} for ${paid} from ${email}. ${allAdded ? "Added to the pass." : "Needs adding by hand."}\n${dashboard}`, html, replyTo: email !== "unknown" ? email : undefined });
 
   if (email !== "unknown") {
     const site = `https://${req.headers["x-forwarded-host"] || req.headers.host}`;
     const until = pass ? new Date(pass.ends_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" }) : "";
-    const rows = [["Added", esc(what)], ["Amount paid", esc(paid)]];
-    if (left != null) rows.push([kind === "ai" ? "AI Build actions now left" : kind === "image" ? "Images now left" : "Videos now left", String(left)]);
+    const rows = [...lines.map(l => ["Added", esc(l.what)]), ["Amount paid", esc(paid)]];
+    for (const l of lines) { const left = leftOf(l.kind); if (left != null) rows.push([l.kind === "ai" ? "AI Build actions now left" : l.kind === "image" ? "Images now left" : "Videos now left", String(left)]); }
     if (until) rows.push(["Use them by", esc(until)]);
+    const where = lines.every(l => l.kind === "ai") ? "AI Build" : lines.some(l => l.kind === "ai") ? "AI Build or AI Render" : "AI Render";
     await sendToCustomer({
       to: email,
-      subject: `${test ? "[Test] " : ""}Your ${what} ${units === 1 ? "is" : "are"} ready`,
-      text: `${what} ${units === 1 ? "was" : "were"} added to your BoothVue pass${until ? `. Use ${units === 1 ? "it" : "them"} by ${until}` : ""}.\nOpen ${site}/app/ and click ${kind === "ai" ? "AI Build" : "AI Render"}.`,
+      subject: `${test ? "[Test] " : ""}Your extra credits ${plural ? "are" : "is"} ready`,
+      text: `${what} ${plural ? "were" : "was"} added to your BoothVue pass${until ? `. Use ${plural ? "them" : "it"} by ${until}` : ""}.\nOpen ${site}/app/ and click ${where}.`,
       html: brandedEmail({
         eyebrow: test ? "Payment confirmed · test" : "Payment confirmed",
-        title: `Your ${what} ${units === 1 ? "is" : "are"} ready`,
+        title: `Your extra credits ${plural ? "are" : "is"} ready`,
         rows,
-        panelHtml: added ? `Already on your pass. Open the app and click <b>${kind === "ai" ? "AI Build" : "AI Render"}</b> to use them.` : "They're being added to your pass and will be ready shortly.",
+        panelHtml: allAdded ? `Already on your pass. Open the app and click <b>${where}</b> to use them.` : "They're being added to your pass and will be ready shortly.",
         button: { href: `${site}/app/`, label: "Open BoothVue" },
         footer: "Your invoice and card receipt come separately from Stripe. Questions? Just reply to this email.",
       }),
@@ -214,17 +226,19 @@ async function handleRefund(res, event) {
 
   let what = "", outcome = "";
   try {
-    const pass = await passBySession(session.id), topup = pass ? null : await topupBySession(session.id);
+    const pass = await passBySession(session.id), topups = pass ? [] : await topupsBySession(session.id);
+    const topup = topups[0];
     const email = pass?.email || topup?.email || session.customer_details?.email || "unknown";
     if (pass) {
       what = `${PLANS[pass.plan]?.name || pass.plan} for ${email}`;
       if (!full) outcome = "Partial refund: the pass is still active. End it in Supabase if needed.";
       else outcome = (await endPassForRefund(pass.id)) ? "The pass has been ended, so the customer no longer has access." : "This refund was already handled.";
     } else if (topup) {
-      const noun = topup.kind === "ai" ? "AI Build actions" : topup.kind === "video" ? "10-second AI videos" : "AI images";
-      what = `${topup.qty} extra ${noun} for ${email}`;
+      const noun = k => k === "ai" ? "AI Build actions" : k === "video" ? "10-second AI videos" : "AI images";
+      what = `${topups.map(t => `${t.qty} extra ${noun(t.kind)}`).join(", ")} for ${email}`;
       if (!full) outcome = "Partial refund: the extras are still on the pass.";
-      else outcome = (await takeBackTopup(topup)) ? "The extras were taken back from the pass (any already used stay used)." : "This refund was already handled.";
+      else { let took = false; for (const t of topups) if (await takeBackTopup(t)) took = true;
+        outcome = took ? "The extras were taken back from the pass (any already used stay used)." : "This refund was already handled."; }
     } else {
       return res.status(200).json({ received: true, skipped: "no_matching_purchase", session: session.id });
     }

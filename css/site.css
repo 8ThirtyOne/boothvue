@@ -715,6 +715,8 @@ button.nav-acct:hover { background: rgba(255,255,255,.12); color: #fff; }
 .ba-frames img { display: block; width: 100%; height: auto; }
 .ba-frames .ba-after { position: absolute; inset: 0; opacity: 0; transition: opacity .9s ease; }
 .ba-frames .ba-after.on { opacity: 1; }
+.ba-frames .ba-video { width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+.dm-anim { top: auto; bottom: 14px; left: auto; right: 14px; }
 .ba-url { display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 4px 0 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--bg); font: 500 13px "IBM Plex Mono", var(--font-mono); color: var(--ink); }
 .ba-type { white-space: nowrap; overflow: hidden; }
 .ba-caret { width: 1.5px; height: 15px; background: var(--accent); animation: ba-blink 1s steps(1) infinite; }

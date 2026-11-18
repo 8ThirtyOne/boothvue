@@ -133,9 +133,11 @@ export async function passBySession(session) {
   const rows = await rest(`passes?select=*&stripe_session=eq.${encodeURIComponent(session)}&limit=1`);
   return rows && rows[0] ? rows[0] : null;
 }
-export async function topupBySession(session) {
-  const rows = await rest(`credit_purchases?select=*&stripe_session=eq.${encodeURIComponent(session)}&limit=1`);
-  return rows && rows[0] ? rows[0] : null;
+// Every extras row for a Stripe session: the plain id (one kind) or "<id>#<kind>" (a cart of several kinds).
+export async function topupsBySession(session) {
+  const id = encodeURIComponent(session);
+  const rows = await rest(`credit_purchases?select=*&or=(stripe_session.eq.${id},stripe_session.like.${id}%23*)`);
+  return Array.isArray(rows) ? rows : [];
 }
 // Ends a refunded pass now. Returns the pass if this call ended it, or null if it was already handled.
 export async function endPassForRefund(id) {

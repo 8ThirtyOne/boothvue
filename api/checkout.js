@@ -1,6 +1,6 @@
 // POST /api/checkout -> { url } of a Stripe Checkout page.
 //   { plan: "week" | "month" | "year" }        a pass, bought from the website
-//   { addon: "image" | "video", qty: 1..20 }   extra AI Render credits, bought from the app by a signed-in customer
+//   { items: { ai, image, video } }             extra credits in one cart (each 0..20), bought from the app by a signed-in customer
 //                                               with an active pass (Authorization: Bearer <access token>)
 // Needs STRIPE_SECRET_KEY in Vercel (sk_test_... while testing, sk_live_... at launch).
 import { ADDONS, ADDON_MAX_QTY, PLANS } from "./_plans.js";
@@ -15,10 +15,11 @@ export default async function handler(req, res) {
   const origin = `https://${req.headers["x-forwarded-host"] || req.headers.host}`;
   let form;
 
-  if (body.addon != null) {
-    const addonId = String(body.addon), addon = ADDONS[addonId];
-    const qty = Math.floor(Number(body.qty));
-    if (!addon || !(qty >= 1 && qty <= ADDON_MAX_QTY)) return res.status(400).json({ code: "bad_request", message: `Choose images, videos or AI Build actions, 1 to ${ADDON_MAX_QTY}.` });
+  if (body.addon != null || body.items != null) {
+    // One cart: { items: { ai: n, image: n, video: n } } (old single form { addon, qty } still works).
+    const raw = body.items && typeof body.items === "object" ? body.items : { [String(body.addon)]: body.qty };
+    const cart = Object.entries(raw).map(([k, q]) => [k, Math.floor(Number(q)) || 0]).filter(([, q]) => q > 0);
+    if (!cart.length || cart.some(([k, q]) => !ADDONS[k] || q > ADDON_MAX_QTY)) return res.status(400).json({ code: "bad_request", message: `Choose images, videos or AI Build actions, 1 to ${ADDON_MAX_QTY} each.` });
     if (!dbConfigured()) return res.status(503).json({ code: "not_configured", message: "Buying extra credits isn't set up yet." });
     const token = String(req.headers.authorization || "").replace(/^Bearer\s+/i, "");
     const user = await userFromToken(token).catch(() => null);
@@ -30,20 +31,22 @@ export default async function handler(req, res) {
       mode: "payment",
       "invoice_creation[enabled]": "true", // a PDF invoice for every purchase; Stripe emails it with the receipt
       customer_email: user.email,
-      "line_items[0][quantity]": String(qty),
-      "line_items[0][price_data][currency]": "usd",
-      "line_items[0][price_data][unit_amount]": String(addon.amount),
-      "line_items[0][price_data][product_data][name]": `BoothVue ${addon.name}`,
-      "line_items[0][price_data][product_data][description]": addonId === "ai"
-        ? `Each pack adds 10 AI Build actions to your pass (AI Build, photo to 3D, prompt writing). Use them by ${until}, when your pass ends.`
-        : `Added to your pass for photo-realistic AI Render ${addonId === "video" ? "10-second videos" : "images"}. Use them by ${until}, when your pass ends.`,
-      "metadata[addon]": addonId,
-      "metadata[qty]": String(qty),
+      "metadata[items]": cart.map(([k, q]) => `${k}:${q}`).join(","),
+      "metadata[addon]": cart.map(([k]) => k).join(","),
       "metadata[pass_id]": pass.id,
-      "payment_intent_data[metadata][addon]": addonId,
-      "payment_intent_data[metadata][qty]": String(qty),
-      success_url: `${origin}/app/?credits=added&kind=${addonId}`,
+      "payment_intent_data[metadata][items]": cart.map(([k, q]) => `${k}:${q}`).join(","),
+      success_url: `${origin}/app/?credits=added&kind=${cart[0][0]}`,
       cancel_url: `${origin}/app/`,
+    });
+    cart.forEach(([k, q], i) => {
+      const addon = ADDONS[k], p = `line_items[${i}]`;
+      form.set(`${p}[quantity]`, String(q));
+      form.set(`${p}[price_data][currency]`, "usd");
+      form.set(`${p}[price_data][unit_amount]`, String(addon.amount));
+      form.set(`${p}[price_data][product_data][name]`, `BoothVue ${addon.name}`);
+      form.set(`${p}[price_data][product_data][description]`, k === "ai"
+        ? `Each pack adds 10 AI Build actions to your pass (AI Build, photo to 3D, prompt writing). Use them by ${until}, when your pass ends.`
+        : `Added to your pass for photo-realistic AI Render ${k === "video" ? "10-second videos" : "images"}. Use them by ${until}, when your pass ends.`);
     });
   } else {
     const planId = String(body.plan || "");
