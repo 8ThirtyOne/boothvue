@@ -12,7 +12,7 @@ export function brandedEmail({ eyebrow, title, intro = "", rows = [], panelHtml 
   // "Vue" in blue wherever the brand name appears in the body text (not inside tags or the white-on-blue button)
   const bv = s => String(s).replace(/BoothVue(?![^<>]*>)/g, `Booth<span style="color:${ACCENT}">Vue</span>`);
   const row = ([label, value]) => `<tr><td style="padding:7px 14px 7px 0;width:120px;vertical-align:top;font:600 12px/1.5 ${FF};letter-spacing:.06em;text-transform:uppercase;color:#676c77">${esc(label)}</td><td style="padding:7px 0;font:15px/1.5 ${FF};color:#16181d">${value}</td></tr>`;
-  return `<!doctype html><html><head><meta charset="utf-8"><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Google+Sans+Flex:opsz,wght@6..144,500..800&display=swap" rel="stylesheet"></head><body style="margin:0;padding:0;background:#f2efe8">
+  return `<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;background:#f2efe8">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f2efe8;padding:28px 12px"><tr><td align="center">
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#fbfaf6;border-radius:18px;overflow:hidden;border:1px solid #dcd7cb">
   ${emailHeader()}
@@ -82,7 +82,6 @@ export function emailFooter({ note = "", links = [] } = {}) {
   const site = SITE, host = site.replace(/^https?:\/\//, "");
   const btn = (href, label) => `<td style="padding:0 4px"><a href="${href}" style="display:inline-block;padding:7px 13px;border:1.5px solid #c5cbd6;border-radius:999px;font:700 10.5px/1 ${FF};color:#c5cbd6;text-decoration:none;white-space:nowrap">${label}</a></td>`;
   const a = ([label, href]) => `<a href="${href}" style="color:#ffffff;font-weight:700;text-decoration:none">${label}</a>`;
-  const share = `mailto:?subject=${encodeURIComponent("Have a look at BoothVue")}&body=${encodeURIComponent("See your trade show booth before it's built: " + site)}`;
   const all = [...links, ["Privacy policy", site + "/privacy/"], ["Terms", site + "/terms/"]];
   return `<tr><td style="height:35px;line-height:35px;font-size:0">&nbsp;</td></tr><tr><td align="center" style="background:#0d1526;padding:49px 28px 30px;text-align:center">
     <table role="presentation" align="center" cellpadding="0" cellspacing="0" style="margin:0 auto"><tr>
@@ -90,7 +89,7 @@ export function emailFooter({ note = "", links = [] } = {}) {
       <td style="vertical-align:middle;padding-left:11px"><a href="${site}" style="font:700 26px/1 ${HF};color:#ffffff;letter-spacing:-.02em;text-decoration:none">Booth<span style="color:${VUE}">Vue</span></a></td>
     </tr></table>
     <p style="margin:11px 0 18px;font:400 17px/1.3 ${HF};color:#ffffff;letter-spacing:-.01em">See your booth <b>before it&rsquo;s built</b></p>
-    <table role="presentation" align="center" cellpadding="0" cellspacing="0" style="margin:0 auto 35px"><tr>${btn(site + "/app/", "OPEN THE STUDIO")}${btn(share, "SHARE BOOTHVUE")}${btn(site + "/contact/", "CONTACT US")}</tr></table>
+    <table role="presentation" align="center" cellpadding="0" cellspacing="0" style="margin:0 auto 35px"><tr>${btn(site + "/app/", "OPEN THE STUDIO")}${btn(site + "/contact/", "CONTACT US")}</tr></table>
     ${note ? `<p style="margin:0 0 3px;font:11.5px/1.6 ${FF};color:#cfd6e3">${esc(note)}</p>` : ""}
     <p style="margin:0 0 3px;font:11.5px/1.6 ${FF};color:#cfd6e3">Questions? <a href="mailto:support@boothvue.co" style="color:#ffffff;text-decoration:none">support@boothvue.co</a> &middot; <a href="${site}" style="color:#ffffff;text-decoration:none">${host === "staging.boothvue.co" ? "boothvue.co" : host}</a></p>
     <p style="margin:15px 0 6px;font:11.5px/1.6 ${FF};color:#cfd6e3">${all.map(a).join(" &nbsp;|&nbsp; ")}</p>

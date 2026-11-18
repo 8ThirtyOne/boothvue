@@ -95,7 +95,7 @@ export default async function handler(req, res) {
         const until = endsAt.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
         const includes = `${plan.days} days of full access, ${plan.ai} AI Build actions, ${plan.images} AI images, ${plan.videos} 10-second AI video${plan.videos === 1 ? "" : "s"}`;
         const steps = recorded
-          ? `1. Open the app and click <b>Sign in</b>.<br>2. Enter <b>${esc(email)}</b> and open the sign-in link we email you.<br>3. Your pass and credits appear under <b>Account</b>.`
+          ? `1. Open the app and click <b>Sign in</b>.<br>2. Enter <b>${esc(email)}</b> then open the sign-in link or type the code we email you.<br>3. Your pass and credits appear under <b>Account</b>.`
           : "Your pass is being switched on and will be ready shortly. We'll be in touch if anything is needed.";
         const custHtml = brandedEmail({
           eyebrow: test ? "Payment confirmed · test" : "Payment confirmed",
@@ -109,13 +109,13 @@ export default async function handler(req, res) {
           ],
           panelHtml: steps,
           button: { href: `${site}/app/#signin`, label: "Open BoothVue" },
-          footer: "Thanks for choosing BoothVue. Your invoice and card receipt come separately from Stripe. Questions? Just reply to this email.",
+          footer: "Thanks for choosing BoothVue. Your invoice and card receipt come separately from Stripe. Just reply to this email if you have questions.",
         });
         const custText = [
           `Your ${passName} is ready${test ? " (test purchase)" : ""}.`, "",
           `Pass: ${passName}`, `Amount paid: ${paid}`, `Includes: ${includes}`, `Active until: ${until}`, `Account email: ${email}`, "",
           recorded ? `Open ${site}/app/ and sign in with ${email} to start designing.` : "Your pass is being switched on and will be ready shortly.",
-          "", "Your invoice and card receipt come separately from Stripe. Questions? Just reply to this email.",
+          "", "Your invoice and card receipt come separately from Stripe. Just reply to this email if you have questions.",
         ].join("\n");
         await sendToCustomer({ to: email, subject: `${test ? "[Test] " : ""}Your BoothVue ${passName} is ready`, text: custText, html: custHtml });
       }
@@ -192,7 +192,7 @@ async function handleTopup(req, res, event, s) {
         rows,
         panelHtml: allAdded ? `Already on your pass. Open the app and click <b>${where}</b> to use them.` : "They're being added to your pass and will be ready shortly.",
         button: { href: `${site}/app/`, label: "Open BoothVue" },
-        footer: "Your invoice and card receipt come separately from Stripe. Questions? Just reply to this email.",
+        footer: "Your invoice and card receipt come separately from Stripe. Just reply to this email if you have questions.",
       }),
     });
   }
