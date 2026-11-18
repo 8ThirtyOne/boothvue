@@ -34,7 +34,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display&family=IBM+Plex+Mono:wght@500&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="/css/site.css?v=34">
+<link rel="stylesheet" href="/css/site.css?v=35">
 <link rel="stylesheet" href="/css/footer.css?v=2">
 
 <header class="nav">
@@ -76,50 +76,110 @@
     </div>
   </section>
 
-  <section id="features">
+  <section id="features" class="fx">
     <div class="wrap">
-      <div class="features">
-        <article class="feature ai">
-          <div class="icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></div>
-          <h3>AI build from a sentence</h3>
-          <p>Describe the booth, drop in up to four reference images, and Claude picks the size, walls, floor, colors and furniture for you.</p>
-          <div class="spec">“A 20×30 corner booth for a coffee brand”</div>
+      <ul class="fx-stats" aria-label="BoothVue at a glance">
+        <li><b>53</b><span>items at real size</span></li>
+        <li><b>4</b><span>booth types, 10×10 to 40×40</span></li>
+        <li><b>3</b><span>levels of AI Render</span></li>
+        <li><b>4K</b><span>renders from any angle</span></li>
+        <li><b>0</b><span>installs. It runs in your browser</span></li>
+      </ul>
+
+      <div class="fx-chapter">
+        <div class="eyebrow">AI does the heavy lifting</div>
+        <h2>From a sentence to a branded booth.</h2>
+      </div>
+      <div class="bento">
+        <article class="tile tile-xl tile-media">
+          <img src="/img/step2-after.jpg?v=2" width="1600" height="1000" loading="lazy" alt="An island booth built by AI Build from one sentence: a purple center wall, a ring sign overhead, a coffee bar and a digital totem">
+          <div class="tile-copy">
+            <span class="tile-tag">✦ AI Build</span>
+            <h3>Describe it. Watch it build.</h3>
+            <p>Type a sentence and drop in up to four reference images. AI picks the size, walls, floor, colors and furniture, and hands you an editable 3D booth.</p>
+            <div class="tile-quote">“A 20×20 island for a wellness brand with a coffee bar and a digital totem”</div>
+          </div>
         </article>
-        <article class="feature ai">
-          <div class="icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 16l-5-5-9 8"/></svg></div>
-          <h3>Photo to 3D</h3>
-          <p>Upload a photo of an existing booth. Claude reads the layout and rebuilds it as editable 3D geometry at the size you choose.</p>
-          <div class="spec">Then refine it against the photo</div>
+        <article class="tile tile-media tile-tall">
+          <img src="/img/step1-after.jpg?v=2" width="1600" height="1000" loading="lazy" alt="A booth branded for BoothVue from its website">
+          <div class="tile-copy">
+            <span class="tile-tag">✦ Brand from your website</span>
+            <h3>Type your web address.</h3>
+            <p>Name, tagline, colors, logo and style go straight onto the walls, counters and signs.</p>
+            <div class="tile-url"><span>boothvue.co</span><b>Get Brand</b></div>
+          </div>
         </article>
-        <article class="feature ai">
-          <div class="icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18"/></svg></div>
-          <h3>Your brand from your website</h3>
-          <p>Type your web address and AI reads your site: your name, tagline, colors, logo and visual style go onto the booth in seconds. Pick pictures from your site for the walls.</p>
-          <div class="spec">One click · no brand guide needed</div>
+        <article class="tile tile-dark">
+          <span class="tile-tag">✦ Photo to 3D</span>
+          <h3>Have a booth already? Upload a photo.</h3>
+          <p>AI reads the layout and rebuilds it as editable 3D at the size you choose, ready to refine and rebrand.</p>
+          <div class="tile-flow" aria-hidden="true"><i>Photo</i><span>→</span><i>3D booth</i><span>→</span><i>Edit</i></div>
         </article>
-        <article class="feature">
-          <div class="icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"/></svg></div>
-          <h3>A library of 53 items</h3>
-          <p>Counters, podiums, stools, screens, video walls, lighting, plants, a display car, stages, meeting rooms and hanging signs, all at real size.</p>
-          <div class="spec">11 categories · searchable</div>
+        <article class="tile">
+          <span class="tile-tag">✦ AI art direction</span>
+          <h3>Stuck on a look?</h3>
+          <p>AI writes the art direction for you: lighting, mood and show-day details, ready for your render.</p>
         </article>
-        <article class="feature">
-          <div class="icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 19l4-1 10-10-3-3L6 15z"/><path d="M14 6l3 3"/></svg></div>
-          <h3>Edit anything you click</h3>
-          <p>Select any wall or piece to move, resize, rotate or recolor it, cut a walk-through opening, add an overhang or place your own artwork and fonts.</p>
-          <div class="spec">Drag on the floor · double-click to rotate</div>
+      </div>
+
+      <div class="fx-chapter">
+        <div class="eyebrow">A real 3D studio</div>
+        <h2>Click, drag and get it exactly right.</h2>
+      </div>
+      <div class="bento">
+        <article class="tile tile-wide tile-media tile-side">
+          <img src="/img/step3-3.jpg?v=2" width="1600" height="1000" loading="lazy" alt="A sofa selected and dragged across the BoothVue island booth in the 3D editor">
+          <div class="tile-copy">
+            <span class="tile-tag">Edit anything you click</span>
+            <h3>Move, resize, rotate, recolor.</h3>
+            <p>Select any wall or piece. Cut a walk-through opening, add an overhang, or place your own artwork and fonts.</p>
+            <ul class="tile-keys"><li><kbd>Drag</kbd> to move</li><li><kbd>Double-click</kbd> to rotate</li><li><kbd>⌘Z</kbd> to undo</li></ul>
+          </div>
         </article>
-        <article class="feature">
-          <div class="icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17L17 3l4 4L7 21H3z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/></svg></div>
-          <h3>Measure and estimate it</h3>
-          <p>Show sizes on every item, measure between any two points, and get ballpark weight, power and setup estimates to start the conversation.</p>
-          <div class="spec">Feet or meters · plan, side and eye-level views</div>
+        <article class="tile">
+          <span class="tile-tag">Library</span>
+          <h3>53 pieces, all at real size.</h3>
+          <ul class="tile-chips"><li>Furniture</li><li>Display</li><li>Electronics</li><li>Structure</li><li>Plants</li><li>Lighting</li><li>Hanging signs</li><li>Panels</li><li>Equipment</li><li>Rooms</li><li>Vehicles</li></ul>
         </article>
-        <article class="feature">
-          <div class="icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/></svg></div>
-          <h3>Photo-realistic images and video</h3>
-          <p>Turn your render into an ultra-realistic image or video clip without leaving the app. Every pass includes AI image and video credits.</p>
-          <div class="spec">Also exports 4K PNG · GLB model · specs</div>
+        <article class="tile tile-wide tile-media tile-side tile-flip">
+          <img src="/img/step4-front.jpg?v=2" width="1600" height="1000" loading="lazy" alt="Front view of the BoothVue island booth in the 3D editor">
+          <div class="tile-copy">
+            <span class="tile-tag">Measure and estimate</span>
+            <h3>Plan, front, side and eye level.</h3>
+            <p>Show sizes on every item, measure any two points, and get ballpark weight, power and setup estimates.</p>
+          </div>
+        </article>
+        <article class="tile">
+          <span class="tile-tag">Every booth type</span>
+          <h3>Inline, corner, peninsula, island.</h3>
+          <div class="tile-types" aria-hidden="true"><i class="t-inline"></i><i class="t-corner"></i><i class="t-pen"></i><i class="t-island"></i></div>
+          <p>From 10×10 to 40×40, in feet or meters, with real construction systems.</p>
+        </article>
+      </div>
+
+      <div class="fx-chapter">
+        <div class="eyebrow">What you walk away with</div>
+        <h2>Pictures that win the room.</h2>
+      </div>
+      <div class="bento">
+        <article class="tile tile-xl tile-media tile-video">
+          <video src="/img/step5-flagship.mp4" poster="/img/step5-flagship.jpg" autoplay muted loop playsinline preload="metadata" aria-label="10-second AI video of the VoltEdge technology booth with visitors"></video>
+          <div class="tile-copy">
+            <span class="tile-tag">◉ AI Render</span>
+            <h3>Photo-realistic images and 10-second video.</h3>
+            <p>One click turns your 3D view into a show-floor photo. One more makes it move. Every pass includes image and video credits.</p>
+            <ol class="tile-levels"><li><b>1</b> Stay true to my design</li><li><b>2</b> Enhance my design</li><li><b>3</b> WOW me!</li></ol>
+          </div>
+        </article>
+        <article class="tile tile-dark tile-tall">
+          <span class="tile-tag">Take it anywhere</span>
+          <h3>Export everything.</h3>
+          <ul class="tile-exports">
+            <li><b>4K PNG</b><span>Crisp renders from any angle</span></li>
+            <li><b>GLB model</b><span>Opens in Blender, SketchUp, Unreal and more</span></li>
+            <li><b>Specs</b><span>Components, sizes and estimates</span></li>
+            <li><b>Share link</b><span>A view-only link for your team or client</span></li>
+          </ul>
         </article>
       </div>
     </div>
