@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&display=swap">
 <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/" } }</script>
 
-<link rel="stylesheet" href="/app/app.css?v=96">
+<link rel="stylesheet" href="/app/app.css?v=97">
 
 <!-- HEADER -->
 <header>
@@ -428,6 +428,7 @@
       </div>
       <button class="btn btn-primary" onclick="exportSpecs()">Save specs file</button>
     </nav>
+    <div class="concept-note" role="note"><b>General estimates for planning, not construction documents.</b> Sizes, dimensions, weights and power come from the 3D model. BoothVue does not provide official schematics, CAD or fabrication drawings. Your exhibit house or booth builder produces the final drawings and specs.</div>
     <div><div class="ss-title">Structural Overview</div><div class="specs-grid" id="spec-cards"></div></div>
     <div>
       <div class="ss-title">Components &amp; Materials</div>
@@ -445,7 +446,7 @@
   <div id="modal-card"><div class="modal-head"><h2 id="modal-title"></h2><button class="btn btn-sm" onclick="closeModal()" aria-label="Close">✕</button></div><div id="modal-body"></div></div>
 </div>
 
-<script type="module" src="/app/three-loader.js?v=85"></script>
+<script type="module" src="/app/three-loader.js?v=86"></script>
 
 
 <!-- Small-screen notice: the app is built for a large desktop screen -->

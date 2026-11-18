@@ -211,6 +211,7 @@
     }
     w.innerHTML = `<div class="gen-top"><p style="margin:0;font-size:13px;color:var(--fg-muted);max-width:52ch;line-height:1.5"><b style="color:var(--fg)">AI Render photographs your finished design.</b> Frame the view you want in 3D, choose a style, then generate a photo-realistic image (1 image credit) or a 10-second video (1 video credit). To change the design itself, use <b style="color:var(--fg)">AI Build</b> or edit it by hand.</p>
         <div class="gen-credits"><div class="gen-chip"><b id="gen-img-left">${c.img} / ${c.imgTotal}</b><span>Images left</span></div><div class="gen-chip"><b id="gen-vid-left">${c.vid} / ${c.vidTotal}</b><span>Videos left</span></div></div></div>
+      <div class="concept-note" role="note"><b>Concept visualization only.</b> AI images and videos are artistic interpretations for pitches and sign-off. They must not be used for construction, and they are not schematics or CAD drawings.</div>
       <div class="gen-mode" role="radiogroup" aria-label="Render style">
         <div class="gen-mode-btn" data-mode="faithful" role="radio" tabindex="0"><small>Level 1</small><b>Stay True to My Design</b><span>Your booth exactly as designed, made to look like a real photo.</span></div>
         <div class="gen-mode-btn" data-mode="enhance" role="radio" tabindex="0"><small>Level 2</small><b>Enhance My Design</b><span>Same booth and layout, with premium finishes, lighting and graphics.</span></div>

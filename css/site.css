@@ -1013,3 +1013,10 @@ button.nav-acct:hover { background: rgba(255,255,255,.12); color: #fff; }
 .nf-links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 18px; }
 .nf-links a { color: #bcd3ff; font: 600 15px var(--font-display); text-decoration: none; }
 .nf-links a:hover { color: #fff; }
+
+/* Concept-only notice: AI images and specs are not construction documents */
+.concept-note { display: flex; gap: 14px; align-items: flex-start; margin: clamp(22px, 3vw, 32px) 0; padding: 16px 18px; border-radius: 14px; border: 1px solid rgba(245,180,60,.55); background: rgba(245,180,60,.1); color: inherit; text-align: left; }
+.concept-note .cn-icon { flex: none; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; background: #f5b43c; }
+.concept-note svg { width: 17px; height: 17px; fill: none; stroke: #1a1203; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.concept-note .cn-title { display: block; font: 700 15px/1.3 var(--font-display); letter-spacing: .01em; margin-bottom: 4px; }
+.concept-note p { margin: 0; font: 500 14.5px/1.55 var(--font-display); opacity: .9; max-width: none; }

@@ -2516,7 +2516,7 @@ async function exportModel() {
   btn.disabled = true; msg.textContent = 'Building the 3D model…';
   try {
     const glb = await buildGlb();
-    const readme = new TextEncoder().encode(`BoothVue 3D model\n\nbooth.glb is a binary glTF 2.0 file in meters, Y up, with materials and textures embedded.\nIt opens in Blender (File > Import > glTF 2.0), SketchUp, 3ds Max, Cinema 4D, Unreal, Unity and most AI 3D tools.\nLights are included as KHR_lights_punctual; the show floor, crowd and background are not part of the model.\n`);
+    const readme = new TextEncoder().encode(`BoothVue 3D model\n\nThis is a concept model for visualization only, not a construction document, schematic or CAD drawing. Sizes are general estimates.\n\nbooth.glb is a binary glTF 2.0 file in meters, Y up, with materials and textures embedded.\nIt opens in Blender (File > Import > glTF 2.0), SketchUp, 3ds Max, Cinema 4D, Unreal, Unity and most AI 3D tools.\nLights are included as KHR_lights_punctual; the show floor, crowd and background are not part of the model.\n`);
     const zip = zipStore([{ name: 'booth.glb', data: glb }, { name: 'README.txt', data: readme }]);
     msg.textContent = 'Waiting for you to confirm the save…';
     await downloads.save({ filename: 'booth-3d-model.zip', data: zip });
@@ -3973,7 +3973,7 @@ async function exportSpecs() {
   const btns = [...document.querySelectorAll('button[onclick^="exportSpecs"]')];
   const flash = t => btns.forEach(b => { const o = b.dataset.label || (b.dataset.label = b.textContent); b.textContent = t; setTimeout(() => { b.textContent = o; }, 2200); });
   if (!downloads) { flash('Saving unavailable here'); return; }
-  try { await downloads.save({ filename: 'booth-specs.html', data: html }); flash('Saved'); }
+  try { await downloads.save({ filename: 'booth-specs.html', data: html.replace('</body>', '<p style="margin-top:28px;padding:12px 14px;border:1px solid #e0b040;border-radius:8px;background:#fff7e3;color:#3a2a00"><b>Concept visualization only.</b> These are general estimates from a BoothVue 3D concept model, not construction documents. BoothVue does not provide official schematics, CAD or fabrication drawings, or engineering specifications. Your exhibit house or booth builder produces the final drawings and specs.</p></body>') }); flash('Saved'); }
   catch (e) { flash(e?.code === 'declined' ? 'Cancelled' : 'Could not save'); }
 }
 

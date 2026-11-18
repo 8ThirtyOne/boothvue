@@ -771,3 +771,7 @@ html.embed #files-tray { display: none; }
 .acct-btns .btn { white-space: normal; min-width: 0; }
 .acct-sent, .acct-code { min-width: 0; }
 @media (max-width: 480px) { .acct-btns { grid-template-columns: minmax(0, 1fr); } }
+
+.concept-note { padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(217,150,30,.5); background: rgba(245,180,60,.12); font-size: 12.5px; line-height: 1.5; color: var(--fg); }
+.concept-note b { font-weight: 700; }
+#specs-panel > .concept-note { margin: 0 0 4px; }
