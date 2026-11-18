@@ -746,3 +746,4 @@ html.embed #files-tray { display: none; }
 .sc-val { font-size: 24px; }
 .sc-unit { font-size: 13px; }
 .specs-panel .ss-title { font-size: 16px; }
+.specs-tbl td:first-child { font-weight: 700; }
