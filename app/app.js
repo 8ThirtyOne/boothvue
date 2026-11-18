@@ -4289,8 +4289,18 @@ function resize(){
 window.addEventListener('resize',resize);
 resize();
 
+// Embed links can show a ready-made design file instead of a template, e.g. /app/?embed=1#file-boothvue-island
+// (from /app/designs/). The page's loading screen stays up until that design is on screen.
+let embedHold = false;
+(() => {
+  const m = EMBED && /^#file-([a-z0-9-]+)$/.exec(location.hash || ''); if (!m) return;
+  embedHold = true;
+  fetch(`/app/designs/${m[1]}.json`).then(r => r.ok ? r.json() : null).then(d => {
+    if (d) { applyDesign(d); resetCamera(); oR *= 1.55; oTarget.y = 2.2; camUpdate(); }   // a step back, so the whole booth fits behind the page text
+  }).catch(() => {}).finally(() => setTimeout(() => { embedHold = false; }, 900));
+})();
 let embedFrames = 0;
-(function animate(){ requestAnimationFrame(animate); if (EMBED && ++embedFrames === 4 && parent !== window) parent.postMessage({ boothvue: 'embed-ready' }, location.origin); if (embedSpin && !matchMedia('(prefers-reduced-motion: reduce)').matches) { oTh += 0.0016; camUpdate(); } renderFrame(); drawOverlay(); })();
+(function animate(){ requestAnimationFrame(animate); if (EMBED && !embedHold && ++embedFrames === 4 && parent !== window) parent.postMessage({ boothvue: 'embed-ready' }, location.origin); if (embedSpin && !matchMedia('(prefers-reduced-motion: reduce)').matches) { oTh += 0.0016; camUpdate(); } renderFrame(); drawOverlay(); })();
 
 // INIT
 loadStartupScene();
