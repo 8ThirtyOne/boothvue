@@ -797,3 +797,17 @@ button.nav-acct:hover { background: rgba(255,255,255,.12); color: #fff; }
 .wf-bar-in .btn { flex: none; }
 .wf-bar-short { display: none; }
 @media (max-width: 520px) { .wf-bar-long { display: none; } .wf-bar-short { display: inline; } }
+
+/* Showcase band: the BoothVue AI video, featured near the end of every inner page */
+.showcase { background: radial-gradient(120% 90% at 85% 20%, rgba(37,99,235,.35), transparent 60%), #070b16; color: #f3f6fc; padding-block: clamp(64px, 9vw, 110px); overflow: hidden; }
+.showcase-in { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 5vw, 64px); align-items: center; }
+.showcase .eyebrow { color: #8fb6ff; }
+.showcase h2 { color: #fff; font-size: clamp(32px, 4.6vw, 52px); line-height: 1.1; text-wrap: balance; margin: 10px 0 16px; }
+.showcase p { color: rgba(243,246,252,.8); font-family: var(--font-display); font-size: 17px; line-height: 1.55; margin: 0; max-width: 46ch; }
+.showcase-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.showcase-media { position: relative; }
+.showcase-media .browser { box-shadow: 0 40px 90px -30px rgba(37,99,235,.55), 0 0 0 1px rgba(160,190,255,.18); }
+.showcase-media video { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+.showcase-tag { position: absolute; left: 16px; bottom: 16px; padding: 6px 12px; border-radius: 999px; background: rgba(8,13,28,.85); color: #fff; font: 500 11px "IBM Plex Mono", var(--font-mono); letter-spacing: .14em; text-transform: uppercase; }
+@media (max-width: 860px) { .showcase-in { grid-template-columns: minmax(0, 1fr); } .showcase-media { order: -1; } }
+.showcase .btn-ghost { background: rgba(255,255,255,.06); color: #fff; border: 1px solid rgba(255,255,255,.28); }
