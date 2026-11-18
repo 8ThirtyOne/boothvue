@@ -327,8 +327,15 @@
     live.items.forEach(it => {
       const d = el('div', 'gen-item' + (it.status === 'done' ? ' done' : ''));
       if (it.status === 'done' && it.result_url) {
-        if (it.kind === 'video') { const v = el('video'); v.src = it.result_url; v.controls = true; v.loop = true; v.muted = true; v.playsInline = true; v.preload = 'metadata'; d.append(v); }
+        // Click any picture or video for the large view; videos preview on hover.
+        if (it.kind === 'video') { const v = el('video'); v.src = it.result_url; v.loop = true; v.muted = true; v.playsInline = true; v.preload = 'metadata'; d.append(v, el('span', 'gen-play', '▶'));
+          d.onmouseenter = () => v.play().catch(() => {}); d.onmouseleave = () => v.pause(); }
         else { const im = el('img'); im.src = it.result_url; im.alt = 'Photo-realistic render of the booth'; im.loading = 'lazy'; d.append(im); }
+        d.classList.add('can-zoom'); d.tabIndex = 0; d.setAttribute('role', 'button'); d.setAttribute('aria-label', it.kind === 'video' ? 'View video larger' : 'View image larger');
+        const zoom = () => openFilePreview({ kind: it.kind, url: it.result_url, name: it.kind === 'video' ? 'AI Render video' : 'AI Render image', ai: true, thumb: live.posters.get(it.id) || null });
+        d.onclick = e => { if (!e.target.closest('a, button')) zoom(); };
+        d.onkeydown = e => { if ((e.key === 'Enter' || e.key === ' ') && e.target === d) { e.preventDefault(); zoom(); } };
+        d.append(el('span', 'gen-zoom', '⤢'));
         const open = el('a', 'gen-open', it.kind === 'video' ? 'Open video' : 'Open full size'); open.href = it.result_url; open.target = '_blank'; open.rel = 'noopener'; d.append(open);
         if (it.kind === 'image') { const an = el('button', 'gen-animate', 'Animate · 10-sec video'); an.onclick = () => start('video', it.result_url); d.append(an); }
       } else {
