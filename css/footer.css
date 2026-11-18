@@ -17,3 +17,6 @@ a, a:hover, a:focus { text-decoration: none !important; }
 
 /* No blue glow under the solid blue buttons, anywhere on the site */
 .btn-primary, .btn-primary:hover, .plan.featured .btn-primary { box-shadow: none !important; }
+.site-foot .sf-addr { grid-column: 1 / -1; margin-top: 8px; font-style: normal; font-size: 12.5px; color: #8a92a1; }
+.site-foot .sf-addr a { color: #b9c0cc; text-decoration: none; }
+.site-foot .sf-addr a:hover { color: #fff; }
