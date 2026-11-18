@@ -34,7 +34,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display&family=IBM+Plex+Mono:wght@500&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="/css/site.css?v=35">
+<link rel="stylesheet" href="/css/site.css?v=37">
 <link rel="stylesheet" href="/css/footer.css?v=2">
 
 <header class="nav">
@@ -78,27 +78,78 @@
 
   <section id="types" class="band-blue">
     <div class="wrap">
-      <div class="types">
-        <a class="type" href="/app/#type-inline" aria-label="Open a 10 × 10 ft inline booth in the studio">
-          <svg viewBox="0 0 160 110" aria-hidden="true"><rect x="12" y="12" width="136" height="86" rx="4" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="4 4"/><path d="M12 98V12h136v86" fill="none" stroke="currentColor" stroke-width="7"/></svg>
-          <h3>Inline</h3><div class="meta">1 open side · back + 2 partitions</div>
-          <p>The classic 10 × 10 or 10 × 20 in a row of exhibitors.</p>
-        <span class="type-go">Open in the studio <span aria-hidden="true">→</span></span></a>
-        <a class="type" href="/app/#type-corner" aria-label="Open a 10 × 20 ft corner booth in the studio">
-          <svg viewBox="0 0 160 110" aria-hidden="true"><rect x="12" y="12" width="136" height="86" rx="4" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="4 4"/><path d="M12 98V12h136" fill="none" stroke="currentColor" stroke-width="7"/></svg>
-          <h3>Corner</h3><div class="meta">2 open sides · left or right partition</div>
-          <p>End of a row, open to two aisles.</p>
-        <span class="type-go">Open in the studio <span aria-hidden="true">→</span></span></a>
-        <a class="type" href="/app/#type-peninsula" aria-label="Open a 20 × 20 ft peninsula booth in the studio">
-          <svg viewBox="0 0 160 110" aria-hidden="true"><rect x="12" y="12" width="136" height="86" rx="4" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="4 4"/><path d="M12 12h136" fill="none" stroke="currentColor" stroke-width="7"/></svg>
-          <h3>Peninsula</h3><div class="meta">3 open sides · back wall only</div>
-          <p>Backs onto one neighbor, open to three aisles.</p>
-        <span class="type-go">Open in the studio <span aria-hidden="true">→</span></span></a>
-        <a class="type" href="/app/#type-island" aria-label="Open a 20 × 20 ft island booth in the studio">
-          <svg viewBox="0 0 160 110" aria-hidden="true"><rect x="12" y="12" width="136" height="86" rx="4" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="4 4"/><path d="M58 55h44" fill="none" stroke="currentColor" stroke-width="7"/><circle cx="80" cy="55" r="22" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3"/></svg>
-          <h3>Island</h3><div class="meta">4 open sides · center wall + hanging sign</div>
-          <p>Free-standing, visible from every aisle.</p>
-        <span class="type-go">Open in the studio <span aria-hidden="true">→</span></span></a>
+      <nav class="bt-jump" aria-label="Booth types">
+        <a href="#inline">Inline</a><a href="#corner">Corner</a><a href="#peninsula">Peninsula</a><a href="#island">Island</a>
+      </nav>
+      <div class="bt-rows">
+      <article class="bt-row" id="inline">
+        <a class="bt-media" href="/app/#type-inline" aria-label="Open a inline booth in the studio">
+          <img src="/img/type-inline.jpg" width="1600" height="1000" loading="lazy" alt="A inline booth in the BoothVue 3D studio">
+          <span class="bt-plan" aria-hidden="true"><svg viewBox="0 0 160 110" aria-hidden="true"><rect x="12" y="12" width="136" height="86" rx="4" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="4 4"/><path d="M12 98V12h136v86" fill="none" stroke="currentColor" stroke-width="7"/></svg></span>
+        </a>
+        <div class="bt-copy">
+          <div class="bt-num" aria-hidden="true">01</div>
+          <h3>Inline</h3>
+          <div class="bt-badges"><span class="bt-open">1 open side</span><span>Back wall + 2 side partitions</span></div>
+          <dl class="bt-facts">
+            <div><dt>Typical sizes (ft)</dt><dd><ul class="bt-sizes"><li>10 × 10</li><li>10 × 20</li><li>10 × 30</li></ul></dd></div>
+            <div><dt>Best for</dt><dd>First shows, tight budgets and product launches in a row of exhibitors.</dd></div>
+            <div><dt>Designer tip</dt><dd>Put your logo high on the back wall: it is the one surface every passer-by sees.</dd></div>
+          </dl>
+          <a class="btn btn-primary" href="/app/#type-inline">Design a inline booth</a>
+        </div>
+      </article>
+      <article class="bt-row bt-flip" id="corner">
+        <a class="bt-media" href="/app/#type-corner" aria-label="Open a corner booth in the studio">
+          <img src="/img/type-corner.jpg" width="1600" height="1000" loading="lazy" alt="A corner booth in the BoothVue 3D studio">
+          <span class="bt-plan" aria-hidden="true"><svg viewBox="0 0 160 110" aria-hidden="true"><rect x="12" y="12" width="136" height="86" rx="4" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="4 4"/><path d="M12 98V12h136" fill="none" stroke="currentColor" stroke-width="7"/></svg></span>
+        </a>
+        <div class="bt-copy">
+          <div class="bt-num" aria-hidden="true">02</div>
+          <h3>Corner</h3>
+          <div class="bt-badges"><span class="bt-open">2 open sides</span><span>Back wall + 1 side partition</span></div>
+          <dl class="bt-facts">
+            <div><dt>Typical sizes (ft)</dt><dd><ul class="bt-sizes"><li>10 × 10</li><li>10 × 20</li><li>20 × 20</li></ul></dd></div>
+            <div><dt>Best for</dt><dd>Catching traffic from two aisles at the end of a row.</dd></div>
+            <div><dt>Designer tip</dt><dd>Angle the counter toward the corner so it greets both aisles at once.</dd></div>
+          </dl>
+          <a class="btn btn-primary" href="/app/#type-corner">Design a corner booth</a>
+        </div>
+      </article>
+      <article class="bt-row" id="peninsula">
+        <a class="bt-media" href="/app/#type-peninsula" aria-label="Open a peninsula booth in the studio">
+          <img src="/img/type-peninsula.jpg" width="1600" height="1000" loading="lazy" alt="A peninsula booth in the BoothVue 3D studio">
+          <span class="bt-plan" aria-hidden="true"><svg viewBox="0 0 160 110" aria-hidden="true"><rect x="12" y="12" width="136" height="86" rx="4" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="4 4"/><path d="M12 12h136" fill="none" stroke="currentColor" stroke-width="7"/></svg></span>
+        </a>
+        <div class="bt-copy">
+          <div class="bt-num" aria-hidden="true">03</div>
+          <h3>Peninsula</h3>
+          <div class="bt-badges"><span class="bt-open">3 open sides</span><span>Back wall only</span></div>
+          <dl class="bt-facts">
+            <div><dt>Typical sizes (ft)</dt><dd><ul class="bt-sizes"><li>20 × 20</li><li>20 × 30</li><li>20 × 40</li></ul></dd></div>
+            <div><dt>Best for</dt><dd>Bigger brands that want presence without a full island.</dd></div>
+            <div><dt>Designer tip</dt><dd>Use the back wall as a hero graphic and keep the front open for walk-in demos.</dd></div>
+          </dl>
+          <a class="btn btn-primary" href="/app/#type-peninsula">Design a peninsula booth</a>
+        </div>
+      </article>
+      <article class="bt-row bt-flip" id="island">
+        <a class="bt-media" href="/app/#type-island" aria-label="Open a island booth in the studio">
+          <img src="/img/type-island.jpg" width="1600" height="1000" loading="lazy" alt="A island booth in the BoothVue 3D studio">
+          <span class="bt-plan" aria-hidden="true"><svg viewBox="0 0 160 110" aria-hidden="true"><rect x="12" y="12" width="136" height="86" rx="4" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="4 4"/><path d="M58 55h44" fill="none" stroke="currentColor" stroke-width="7"/><circle cx="80" cy="55" r="22" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3"/></svg></span>
+        </a>
+        <div class="bt-copy">
+          <div class="bt-num" aria-hidden="true">04</div>
+          <h3>Island</h3>
+          <div class="bt-badges"><span class="bt-open">4 open sides</span><span>Center wall + hanging sign</span></div>
+          <dl class="bt-facts">
+            <div><dt>Typical sizes (ft)</dt><dd><ul class="bt-sizes"><li>20 × 20</li><li>30 × 30</li><li>40 × 40</li></ul></dd></div>
+            <div><dt>Best for</dt><dd>Flagship presence, visible from every aisle on the floor.</dd></div>
+            <div><dt>Designer tip</dt><dd>A hanging sign is your beacon: it is how people find you from across the hall.</dd></div>
+          </dl>
+          <a class="btn btn-primary" href="/app/#type-island">Design a island booth</a>
+        </div>
+      </article>
       </div>
     </div>
   </section>
