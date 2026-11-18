@@ -47,7 +47,8 @@
       const data = designForSave(), s = JSON.stringify(data);
       if (s === cloud.lastSaved) return;
       setStatus('Saving…', 'busy');
-      const { error } = await table().update({ data, updated_at: new Date().toISOString() }).eq('id', cloud.id);
+      // A new AI image also becomes the design's picture in Your Designs, without waiting for a manual save.
+      const { error } = await table().update({ data, ...(S.aiThumb ? { thumb: S.aiThumb } : {}), updated_at: new Date().toISOString() }).eq('id', cloud.id);
       if (error) { setStatus('Not saved', 'err'); return; }
       cloud.lastSaved = s; setStatus('Saved', 'ok');
     }, 20000);
