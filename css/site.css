@@ -820,3 +820,34 @@ button.nav-acct:hover { background: rgba(255,255,255,.12); color: #fff; }
 .hero-reel button.on { color: #fff; background: #2563eb; border-color: #2563eb; }
 .hero-stage { font: 500 11px "IBM Plex Mono", var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: #fff; background: rgba(8,13,28,.75); border-radius: 999px; padding: 8px 12px; opacity: 0; transition: opacity .4s; }
 .hero-stage.on { opacity: 1; }
+
+/* Sample reels: 3D design, then AI image, then AI video, for several brands */
+.reels { margin-top: clamp(40px, 6vw, 72px); }
+.reels-head { max-width: 640px; margin: 0 auto 28px; text-align: center; display: grid; gap: 10px; }
+.reels-head h3 { font-size: clamp(26px, 3.6vw, 38px); line-height: 1.15; text-wrap: balance; margin: 0; }
+.reels-head p { margin: 0; font-family: var(--font-display); font-size: 16px; line-height: 1.55; opacity: .82; }
+.reel-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.reel-card { margin: 0; min-width: 0; }
+.reel-frame { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #0b0f16; }
+.reel-frame img, .reel-frame video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .8s ease; }
+.reel-frame .reel-img:first-child { opacity: 1; }
+.reel-frame .on { opacity: 1; }
+.reel-frame video { z-index: 1; }
+.reel-stage { position: absolute; z-index: 2; left: 12px; bottom: 12px; padding: 6px 11px; border-radius: 999px; background: rgba(8,13,28,.85); color: #fff; font: 500 10.5px "IBM Plex Mono", var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
+.reel-card figcaption { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding: 12px 4px 0; font-family: var(--font-display); }
+.reel-card figcaption b { font-size: 17px; font-weight: 700; }
+.reel-card figcaption span { font-size: 14px; opacity: .72; }
+@media (max-width: 760px) { .reel-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* AI Render levels, step 5 */
+.levels { margin: 0 auto clamp(24px, 4vw, 36px); }
+.levels-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; margin-bottom: 14px; font-family: var(--font-display); }
+.levels-head b { font-size: 20px; color: #fff; }
+.levels-head span { color: rgba(243,246,252,.72); font-size: 15px; }
+.levels-row { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; counter-reset: none; }
+.levels-row li { padding: 18px 20px; border-radius: var(--r); background: rgba(255,255,255,.06); border: 1px solid rgba(160,190,255,.2); }
+.levels-row li:last-child { background: linear-gradient(135deg, rgba(37,99,235,.35), rgba(79,140,255,.12)); border-color: rgba(120,165,255,.45); }
+.levels-row small { font: 500 10.5px "IBM Plex Mono", var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: #8fb6ff; }
+.levels-row h3 { color: #fff; font-size: 18px; margin: 6px 0 6px; }
+.levels-row p { margin: 0; color: rgba(243,246,252,.75); font-family: var(--font-display); font-size: 14.5px; line-height: 1.5; }
+@media (max-width: 760px) { .levels-row { grid-template-columns: minmax(0, 1fr); } }

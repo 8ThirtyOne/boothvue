@@ -1,5 +1,5 @@
 // AI Render: turns the customer's booth into ultra photo-realistic images and videos with fal.ai.
-//   POST /api/render { kind: "image"|"video", mode?: "upgrade"|"faithful", image?: <base64 JPEG>, sourceUrl?: <one of our stored AI images>,
+//   POST /api/render { kind: "image"|"video", mode?: "faithful"|"enhance"|"upgrade" (stay true / enhance / wow me), image?: <base64 JPEG>, sourceUrl?: <one of our stored AI images>,
 //                      direction?: string, brand?: { company, tagline, colors[], bg, font, size, type, tone, style },
 //                      logos?: [<base64 JPEG>] the customer's logo artwork, up to 2 }  -> { id }
 // Every prompt ends with the brand lock (see brandLock): logo, typeface and colors are reproduced exactly, in every mode.
@@ -77,6 +77,20 @@ const PROMPTS = {
     dir ? `Photo style: ${dir}` : "",
     brandLock(b, b.logoCount),
   ].filter(Boolean).join(" "),
+  // Enhance: the middle level. The customer's own booth, made more polished, with some freedom on finishes and details.
+  enhance: (dir, b) => [
+    "You are a top exhibit designer and an architectural photographer.",
+    `The attached image is a 3D design of a trade show booth${b.company ? ` for "${b.company}"` : ""}${b.tagline ? `, tagline "${b.tagline}"` : ""}${b.size ? `, a ${b.size}${b.type ? " " + b.type : ""} booth` : ""}. Photograph an enhanced, premium build of THIS design.`,
+    "Keep the design itself: the same footprint, structures and their shapes, wall and canopy positions, signs, counter, screens, furniture positions and camera angle. A visitor who saw the 3D design must instantly recognize this exact booth.",
+    "You may enhance how it is finished: premium real materials, crisp integrated LED edge lighting and accent lighting, richer brand graphics and photography on the existing walls and screens, a refined platform floor, and small touches such as plants, literature, product displays and real people.",
+    "Do not add or remove walls, towers, canopies, arches, hanging signs or rooms, and do not change the booth's shape or layout.",
+    b.colors.length ? `Use only the brand colors ${b.colors.join(", ")} as the palette, with neutral white surfaces where the design needs relief.` : "Use only the design's colors as the brand palette.",
+    "Make it an ultra photo-realistic, magazine-quality professional photograph in a real convention center with truss lighting and neighboring exhibits softly out of focus, with realistic materials, reflections, shadows and depth of field.",
+    "Absolutely no 3D-render or CGI look, no mannequins or placeholder figures, no distorted or misspelled text.",
+    b.style || b.tone ? `Match this brand's real look${b.tone ? ` (tone: ${b.tone})` : ""}${b.style ? `: ${b.style}` : ""}.` : "",
+    dir ? `Photo style: ${dir}` : "",
+    brandLock(b, b.logoCount),
+  ].filter(Boolean).join(" "),
   faithful: (dir, b = {}) => [
     "Transform this computer-generated 3D render into a real photograph of a trade show booth, taken with a professional camera at a real convention center.",
     "The result must not look like a 3D render: replace every flat, synthetic surface with real materials, such as printed tension fabric graphics, brushed aluminum frames, real carpet texture, glossy laminate, wood grain and glass, with real reflections, soft shadows and natural light falloff.",
@@ -148,7 +162,7 @@ export default async function handler(req, res) {
       }
       const { kind, image, sourceUrl, direction, brand } = req.body || {};
       const logos = (Array.isArray(req.body?.logos) ? req.body.logos : []).filter(l => typeof l === "string" && l.length > 200 && l.length < 500_000 && /^[A-Za-z0-9+/=]+$/.test(l)).slice(0, 2);
-      const mode = req.body?.mode === "faithful" ? "faithful" : "upgrade";
+      const mode = ["faithful", "enhance"].includes(req.body?.mode) ? req.body.mode : "upgrade";
       if (!MODELS[kind]) return res.status(400).json({ code: "bad_request", message: "Choose image or video." });
       const fromPhoto = kind === "video" && ownStoredImage(sourceUrl, user.id);
       if (!fromPhoto && (typeof image !== "string" || image.length < 1000 || image.length > 3_000_000)) return res.status(400).json({ code: "bad_request", message: "The current view couldn't be captured. Try again." });

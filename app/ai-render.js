@@ -4,7 +4,7 @@
   const auth = window.bvAuth;
   if (!auth) return; // not on the hosted site: keep the preview
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-  const live = { items: [], polling: new Map(), posters: new Map(), stamps: new Map(), loaded: false, mode: 'upgrade' };
+  const live = { items: [], polling: new Map(), posters: new Map(), stamps: new Map(), loaded: false, mode: 'enhance' };
   const brandInfo = () => {
     let size = '', type = '';
     try { size = getSZ().lbl; type = (BOOTH_TYPES[S.boothType] || '').toString(); } catch {}
@@ -212,8 +212,9 @@
     w.innerHTML = `<div class="gen-top"><p style="margin:0;font-size:13px;color:var(--fg-muted);max-width:52ch;line-height:1.5"><b style="color:var(--fg)">AI Render photographs your finished design.</b> Frame the view you want in 3D, choose a style, then generate a photo-realistic image (1 image credit) or a 10-second video (1 video credit). To change the design itself, use <b style="color:var(--fg)">AI Build</b> or edit it by hand.</p>
         <div class="gen-credits"><div class="gen-chip"><b id="gen-img-left">${c.img} / ${c.imgTotal}</b><span>Images left</span></div><div class="gen-chip"><b id="gen-vid-left">${c.vid} / ${c.vidTotal}</b><span>Videos left</span></div></div></div>
       <div class="gen-mode" role="radiogroup" aria-label="Render style">
-        <div class="gen-mode-btn" data-mode="upgrade" role="radio" tabindex="0"><b>Concept Upgrade</b><span>AI redesigns a much more enhanced, premium version of your booth, then photographs it. Expect a big step up from your 3D model.</span></div>
-        <div class="gen-mode-btn" data-mode="faithful" role="radio" tabindex="0"><b>Faithful to My Design</b><span>Keeps your design exactly and makes it look real</span></div>
+        <div class="gen-mode-btn" data-mode="faithful" role="radio" tabindex="0"><small>Level 1</small><b>Stay True to My Design</b><span>Your booth exactly as designed, made to look like a real photo.</span></div>
+        <div class="gen-mode-btn" data-mode="enhance" role="radio" tabindex="0"><small>Level 2</small><b>Enhance My Design</b><span>Same booth and layout, with premium finishes, lighting and graphics.</span></div>
+        <div class="gen-mode-btn" data-mode="upgrade" role="radio" tabindex="0"><small>Level 3</small><b>Wow Me</b><span>AI reimagines it as an award-winning flagship. Expect a big leap from your 3D model.</span></div>
       </div>
       <div class="gen-styles" role="group" aria-label="Art direction styles">${STYLES.map(s => `<div class="gen-style" role="button" tabindex="0" data-style="${s.id}">${s.name}</div>`).join('')}</div>
       <textarea class="gen-dir" id="gen-dir" rows="3" aria-label="Art direction" placeholder="Art direction (optional), e.g. busy show hours, warm evening light"></textarea>

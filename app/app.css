@@ -536,7 +536,8 @@ details.sec > .ss > .ss-label { display: none; }
 .gen-wait.failed { color: #c2410c; background: var(--panel); }
 @media (prefers-reduced-motion: no-preference) { .gen-wait:not(.failed) { background-size: 200% 200%; animation: gen-stripes 1.2s linear infinite; } }
 @keyframes gen-stripes { to { background-position: 28px 0; } }
-.gen-mode { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.gen-mode { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.gen-mode-btn small { font: 600 10px var(--font-ui); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
 .gen-mode-btn { display: grid; gap: 3px; text-align: left; padding: 10px 12px; border-radius: var(--r-lg); border: 1.5px solid var(--border); background: var(--panel); color: var(--fg); cursor: pointer; font: 12px/1.4 var(--font-ui); }
 .gen-mode-btn b { font-size: 13px; font-weight: 700; }
 .gen-mode-btn span { color: var(--fg-muted); }
