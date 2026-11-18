@@ -34,7 +34,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display&family=IBM+Plex+Mono:wght@500&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="/css/site.css?v=28">
+<link rel="stylesheet" href="/css/site.css?v=29">
 <link rel="stylesheet" href="/css/footer.css?v=2">
 
 <header class="nav">
@@ -99,7 +99,7 @@
               show(v, false); v.pause(); show(sAi, false); show(s3d, true); label('1 · Your 3D design'); await wait(2800); if (me !== run) return;
               show(sAi, true); label('2 · AI Render image'); await wait(2600); if (me !== run) return;
               label('3 · One click: 10-sec AI video');
-              const done = playClip('/img/step5-ai.mp4?v=2', '/img/step5-ai.jpg'); await wait(400); show(s3d, false); show(sAi, false); await done;
+              const done = playClip('/img/step5-ai.mp4?v=3', '/img/step5-ai.jpg'); await wait(400); show(s3d, false); show(sAi, false); await done;
             }
             if (me !== run) return; k = 1 - k;
           }
@@ -209,9 +209,63 @@
           <figcaption><span class="real-tag">Photo-realistic image · BoothVue</span><span>Made from the 3D design on this site with one click of AI Render.</span></figcaption>
         </figure>
         <figure class="real-item real-vid">
-          <video src="/img/step5-ai.mp4?v=2" poster="/img/step5-ai.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Video clip of the photo-realistic BoothVue booth with visitors walking through"></video>
+          <video src="/img/step5-ai.mp4?v=3" poster="/img/step5-ai.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Video clip of the photo-realistic BoothVue booth with visitors walking through"></video>
           <figcaption><span class="real-tag">Video clip · BoothVue</span><span>The same image, animated into a 10-second walk-through with one more click.</span></figcaption>
         </figure>
+      </div>
+
+      <div class="reels">
+        <div class="reels-head">
+          <div class="eyebrow">Samples</div>
+          <h3>Same workflow, any brand.</h3>
+          <p>Each of these started as a plain 3D design in BoothVue. One click made the photo-realistic image, and one more made the 10-second video.</p>
+        </div>
+        <div class="reel-grid">
+        <figure class="reel-card">
+          <div class="browser"><div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="reel-frame">
+              <img class="reel-img on" src="/img/step5-view.jpg" width="1600" height="1000" loading="lazy" alt="The BoothVue booth as a 3D design in BoothVue">
+              <img class="reel-img" src="/img/step5-ai.jpg" width="1600" height="1000" loading="lazy" alt="The BoothVue booth as a photo-realistic AI image on a show floor">
+              <video src="/img/step5-ai.mp4?v=3" muted playsinline preload="none" aria-hidden="true"></video>
+              <span class="reel-stage" aria-hidden="true">1 · 3D design</span>
+            </div>
+          </div>
+          <figcaption><b>BoothVue</b><span>Software · 30×30 island</span></figcaption>
+        </figure>
+        <figure class="reel-card">
+          <div class="browser"><div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="reel-frame">
+              <img class="reel-img on" src="/img/sample-corvana-3d.jpg" width="1600" height="1000" loading="lazy" alt="The Corvana booth as a 3D design in BoothVue">
+              <img class="reel-img" src="/img/sample-corvana-ai.jpg" width="1600" height="1000" loading="lazy" alt="The Corvana booth as a photo-realistic AI image on a show floor">
+              <video src="/img/sample-corvana-ai.mp4" muted playsinline preload="none" aria-hidden="true"></video>
+              <span class="reel-stage" aria-hidden="true">1 · 3D design</span>
+            </div>
+          </div>
+          <figcaption><b>Corvana</b><span>Electric vehicles · 10×10 canopy</span></figcaption>
+        </figure>
+        <figure class="reel-card">
+          <div class="browser"><div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="reel-frame">
+              <img class="reel-img on" src="/img/sample-brewline-3d.jpg" width="1600" height="1000" loading="lazy" alt="The Brewline Coffee booth as a 3D design in BoothVue">
+              <img class="reel-img" src="/img/sample-brewline-ai.jpg" width="1600" height="1000" loading="lazy" alt="The Brewline Coffee booth as a photo-realistic AI image on a show floor">
+              <video src="/img/sample-brewline-ai.mp4" muted playsinline preload="none" aria-hidden="true"></video>
+              <span class="reel-stage" aria-hidden="true">1 · 3D design</span>
+            </div>
+          </div>
+          <figcaption><b>Brewline Coffee</b><span>Food &amp; beverage · 20×20 lounge</span></figcaption>
+        </figure>
+        <figure class="reel-card">
+          <div class="browser"><div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="reel-frame">
+              <img class="reel-img on" src="/img/sample-ledgerline-3d.jpg" width="1600" height="1000" loading="lazy" alt="The Ledgerline booth as a 3D design in BoothVue">
+              <img class="reel-img" src="/img/sample-ledgerline-ai.jpg" width="1600" height="1000" loading="lazy" alt="The Ledgerline booth as a photo-realistic AI image on a show floor">
+              <video src="/img/sample-ledgerline-ai.mp4" muted playsinline preload="none" aria-hidden="true"></video>
+              <span class="reel-stage" aria-hidden="true">1 · 3D design</span>
+            </div>
+          </div>
+          <figcaption><b>Ledgerline</b><span>Fintech · 10×20 demo booth</span></figcaption>
+        </figure>
+        </div>
       </div>
       <div class="s5-more"><a class="btn btn-primary" href="/workflow/">See the full workflow</a></div>
 
@@ -329,6 +383,7 @@
     </div>
   </section>
 </main>
+<script src="/js/reels.js?v=1"></script>
 
 
 <script>
