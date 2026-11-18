@@ -96,8 +96,8 @@ const PROMPTS = {
   ].filter(Boolean).join(" "),
   video: (dir, fromPhoto) => [
     fromPhoto
-      ? "Bring this photograph to life as real camera footage: a smooth, slow cinematic camera move toward the trade show booth at a busy convention center."
-      : "Real camera footage, not a 3D animation: a smooth, slow cinematic camera move toward this trade show booth at a busy, real convention center.",
+      ? "Bring this photograph to life as real camera footage from a locked-off tripod: the camera does not move, pan or zoom, and the framing stays exactly as in the photo, at a busy convention center."
+      : "Real camera footage, not a 3D animation, from a locked-off tripod: the camera does not move, pan or zoom, and the framing stays exactly as in the first frame, at a busy, real convention center.",
     "Real people in business attire stroll past at a relaxed, natural walking pace, in real time and not sped up or time-lapsed; a few stop to talk with staff at the booth. Movement is calm and lifelike, with no rushing or jerky motion. LED lighting and screens glow naturally.",
     "Keep the booth's design, structures, colors, logos and wording exactly as they are.",
     "STRUCTURE LOCK, absolute: the booth is a finished, static build. Nothing is built, added, extended or removed during the clip: no new walls, panels, arches, towers, signs, screens or furniture appear, and the existing ones never grow, slide, unfold or change shape. Only the camera and the people move.",
@@ -167,7 +167,7 @@ export default async function handler(req, res) {
       const prompt = kind === "video" ? PROMPTS.video(dir, fromPhoto) : mode === "faithful" && !banana ? PROMPTS.keep(dir, b) : PROMPTS[mode](dir, b);
       const imageUrl = fromPhoto ? sourceUrl : `data:image/jpeg;base64,${image}`;
       const input = kind === "video"
-        ? { prompt, image_url: imageUrl, duration: "10", negative_prompt: "booth being built, structure growing, new walls appearing, extending panels, construction, unfolding, morphing architecture, changing booth layout, distorted logo, warped text, blur, time-lapse", cfg_scale: 0.7 }
+        ? { prompt, image_url: imageUrl, duration: "10", negative_prompt: "camera movement, zoom, pan, dolly, booth being built, structure growing, new walls appearing, extending panels, construction, unfolding, morphing architecture, changing booth layout, distorted logo, warped text, blur, time-lapse", cfg_scale: 0.7 }
         : banana
           ? { prompt, image_urls: [imageUrl, ...logos.map(l => `data:image/jpeg;base64,${l}`)], num_images: 1, output_format: "jpeg", ...(model.includes("pro") ? { resolution: IMAGE_RESOLUTION } : { limit_generations: true }) }
           : { prompt, image_url: imageUrl, output_format: "jpeg", guidance_scale: 4, num_images: 1 };
