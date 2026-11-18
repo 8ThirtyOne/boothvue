@@ -99,7 +99,7 @@
               show(v, false); v.pause(); show(sAi, false); show(s3d, true); label('1 · Your 3D design'); await wait(2800); if (me !== run) return;
               show(sAi, true); label('2 · AI Render image'); await wait(2600); if (me !== run) return;
               label('3 · One click: 10-sec AI video');
-              const done = playClip('/img/step5-ai.mp4', '/img/step5-ai.jpg'); await wait(400); show(s3d, false); show(sAi, false); await done;
+              const done = playClip('/img/step5-ai.mp4?v=2', '/img/step5-ai.jpg'); await wait(400); show(s3d, false); show(sAi, false); await done;
             }
             if (me !== run) return; k = 1 - k;
           }
@@ -209,7 +209,7 @@
           <figcaption><span class="real-tag">Photo-realistic image · BoothVue</span><span>Made from the 3D design on this site with one click of AI Render.</span></figcaption>
         </figure>
         <figure class="real-item real-vid">
-          <video src="/img/step5-ai.mp4" poster="/img/step5-ai.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Video clip of the photo-realistic BoothVue booth with visitors walking through"></video>
+          <video src="/img/step5-ai.mp4?v=2" poster="/img/step5-ai.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Video clip of the photo-realistic BoothVue booth with visitors walking through"></video>
           <figcaption><span class="real-tag">Video clip · BoothVue</span><span>The same image, animated into a 10-second walk-through with one more click.</span></figcaption>
         </figure>
       </div>
