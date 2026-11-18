@@ -68,27 +68,34 @@
     const img = await loadImg(url, true), W = img.naturalWidth, H = img.naturalHeight;
     const cv = document.createElement('canvas'); cv.width = W; cv.height = H; const x = cv.getContext('2d', { willReadFrequently: true }); x.drawImage(img, 0, 0);
     for (const s of plan) {
-      const q = s.quad.map(p => [p[0] * W, p[1] * H]), cx = q.reduce((t, p) => t + p[0], 0) / 4, cy = q.reduce((t, p) => t + p[1], 0) / 4;
+      const full = s.quad.map(p => [p[0] * W, p[1] * H]), map = squareToQuad(full);
+      const lw = s.img.naturalWidth || 300, lh = s.img.naturalHeight || 300, k = Math.min(4, 1024 / Math.max(lw, lh));
+      const L = document.createElement('canvas'); L.width = Math.max(2, Math.round(lw * k)); L.height = Math.max(2, Math.round(lh * k));
+      const lx = L.getContext('2d', { willReadFrequently: true }); lx.drawImage(s.img, 0, 0, L.width, L.height);
+      // The part of the file that actually has ink (a tall "8" in a square file is much narrower than the file).
+      let u0 = 0, v0 = 0, u1 = 1, v1 = 1;
+      try { const d = lx.getImageData(0, 0, L.width, L.height).data; let a = L.width, b = L.height, c2 = -1, e = -1;
+        for (let yy = 0; yy < L.height; yy += 2) for (let xx = 0; xx < L.width; xx += 2) if (d[(yy * L.width + xx) * 4 + 3] > 24) { if (xx < a) a = xx; if (xx > c2) c2 = xx; if (yy < b) b = yy; if (yy > e) e = yy; }
+        if (c2 > a && e > b) { u0 = a / L.width; u1 = (c2 + 2) / L.width; v0 = b / L.height; v1 = (e + 2) / L.height; } } catch {}
+      const q = [map(u0, v0), map(u1, v0), map(u1, v1), map(u0, v1)], cx = q.reduce((t, p) => t + p[0], 0) / 4, cy = q.reduce((t, p) => t + p[1], 0) / 4;
       const grow = k => q.map(p => [cx + (p[0] - cx) * k, cy + (p[1] - cy) * k]);
       const size = Math.max(...q.map(p => Math.hypot(p[0] - cx, p[1] - cy)));
       // The surface color just outside each edge of the logo (the middle value per edge, so stray pixels don't count).
-      const ring = grow(1.09), edge = e => { const px = [];
+      const ring = grow(1.16), edge = e => { const px = [];
         for (let t = 1; t < 12; t++) { const a = ring[e], b = ring[(e + 1) % 4], sx = Math.round(a[0] + (b[0] - a[0]) * t / 12), sy = Math.round(a[1] + (b[1] - a[1]) * t / 12);
           if (sx >= 0 && sy >= 0 && sx < W && sy < H) px.push(x.getImageData(sx, sy, 1, 1).data); }
         const mid = ch => { const v = px.map(p => p[ch]).sort((m, n) => m - n); return v.length ? v[v.length >> 1] : 255; };
         return `rgb(${mid(0)},${mid(1)},${mid(2)})`; };
       const [top, right, bottom, left] = [edge(0), edge(1), edge(2), edge(3)];
       // Cover whatever the AI drew there, keeping the surface's own light falloff: left-to-right, then top-to-bottom blended in.
-      const cover = grow(1.035), path = () => { x.beginPath(); cover.forEach((p, i) => i ? x.lineTo(p[0], p[1]) : x.moveTo(p[0], p[1])); x.closePath(); };
+      const cover = grow(1.08), path = () => { x.beginPath(); cover.forEach((p, i) => i ? x.lineTo(p[0], p[1]) : x.moveTo(p[0], p[1])); x.closePath(); };
       const mp = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], L0 = mp(q[0], q[3]), R0 = mp(q[1], q[2]), T0 = mp(q[0], q[1]), B0 = mp(q[3], q[2]);
       x.save(); x.filter = `blur(${Math.max(1.5, size * .012).toFixed(1)}px)`;
       let g = x.createLinearGradient(L0[0], L0[1], R0[0], R0[1]); g.addColorStop(0, left); g.addColorStop(1, right); x.fillStyle = g; path(); x.fill();
       g = x.createLinearGradient(T0[0], T0[1], B0[0], B0[1]); g.addColorStop(0, top); g.addColorStop(1, bottom); x.globalAlpha = .5; x.fillStyle = g; path(); x.fill();
       x.restore();
       // The real logo, warped onto the spot in small triangles.
-      const lw = s.img.naturalWidth || 300, lh = s.img.naturalHeight || 300, k = Math.min(4, 1024 / Math.max(lw, lh));
-      const L = document.createElement('canvas'); L.width = Math.max(2, Math.round(lw * k)); L.height = Math.max(2, Math.round(lh * k)); L.getContext('2d').drawImage(s.img, 0, 0, L.width, L.height);
-      const map = squareToQuad(q), N = 14;
+      const N = 14;
       const tri = (s0, s1, s2, d0, d1, d2) => {
         const den = (s1[0] - s0[0]) * (s2[1] - s0[1]) - (s2[0] - s0[0]) * (s1[1] - s0[1]); if (!den) return;
         const a = ((d1[0] - d0[0]) * (s2[1] - s0[1]) - (d2[0] - d0[0]) * (s1[1] - s0[1])) / den, b = ((d1[1] - d0[1]) * (s2[1] - s0[1]) - (d2[1] - d0[1]) * (s1[1] - s0[1])) / den;
