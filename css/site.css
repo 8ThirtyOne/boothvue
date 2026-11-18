@@ -876,3 +876,5 @@ button.nav-acct:hover { background: rgba(255,255,255,.12); color: #fff; }
 #step-5 .s5-head > div:last-child { justify-items: start; }
 #step-5 .money-n { font-size: clamp(36px, 4.4vw, 52px); }
 #step-5 .money h3 { font-size: clamp(18px, 1.8vw, 22px); }
+.levels-row small { font-size: 13px; }
+.levels-row h3 { font-size: clamp(20px, 2vw, 24px); margin-top: 8px; }
