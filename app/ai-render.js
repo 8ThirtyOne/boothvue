@@ -95,12 +95,12 @@
       g = x.createLinearGradient(T0[0], T0[1], B0[0], B0[1]); g.addColorStop(0, top); g.addColorStop(1, bottom); x.globalAlpha = .5; x.fillStyle = g; path(); x.fill();
       x.restore();
       // The real logo, warped onto the spot in small triangles.
-      const N = 14;
+      const N = 8;
       const tri = (s0, s1, s2, d0, d1, d2) => {
         const den = (s1[0] - s0[0]) * (s2[1] - s0[1]) - (s2[0] - s0[0]) * (s1[1] - s0[1]); if (!den) return;
         const a = ((d1[0] - d0[0]) * (s2[1] - s0[1]) - (d2[0] - d0[0]) * (s1[1] - s0[1])) / den, b = ((d1[1] - d0[1]) * (s2[1] - s0[1]) - (d2[1] - d0[1]) * (s1[1] - s0[1])) / den;
         const c2 = ((d2[0] - d0[0]) * (s1[0] - s0[0]) - (d1[0] - d0[0]) * (s2[0] - s0[0])) / den, d = ((d2[1] - d0[1]) * (s1[0] - s0[0]) - (d1[1] - d0[1]) * (s2[0] - s0[0])) / den;
-        const mx = (d0[0] + d1[0] + d2[0]) / 3, my = (d0[1] + d1[1] + d2[1]) / 3, out = p => [p[0] + Math.sign(p[0] - mx) * .6, p[1] + Math.sign(p[1] - my) * .6];   // tiny overlap hides seams
+        const mx = (d0[0] + d1[0] + d2[0]) / 3, my = (d0[1] + d1[1] + d2[1]) / 3, out = p => { const dd = Math.hypot(p[0] - mx, p[1] - my) || 1; return [p[0] + (p[0] - mx) / dd * 1.6, p[1] + (p[1] - my) / dd * 1.6]; };   // each piece overlaps its neighbours, so no seams show
         const [o0, o1, o2] = [out(d0), out(d1), out(d2)];
         x.save(); x.beginPath(); x.moveTo(o0[0], o0[1]); x.lineTo(o1[0], o1[1]); x.lineTo(o2[0], o2[1]); x.closePath(); x.clip();
         x.transform(a, b, c2, d, d0[0] - a * s0[0] - c2 * s0[1], d0[1] - b * s0[0] - d * s0[1]); x.drawImage(L, 0, 0); x.restore();
