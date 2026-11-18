@@ -775,3 +775,10 @@ html.embed #files-tray { display: none; }
 .concept-note { padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(217,150,30,.5); background: rgba(245,180,60,.12); font-size: 12.5px; line-height: 1.5; color: var(--fg); }
 .concept-note b { font-weight: 700; }
 #specs-panel > .concept-note { margin: 0 0 4px; }
+
+.acct-refund { margin-top: 14px; text-align: center; font-size: 12px; color: var(--fg-muted); }
+.acct-refund-link { background: none; border: 0; padding: 2px 4px; font: inherit; color: var(--fg-muted); opacity: .7; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.acct-refund-link:hover { opacity: 1; color: var(--fg); }
+.acct-refund p { margin: 0 0 8px; line-height: 1.5; }
+.acct-refund-btns { display: flex; justify-content: center; gap: 8px; }
+.acct-refund-yes { color: #b42318; border-color: rgba(180,35,24,.4); }

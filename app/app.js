@@ -3676,11 +3676,37 @@ function openAccountLive() {
     </div>
     ${r ? `<div class="gen-credits">${r.ai_total ? `<div class="gen-chip"><b>${r.ai_total - r.ai_used} / ${r.ai_total}</b><span>AI Build actions left</span></div>` : ''}<div class="gen-chip"><b>${r.images_total - r.images_used} / ${r.images_total}</b><span>Images left</span></div><div class="gen-chip"><b>${r.videos_total - r.videos_used} / ${r.videos_total}</b><span>Videos left</span></div></div><button class="btn btn-primary" id="acct-more">Buy extras: AI Build actions, images, videos</button>` : '<p style="font-size:13px;color:var(--fg-muted);line-height:1.5">Buy a pass with this email to unlock AI features and image and video credits. It shows up here a few seconds after checkout.</p>'}
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${r ? '<button class="btn" id="acct-refresh">Refresh</button>' : '<a class="btn btn-primary" href="/pricing/" style="text-align:center">See passes</a>'}<button class="btn" id="acct-out">Sign out</button></div>
-    <div class="acct-msg" id="acct-msg" aria-live="polite"></div>`;
+    <div class="acct-msg" id="acct-msg" aria-live="polite"></div>
+    ${refundable(r) ? '<div class="acct-refund"><button type="button" class="acct-refund-link" id="acct-refund">Request a refund</button></div>' : ''}`;
   document.getElementById('acct-who').textContent = acct.email;
+  // Self-serve refund: shown only within 48 hours of purchase and before any AI Build or AI Render is used.
+  const rb = document.getElementById('acct-refund');
+  if (rb) rb.onclick = () => {
+    const box = rb.parentElement, price = { week: '$99', month: '$199', year: '$399' }[r.plan] || 'the full price';
+    box.innerHTML = `<p>Refund ${price} and end your pass now? This can't be undone.</p><div class="acct-refund-btns"><button type="button" class="btn btn-sm" id="acct-refund-no">Keep my pass</button><button type="button" class="btn btn-sm acct-refund-yes" id="acct-refund-yes">Yes, refund</button></div>`;
+    document.getElementById('acct-refund-no').onclick = () => openAccount();
+    const yes = document.getElementById('acct-refund-yes');
+    yes.onclick = async () => {
+      yes.disabled = true; yes.textContent = 'Refunding…';
+      try {
+        const token = await window.bvAuth.token();
+        const res = await fetch('/api/refund', { method: 'POST', headers: { Authorization: `Bearer ${token}` } });
+        const d = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(d.message || "The refund couldn't be issued. Email support@boothvue.co.");
+        box.innerHTML = '<p><b>Refunded.</b> Your pass has ended, and Stripe is emailing your refund receipt. It usually reaches your card in 5–10 business days.</p>';
+        await window.bvAuth.refresh();
+      } catch (e) { box.innerHTML = `<p>${String(e.message).replace(/</g, '&lt;')}</p>`; }
+    };
+  };
   const more = document.getElementById('acct-more'); if (more) more.onclick = () => (window.openBuyExtras || window.openGenerate)();
   const rf = document.getElementById('acct-refresh'); if (rf) rf.onclick = async () => { rf.disabled = true; await window.bvAuth.refresh(); };
   document.getElementById('acct-out').onclick = async () => { await window.bvAuth.signOut(); closeModal(); };
+}
+// Matches the Refund Policy and the server check in api/refund.js: 48 hours, no AI used, live or test pass alike.
+function refundable(r) {
+  if (!r || r.refunded_at || !r.starts_at) return false;
+  if (Date.now() - new Date(r.starts_at).getTime() > 48 * 3600 * 1000) return false;
+  return !(r.ai_used > 0 || r.images_used > 0 || r.videos_used > 0);
 }
 function drawAcctBtn() {
   const b = document.getElementById('acct-btn'); if (!b) return;
