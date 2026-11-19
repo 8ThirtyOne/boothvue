@@ -74,7 +74,10 @@ export default async function handler(req, res) {
   if (process.env.STRIPE_AUTOMATIC_TAX === "1") {
     form.set("automatic_tax[enabled]", "true");
     form.set("billing_address_collection", "required");
-    for (let i = 0; form.has(`line_items[${i}][quantity]`); i++) form.set(`line_items[${i}][price_data][tax_behavior]`, "exclusive");
+    for (let i = 0; form.has(`line_items[${i}][quantity]`); i++) {
+      form.set(`line_items[${i}][price_data][tax_behavior]`, "exclusive");
+      form.set(`line_items[${i}][price_data][product_data][tax_code]`, "txcd_10103001"); // SaaS, business use
+    }
   }
 
   try {
