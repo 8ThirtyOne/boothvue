@@ -1054,3 +1054,11 @@ button.nav-acct:hover { background: rgba(255,255,255,.12); color: #fff; }
 .btn.btn-white:hover { transform: translateY(-1px); }
 .btn.btn-primary:active, .btn.btn-ghost:active, .btn.btn-line:active, .btn.btn-white:active { transform: translateY(1px); filter: brightness(.96); }
 @media (prefers-reduced-motion: reduce) { .btn:hover, .btn:active { transform: none !important; } }
+
+/* Phones: headline clearly larger than the intro text; tighter label and intro */
+@media (max-width: 600px) {
+  .hero h1 { font-size: clamp(34px, 9.6vw, 42px); line-height: 1.02; max-width: 12ch; }
+  .page-hero h1 { font-size: clamp(32px, 9vw, 40px); }
+  .hero .lede, .page-hero .lede { font-size: 16px; line-height: 1.5; }
+  .hero .eyebrow, .page-hero .eyebrow { font-size: 11px; letter-spacing: .14em; line-height: 1.5; }
+}
