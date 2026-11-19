@@ -79,7 +79,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .hero-copy { position: relative; z-index: 2; width: 100%; padding-block: calc(70px + clamp(56px, 8vw, 110px)) clamp(56px, 8vw, 110px); }
 .eyebrow { font: 500 12px/1.2 "IBM Plex Mono", var(--font-mono); letter-spacing: .25em; text-transform: uppercase; color: var(--eyebrow); }
 .hero .eyebrow { color: #ffffff; }
-.hero h1 { line-height: 1; font-size: clamp(30px, 4.9vw, 64px); font-weight: 400; margin-top: 14px; max-width: 13ch; }
+.hero h1 { line-height: 1; font-size: clamp(25px, calc(4.9vw - 5px), 59px); font-weight: 400; margin-top: 14px; max-width: 13ch; }
 .hero h1 em { font-style: normal; color: #669dff; }
 .brand, .nav-links a, .nav-signin { white-space: nowrap; }
 @media (max-width: 960px) { .nav-links { display: none; } .nav-signin { margin-left: auto; } }
@@ -433,7 +433,7 @@ a.step:hover h3 { color: var(--accent); }
 .page-hero .crumb { font: 500 12px/1.2 "IBM Plex Mono", var(--font-mono); letter-spacing: .22em; text-transform: uppercase; color: #8fb6ff; display: inline-flex; gap: 10px; align-items: center; }
 .page-hero .crumb a { color: rgba(243,246,252,.6); text-decoration: none; }
 .page-hero .crumb a:hover { color: #fff; }
-.page-hero h1 { font-size: clamp(34px, 5vw, 60px); line-height: 1.06; font-weight: 400; color: #fff; text-wrap: balance; margin: 0; }
+.page-hero h1 { font-size: clamp(29px, calc(5vw - 5px), 55px); line-height: 1.06; font-weight: 400; color: #fff; text-wrap: balance; margin: 0; }
 .page-hero h1 em { font-style: normal; color: #6ea2ff; }
 .page-hero .lede { font-family: "Bricolage Grotesque", var(--font-body); font-weight: 500; font-size: clamp(16px, 1.5vw, 19px); line-height: 1.55; color: rgba(243,246,252,.82); max-width: 54ch; margin: 0; }
 .page-hero .hero-ctas { margin-top: 10px; }
