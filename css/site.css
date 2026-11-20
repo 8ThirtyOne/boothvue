@@ -1168,3 +1168,7 @@ a.size-custom:hover { border-style: solid; }
 .h3l-wrap .h3l-ring { position: absolute; inset: 0; width: auto; height: auto; }
 .h3l-logo { width: 36px; height: 36px; fill: #fff; filter: drop-shadow(0 0 12px rgba(143,182,255,.6)); }
 @media (prefers-reduced-motion: no-preference) { .h3l-logo { animation: h3l-pulse 1.6s ease-in-out infinite; } @keyframes h3l-pulse { 50% { opacity: .6; transform: scale(.92); } } }
+
+/* Top bar links: larger and heavier */
+.nav-links > a, .nav-drop, .nav-signin, .nav-signout { font-size: 15px; font-weight: 800; letter-spacing: -.005em; }
+@media (min-width: 961px) and (max-width: 1100px) { .nav-links > a, .nav-drop, .nav-signin { font-size: 14px; } }
