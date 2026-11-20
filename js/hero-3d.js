@@ -3,7 +3,7 @@
 (() => {
   const hero = document.querySelector(".page-hero.hero-3d"), frame = hero && hero.querySelector(".hero-3d-frame"); if (!frame) return;
   const box = document.createElement("div"); box.className = "hero-3d-load"; box.setAttribute("role", "status");
-  box.innerHTML = '<div class="h3l-in"><span class="h3l-ring" aria-hidden="true"><i></i></span><b>Loading the 3D booth</b><small>Setting up the show floor…</small></div>';
+  box.innerHTML = '<div class="h3l-in"><span class="h3l-wrap" aria-hidden="true"><span class="h3l-ring"><i></i></span><svg class="h3l-logo" viewBox="13 16 156 150"><path d="M128.6 61 81.6 45.8V23.5l73.5 27z"/><path d="M71.9,141.9V23.5L25.8,58.3l-9.5,104,1.5-.5c15.2-9.9,33.5-16.8,53.6-19.6l.6-.2Z"/><path d="M160,56.6l-34.9,12.9v73.8c15.6,3,30,8.5,42.5,15.9l-7.6-102.6Z"/></svg></span><b>Loading the 3D booth</b><small>Setting up the show floor…</small></div>';
   frame.after(box);
   let done = false;
   const finish = () => { if (done) return; done = true; box.classList.add("gone"); setTimeout(() => box.remove(), 900); };

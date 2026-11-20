@@ -1162,3 +1162,9 @@ a.size-custom:hover { border-style: solid; }
 @media (min-width: 861px) and (hover: hover) {
   .hero-ai { left: 28%; width: 72%; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 22%); mask-image: linear-gradient(90deg, transparent 0%, #000 22%); }
 }
+
+/* Loading ring with the BoothVue logo inside */
+.h3l-wrap { position: relative; display: grid; place-items: center; width: 84px; height: 84px; }
+.h3l-wrap .h3l-ring { position: absolute; inset: 0; width: auto; height: auto; }
+.h3l-logo { width: 36px; height: 36px; fill: #fff; filter: drop-shadow(0 0 12px rgba(143,182,255,.6)); }
+@media (prefers-reduced-motion: no-preference) { .h3l-logo { animation: h3l-pulse 1.6s ease-in-out infinite; } @keyframes h3l-pulse { 50% { opacity: .6; transform: scale(.92); } } }
