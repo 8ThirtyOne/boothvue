@@ -3659,11 +3659,12 @@ function openAccountLive() {
           <div class="acct-sent-title">Check your email</div>
           <p>We sent a sign-in link and a sign-in code to <b id="acct-sent-to"></b>. Open the link, or type the code here.</p>
           <p class="acct-sent-small">It can take a minute to arrive. If it isn't in your inbox, check spam or promotions.</p>
+          <p class="acct-sent-small acct-yahoo" hidden>Yahoo and AOL can hold email from new senders for several minutes, or file it under Spam. If nothing arrives, try again with a Gmail, Outlook or work address.</p>
         </div>
         <div class="acct-code"><label for="acct-code">Sign-in code</label><div><input id="acct-code" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="12345678"><button class="btn btn-primary" id="acct-code-go">Sign in</button></div></div>
         <div class="acct-btns"><button class="btn" id="acct-resend" disabled>Send again</button><button class="btn" id="acct-change">Use a different email</button></div>
         <div class="acct-msg" id="acct-msg" aria-live="polite"></div>`;
-      document.getElementById('acct-sent-to').textContent = email;
+      document.getElementById('acct-sent-to').textContent = email; { const y = document.querySelector('.acct-yahoo'); if (y) y.hidden = !/@(yahoo|ymail|rocketmail|aol|aim)\./i.test(email); }
       const resend = document.getElementById('acct-resend'), m2 = document.getElementById('acct-msg');
       let left = 60;
       const tick = () => {
