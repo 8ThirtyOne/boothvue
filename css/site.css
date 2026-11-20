@@ -1315,3 +1315,7 @@ a.size-custom:hover { border-style: solid; }
 section:has(> .wrap > .sizes) { background-color: var(--surface) !important;
   background-image: linear-gradient(rgba(37,99,235,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,.07) 1px, transparent 1px), linear-gradient(rgba(37,99,235,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,.035) 1px, transparent 1px) !important;
   background-size: 96px 96px, 96px 96px, 24px 24px, 24px 24px !important; background-position: center top !important; }
+/* Footer: brighter copyright and concept-only note */
+.site-foot .sf-2, .site-foot .sf-2 a { color: #aeb6c6; }
+.site-foot .sf-2 b { color: #c9d0dd; }
+.site-foot .sf-note { color: #9aa3b5; }
