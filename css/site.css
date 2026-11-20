@@ -1197,3 +1197,8 @@ a.size-custom:hover { border-style: solid; }
 .walk-nav-home a.wn-star span::after { content: " ✦"; color: #ffd977; }
 .walk-nav-home a.wn-star::before { background: linear-gradient(180deg, #4f8cff, #1d4ed8); }
 @media (max-width: 860px) { .walk-nav-home a span { display: inline; } .walk-nav-home a + a::before { display: none; } .walk-nav-home a + a { margin-left: 6px; } }
+
+/* Home hero: label the background video as an AI render */
+.hero-ai-badge { position: absolute; z-index: 3; right: max(20px, env(safe-area-inset-right, 0px)); bottom: 20px; display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 999px; background: rgba(8,13,28,.72); border: 1px solid rgba(143,182,255,.45); color: #fff; font: 600 11px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; pointer-events: none; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.hero-ai-badge span { color: #ffd977; }
+@media (max-width: 600px) { .hero-ai-badge { right: 12px; bottom: 12px; font-size: 9.5px; padding: 5px 10px; } }
