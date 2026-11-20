@@ -1311,3 +1311,7 @@ a.size-custom:hover { border-style: solid; }
 .size-card a.size-chip:hover { background: #fff; border-color: #fff; color: #1d4ed8; }
 .size-card a.size-chip b { font: 800 16.5px var(--font-body); letter-spacing: -.01em; }
 @media (max-width: 600px) { .size-card a.size-chip b { font-size: 14.5px; } }
+/* Standard sizes section: faint blueprint grid behind the cards */
+section:has(> .wrap > .sizes) { background-color: var(--surface) !important;
+  background-image: linear-gradient(rgba(37,99,235,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,.07) 1px, transparent 1px), linear-gradient(rgba(37,99,235,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,.035) 1px, transparent 1px) !important;
+  background-size: 96px 96px, 96px 96px, 24px 24px, 24px 24px !important; background-position: center top !important; }
