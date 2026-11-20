@@ -1202,3 +1202,11 @@ a.size-custom:hover { border-style: solid; }
 .hero-ai-badge { position: absolute; z-index: 3; right: max(20px, env(safe-area-inset-right, 0px)); bottom: 20px; display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 999px; background: rgba(8,13,28,.72); border: 1px solid rgba(143,182,255,.45); color: #fff; font: 600 11px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; pointer-events: none; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .hero-ai-badge span { color: #ffd977; }
 @media (max-width: 600px) { .hero-ai-badge { right: 12px; bottom: 12px; font-size: 9.5px; padding: 5px 10px; } }
+
+/* Home step bar, inverted: dark band, light steps, no connector lines */
+.flow-home { background: #070b16; border-bottom: 1px solid rgba(255,255,255,.06); }
+.flow-home .flow-eyebrow { color: #8fb6ff; }
+.walk-nav-home a + a::before { display: none; }
+.walk-nav-home a { color: rgba(244,247,251,.82); }
+.walk-nav-home a:hover { color: #fff; }
+.walk-nav-home a b { background: #101a33; color: #cfe0ff; border-color: rgba(143,182,255,.45); box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
