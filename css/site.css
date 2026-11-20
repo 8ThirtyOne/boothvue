@@ -1132,3 +1132,18 @@ a.size-chip:hover .fp { background-color: color-mix(in srgb, var(--accent) 30%, 
 .size-grid { padding-top: 8px; }
 a.size-custom { grid-column: 1 / -1; border-style: dashed; border-width: 1.5px; font-family: var(--font-body); }
 a.size-custom:hover { border-style: solid; }
+
+/* Standard sizes on tablets and phones: stack the two cards, more sizes per row, smaller plans */
+@media (max-width: 960px) {
+  .sizes { grid-template-columns: minmax(0, 1fr); }
+  .size-grid { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)) !important; }
+}
+@media (max-width: 600px) {
+  .size-card { padding: 20px 14px 16px; }
+  .size-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 8px !important; }
+  a.size-chip:not(.size-custom) { padding: 12px 4px 9px; }
+  .size-chip .fp { --s: 44px; margin-top: calc(44px - 44px * var(--d)); margin-bottom: 6px; }
+  a.size-chip b { font-size: 13.5px; }
+  .size-chip small { font-size: 10.5px; }
+  .sz-tag { font-size: 8.5px; padding: 2px 6px; }
+}
