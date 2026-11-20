@@ -9,6 +9,13 @@
 import * as T from "three";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { GTAOPass } from "three/addons/postprocessing/GTAOPass.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { VignetteShader } from "three/addons/shaders/VignetteShader.js";
 
 T.ColorManagement.enabled = false;
 
@@ -31,6 +38,7 @@ class SpotLight extends legacyIntensity(T.SpotLight) {
 
 window.THREE = Object.assign({}, T, {
   AmbientLight, HemisphereLight, DirectionalLight, PointLight, SpotLight, GLTFExporter, GLTFLoader,
+  EffectComposer, RenderPass, GTAOPass, UnrealBloomPass, OutputPass, ShaderPass, VignetteShader,
   sRGBEncoding: T.SRGBColorSpace, // old name, still used in a few places
 });
 

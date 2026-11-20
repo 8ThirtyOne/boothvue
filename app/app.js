@@ -1323,6 +1323,32 @@ function stepHQ() {
   hqStatus.textContent = hqN < hqTarget ? `Refining ${hqN}/${hqTarget}` : 'Final quality';
 }
 
+// Embed hero (the spinning booth on the site): the camera never rests, so the accumulated photo-real pass never runs.
+// Give the moving view its own polish instead: ambient occlusion (soft contact shading), a gentle glow on lit graphics.
+let embedFX = null;
+function liveRender() {
+  if (EMBED && THREE.EffectComposer && embedFX !== false) {
+    try {
+      if (!embedFX) {
+        const sz = renderer.getSize(new THREE.Vector2()), c = new THREE.EffectComposer(renderer);
+        c.setPixelRatio(renderer.getPixelRatio());
+        c.addPass(new THREE.RenderPass(scene, camera));
+        const ao = new THREE.GTAOPass(scene, camera, sz.x, sz.y);
+        ao.updateGtaoMaterial({ radius: .5, distanceExponent: 1, thickness: 1.2, scale: 1.15, samples: 12 });
+        ao.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 6, rings: 2, samples: 12 });
+        ao.blendIntensity = 1; c.addPass(ao);
+        c.addPass(new THREE.UnrealBloomPass(sz.clone(), .12, .35, 1.4));   // only the brightest lit graphics glow
+        c.addPass(new THREE.OutputPass());
+        const vig = new THREE.ShaderPass(THREE.VignetteShader); vig.uniforms.offset.value = .95; vig.uniforms.darkness.value = 1.25; c.addPass(vig);
+        c.setSize(sz.x, sz.y); embedFX = c;
+      }
+      const ex = renderer.toneMappingExposure; renderer.toneMappingExposure = ex * .8;   // the still render reads darker; match it
+      embedFX.render(); renderer.toneMappingExposure = ex; return;
+    } catch (e) { console.warn('embed fx off', e); embedFX = false; }
+  }
+  renderer.render(scene, camera);
+}
+
 function renderFrame() {
   if (exporting) return;
   updateCeilingVis();
@@ -1330,7 +1356,7 @@ function renderFrame() {
   const key = [sceneRev, canvas.width, camera.fov, oTh, oPh, oR, oTarget.x, oTarget.y, oTarget.z].join();
   const now = performance.now();
   if (key !== lastKey) { lastKey = key; lastChange = now; resetHQ(); hqStatus.textContent = 'Live preview'; }
-  if (now - lastChange < 350) { renderer.render(scene, camera); return; }
+  if (now - lastChange < 350) { liveRender(); return; }
   if (hqN < hqTarget) { stepHQ(); if (hqN === hqTarget) camUpdate(); }
 }
 
@@ -2435,7 +2461,7 @@ function crowdLiveFrame() {
   poseCrowd(Math.min((now - crowdClock) / 1000, .1)); crowdClock = now;
   if (hqCanvas.style.visibility !== 'hidden' || hqN) resetHQ();
   hqStatus.textContent = 'Live · people walking';
-  renderer.render(scene, camera);
+  liveRender();
   return true;
 }
 
@@ -4320,6 +4346,7 @@ function resize(){
   const W=area.clientWidth, H=area.clientHeight;
   if(!W||!H) return;
   renderer.setSize(W,H,false);
+  if(embedFX) embedFX.setSize(W,H);
   camera.aspect=W/H; camera.updateProjectionMatrix();
   if(typeof bgPhoto!=="undefined"&&bgPhoto) applyBg();
 }
