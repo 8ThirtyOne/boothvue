@@ -473,7 +473,7 @@ details.sec > .ss > .ss-label { display: none; }
 .acct-sent-icon { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: #fff; }
 .acct-sent-title { font: 700 22px/1.15 var(--font-head); color: var(--fg); }
 .acct-sent p { font-size: 14px; line-height: 1.5; color: var(--fg-muted); max-width: 40ch; }
-.acct-sent p b { color: var(--fg); font-weight: 600; word-break: break-all; }
+.acct-sent p b { color: var(--fg); font-weight: 600; display: inline-block; max-width: 100%; overflow-wrap: anywhere; }
 .acct-sent .acct-sent-small { font-size: 12px; }
 .cv-pill:hover { filter: brightness(1.06); }
 .cv-top-right { position: absolute; top: 14px; right: 14px; z-index: 7; display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; max-width: calc(100% - 330px); }
