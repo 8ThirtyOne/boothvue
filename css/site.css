@@ -1296,3 +1296,6 @@ a.size-custom:hover { border-style: solid; }
     linear-gradient(90deg, rgba(3,6,15,.3) 0%, rgba(3,6,15,0) 50%),
     linear-gradient(180deg, rgba(3,6,15,.32) 0%, rgba(3,6,15,0) 16%, rgba(3,6,15,0) 86%, rgba(3,6,15,.22) 100%); }
 }
+/* Workflow hero: plain looping AI video, not interactive */
+.hero-video { object-fit: cover; object-position: 62% 50%; pointer-events: none; }
+@media (min-width: 861px) and (hover: hover) { .hero-video { left: 28%; width: 72%; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 22%); mask-image: linear-gradient(90deg, transparent 0%, #000 22%); } }
