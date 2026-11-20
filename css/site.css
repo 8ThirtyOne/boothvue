@@ -1299,3 +1299,13 @@ a.size-custom:hover { border-style: solid; }
 /* Workflow hero: plain looping AI video, not interactive */
 .hero-video { object-fit: cover; object-position: 62% 50%; pointer-events: none; }
 @media (min-width: 861px) and (hover: hover) { .hero-video { left: 28%; width: 72%; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 22%); mask-image: linear-gradient(90deg, transparent 0%, #000 22%); } }
+
+/* Standard sizes: dark Feet / Meters cards, white size tiles */
+.size-card { background: linear-gradient(160deg, #0d1a3d 0%, #0a1430 60%, #08102a 100%); border-color: #1c2a52; color: #eef2fb; }
+.size-card h3 { color: #fff; }
+.size-card .sub { color: rgba(226,233,248,.72); }
+.size-badge { background: rgba(102,157,255,.16); color: #a9c6ff; }
+.size-card a.size-chip { background: #fff; color: #10172a; border-color: #fff; }
+.size-card a.size-chip small { color: #667085; }
+.size-card a.size-custom { background: #fff; border-color: #fff; }
+.size-card a.size-chip:hover { background: #fff; border-color: #fff; color: #1d4ed8; }
