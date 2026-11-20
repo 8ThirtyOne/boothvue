@@ -1228,3 +1228,31 @@ a.size-custom:hover { border-style: solid; }
 .fc-row a.fc-star { border-top: 3px solid var(--accent); padding-top: 11px; }
 .fc-row a.fc-star small, .fc-row a.fc-star strong { color: var(--accent); }
 @media (max-width: 860px) { .fc-row { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 18px; } .fc-row a.fc-star { grid-column: 1 / -1; } }
+
+/* Home: slim one-line workflow under the hero */
+.flow-line { background: var(--surface); border-bottom: 1px solid var(--line); }
+.flow-line .wrap { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px 22px; padding-block: 16px; }
+.flow-line nav { display: flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: 6px 12px; font: 800 16px var(--font-body); }
+.flow-line nav a { color: var(--ink); text-decoration: none; }
+.flow-line nav a:hover { color: var(--accent); }
+.flow-line nav i { font-style: normal; color: color-mix(in srgb, var(--muted) 60%, transparent); }
+.flow-line nav a.fl-star { color: var(--accent); }
+
+/* Home: the five steps as image cards; step 5 (the AI render) highlighted */
+.scards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; margin-top: clamp(22px, 3vw, 34px); }
+.scard { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--bg); color: var(--ink); text-decoration: none; transition: transform .2s, box-shadow .2s, border-color .2s; }
+.scard:hover { transform: translateY(-3px); box-shadow: 0 18px 36px -24px rgba(13,21,38,.45); border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); }
+.scard-img { position: relative; display: block; aspect-ratio: 4 / 3; background: #0b0f16; overflow: hidden; }
+.scard-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+.scard:hover .scard-img img { transform: scale(1.04); }
+.scard-img b { position: absolute; left: 10px; top: 10px; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: #1d4ed8; font: 800 15px var(--font-body); }
+.scard-body { display: grid; gap: 6px; padding: 14px 14px 16px; flex: 1; align-content: start; }
+.scard-body small { font: 500 11px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.scard-body strong { font: 800 18px/1.15 var(--font-body); }
+.scard-p { font: 500 14px/1.35 var(--font-body); color: var(--muted); }
+.scard-tool { margin-top: auto; padding-top: 6px; font: 500 11px var(--font-mono); letter-spacing: .04em; color: color-mix(in srgb, var(--accent) 80%, var(--ink)); }
+.scard-star { border: 2px solid var(--accent); }
+.scard-star .scard-img b { background: var(--accent); color: #fff; }
+.scard-tag { position: absolute; right: 10px; top: 10px; padding: 4px 10px; border-radius: 999px; background: var(--accent); color: #fff; font: 600 10px var(--font-mono); letter-spacing: .12em; text-transform: uppercase; font-style: normal; }
+@media (max-width: 1000px) { .scards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .scards { grid-template-columns: repeat(2, minmax(0, 1fr)); } .scard-star { grid-column: 1 / -1; } .scard-star .scard-img { aspect-ratio: 16 / 9; } }
