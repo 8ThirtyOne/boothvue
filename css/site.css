@@ -1180,3 +1180,20 @@ a.size-custom:hover { border-style: solid; }
   .nav-menu .nm-ic { width: 38px; height: 38px; }
   .nav-menu .nm-ic svg { width: 20px; height: 20px; }
 }
+
+/* Step circles: no outer glow, slightly larger numbers (inner shading stays) */
+.walk-nav a b { font-size: 15.5px; box-shadow: inset 0 -2px 4px rgba(37,99,235,.22), inset 0 2px 3px rgba(255,255,255,.95); }
+.walk-nav a.done b { box-shadow: inset 0 -3px 5px rgba(8,20,60,.35), inset 0 2px 3px rgba(255,255,255,.55); }
+.walk-nav a.on b { box-shadow: inset 0 -2px 4px rgba(37,99,235,.3); }
+
+/* Home: the workflow step bar under the hero, eyebrow centered, step 5 (the payoff) highlighted */
+.flow-home { background: var(--surface); border-bottom: 1px solid var(--line); }
+.flow-home .wrap { display: grid; justify-items: center; gap: 10px; padding-block: 18px 16px; }
+.flow-eyebrow { text-align: center; }
+.walk-nav-home { position: static; background: none; box-shadow: none; border: 0; backdrop-filter: none; -webkit-backdrop-filter: none; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; row-gap: 10px; width: 100%; }
+.walk-nav-home a { flex: 0 0 auto; }
+.walk-nav-home a.wn-star { color: #fff; background: linear-gradient(180deg, #4f8cff 0%, #2563eb 55%, #1d4ed8 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.45), inset 0 -3px 6px rgba(8,20,60,.35); }
+.walk-nav-home a.wn-star b { background: radial-gradient(circle at 32% 28%, #ffffff 0%, #f1f5ff 55%, #d9e5ff 100%); border-color: #fff; color: var(--accent); }
+.walk-nav-home a.wn-star span::after { content: " ✦"; color: #ffd977; }
+.walk-nav-home a.wn-star::before { background: linear-gradient(180deg, #4f8cff, #1d4ed8); }
+@media (max-width: 860px) { .walk-nav-home a span { display: inline; } .walk-nav-home a + a::before { display: none; } .walk-nav-home a + a { margin-left: 6px; } }
