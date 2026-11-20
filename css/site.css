@@ -1309,3 +1309,5 @@ a.size-custom:hover { border-style: solid; }
 .size-card a.size-chip small { color: #667085; }
 .size-card a.size-custom { background: #fff; border-color: #fff; }
 .size-card a.size-chip:hover { background: #fff; border-color: #fff; color: #1d4ed8; }
+.size-card a.size-chip b { font: 800 16.5px var(--font-body); letter-spacing: -.01em; }
+@media (max-width: 600px) { .size-card a.size-chip b { font-size: 14.5px; } }
