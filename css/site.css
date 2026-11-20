@@ -1270,3 +1270,8 @@ a.size-custom:hover { border-style: solid; }
 .pb-cta { color: #8fb6ff; text-decoration: none; font-weight: 800; }
 .pb-cta:hover { color: #fff; }
 @media (max-width: 600px) { .promo-bar .wrap { font-size: 13px; padding-block: 10px; } .pb-until { display: none; } }
+/* Launch bar: a little bigger */
+.promo-bar .wrap { padding-block: 15px; gap: 8px 16px; font-size: 16.5px; }
+.pb-tag { font-size: 11.5px; padding: 5px 12px; }
+.pb-code { font-size: 15px; padding: 6px 13px; }
+@media (max-width: 600px) { .promo-bar .wrap { font-size: 14px; padding-block: 12px; } .pb-code { font-size: 13.5px; } }
