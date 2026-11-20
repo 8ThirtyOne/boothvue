@@ -1282,3 +1282,10 @@ a.size-custom:hover { border-style: solid; }
   .hero, .page-hero.hero-3d { align-items: flex-start; }
   .page-hero .wrap { padding-top: calc(192px + clamp(56px, 8vw, 110px)); }
 }
+/* Home hero: darken only around the (lowered) text block, so the top-left of the booth shows */
+@media (min-width: 861px) {
+  .hero::after { background:
+    radial-gradient(ellipse 52% 58% at 24% 66%, rgba(8,11,17,.9) 0%, rgba(8,11,17,.78) 42%, rgba(8,11,17,.35) 72%, rgba(8,11,17,0) 100%),
+    linear-gradient(90deg, rgba(8,11,17,.3) 0%, rgba(8,11,17,0) 50%),
+    linear-gradient(180deg, rgba(8,11,17,.32) 0%, rgba(8,11,17,0) 16%, rgba(8,11,17,0) 86%, rgba(8,11,17,.22) 100%); }
+}
