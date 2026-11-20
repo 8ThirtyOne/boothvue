@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 240">
+  <defs><clipPath id="c"><circle cx="120" cy="120" r="104"/></clipPath>
+  <linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd977"/><stop offset="1" stop-color="#f4a93b"/></linearGradient></defs>
+  <circle cx="120" cy="120" r="104" fill="url(#g)"/>
+  <g clip-path="url(#c)">
+    <path d="M0 158 Q30 146 60 158 T120 158 T180 158 T240 158 V240 H0Z" fill="#5b3df5"/>
+    <path d="M0 184 Q30 172 60 184 T120 184 T180 184 T240 184 V240 H0Z" fill="#3a22c4"/>
+    <path d="M0 210 Q30 198 60 210 T120 210 T180 210 T240 210 V240 H0Z" fill="#1a1033"/>
+  </g>
+  <g fill="#1a1033">
+    <path d="M50 124 C70 104 100 96 132 100 L212 96 L136 114 C120 128 94 136 70 132 C60 130 54 128 50 124Z"/>
+    <path d="M78 114 C90 78 124 56 168 52 C140 70 124 88 116 108Z"/>
+    <path d="M52 124 L20 134 L28 122 L18 112 L56 118Z"/>
+  </g>
+  <circle cx="126" cy="105" r="3.6" fill="#ffd977"/>
+  <text x="262" y="138" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-weight="700" font-size="92" letter-spacing="10" fill="#ffffff">HALCYON</text>
+  <text x="266" y="186" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-weight="500" font-size="30" letter-spacing="12" fill="#ffd977">PAUSE HERE</text>
+</svg>
