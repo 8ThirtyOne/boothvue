@@ -1172,3 +1172,11 @@ a.size-custom:hover { border-style: solid; }
 /* Top bar links: larger and heavier */
 .nav-links > a, .nav-drop, .nav-signin, .nav-signout { font-size: 15px; font-weight: 800; letter-spacing: -.005em; }
 @media (min-width: 961px) and (max-width: 1100px) { .nav-links > a, .nav-drop, .nav-signin { font-size: 14px; } }
+
+/* Dropdown menus: match the larger, heavier top bar (desktop only; the phone menu is separate) */
+@media (min-width: 961px) {
+  .nav-menu a b { font-size: 15px; font-weight: 800; letter-spacing: -.005em; }
+  .nav-menu a small { font-size: 13px; }
+  .nav-menu .nm-ic { width: 38px; height: 38px; }
+  .nav-menu .nm-ic svg { width: 20px; height: 20px; }
+}
