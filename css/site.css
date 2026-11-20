@@ -1275,3 +1275,5 @@ a.size-custom:hover { border-style: solid; }
 .pb-tag { font-size: 11.5px; padding: 5px 12px; }
 .pb-code { font-size: 15px; padding: 6px 13px; }
 @media (max-width: 600px) { .promo-bar .wrap { font-size: 14px; padding-block: 12px; } .pb-code { font-size: 13.5px; } }
+/* Home hero: content sits 50px lower */
+@media (min-width: 601px) { .hero-copy { padding-top: calc(120px + clamp(56px, 8vw, 110px)); } }
