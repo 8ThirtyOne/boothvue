@@ -1212,3 +1212,5 @@ a.size-custom:hover { border-style: solid; }
 .walk-nav-home a b { background: #101a33; color: #cfe0ff; border-color: rgba(143,182,255,.45); box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
 .flow-home { background: linear-gradient(135deg, #0a1638 0%, #12286b 40%, #1b3c9a 70%, #2a2f86 100%); border-bottom: 0; }
 .walk-nav-home a b { background: rgba(8,16,44,.55); }
+.walk-nav-home a b { background: #fff; color: #1d4ed8; border-color: #fff; box-shadow: none; }
+.flow-home .flow-eyebrow { color: #fff; }
