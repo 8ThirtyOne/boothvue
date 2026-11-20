@@ -61,6 +61,7 @@ export default async function handler(req, res) {
       "line_items[0][price_data][product_data][name]": `BoothVue ${plan.name}`,
       "line_items[0][price_data][product_data][description]": `${plan.days} days of full access, ${plan.ai} AI Build actions, ${plan.images} AI images and ${plan.videos} 10-second AI video${plan.videos === 1 ? "" : "s"}. One-time payment, no subscription.`,
       customer_creation: "always",
+      allow_promotion_codes: "true", // launch codes (e.g. LAUNCH20) are entered on the Stripe page
       billing_address_collection: "auto",
       "metadata[plan]": planId,
       "payment_intent_data[metadata][plan]": planId,
