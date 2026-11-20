@@ -1289,3 +1289,10 @@ a.size-custom:hover { border-style: solid; }
     linear-gradient(90deg, rgba(8,11,17,.3) 0%, rgba(8,11,17,0) 50%),
     linear-gradient(180deg, rgba(8,11,17,.32) 0%, rgba(8,11,17,0) 16%, rgba(8,11,17,0) 86%, rgba(8,11,17,.22) 100%); }
 }
+/* Page heroes (3D booth pages): same overlay as home, dark only around the text */
+@media (min-width: 861px) and (hover: hover) {
+  .hero-3d-scrim { background:
+    radial-gradient(ellipse 52% 58% at 24% 66%, rgba(3,6,15,.9) 0%, rgba(3,6,15,.78) 42%, rgba(3,6,15,.35) 72%, rgba(3,6,15,0) 100%),
+    linear-gradient(90deg, rgba(3,6,15,.3) 0%, rgba(3,6,15,0) 50%),
+    linear-gradient(180deg, rgba(3,6,15,.32) 0%, rgba(3,6,15,0) 16%, rgba(3,6,15,0) 86%, rgba(3,6,15,.22) 100%); }
+}
