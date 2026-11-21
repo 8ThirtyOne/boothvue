@@ -1,3 +1,5 @@
+// Always open pages at the top (or at a #link); stop the browser restoring an old scroll spot after refresh
+try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; if (!location.hash) addEventListener("pageshow", e => { if (!e.persisted) scrollTo(0, 0); }); } catch {}
 // Phone/tablet menu card (like FoldVue's) and the top bar that turns light once the dark hero scrolls away.
 (() => {
   const nav = document.querySelector("header.nav");
