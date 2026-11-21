@@ -1354,3 +1354,8 @@ section:has(> .wrap > .sizes) { background-color: var(--surface) !important;
 @media (max-width: 960px) { header.nav .nav-signin, header.nav .nav-acct-group, header.nav > .wrap > .nav-acct { margin-left: auto; } }
 /* Line buttons always have a white face, so their text stays dark in dark mode too */
 .btn.btn-line, .btn.btn-line:hover, .btn.btn-line:active { color: #10172a; }
+/* Phone heroes: a little taller */
+@media (max-width: 600px) {
+  .hero-copy { padding-top: calc(70px + 72px); padding-bottom: 76px; }
+  .page-hero .wrap { padding-top: calc(70px + 72px); padding-bottom: 72px; }
+}
