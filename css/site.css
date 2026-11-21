@@ -1356,6 +1356,6 @@ section:has(> .wrap > .sizes) { background-color: var(--surface) !important;
 .btn.btn-line, .btn.btn-line:hover, .btn.btn-line:active { color: #10172a; }
 /* Phone heroes: a little taller */
 @media (max-width: 600px) {
-  .hero-copy { padding-top: calc(70px + 72px); padding-bottom: 76px; }
-  .page-hero .wrap { padding-top: calc(70px + 72px); padding-bottom: 72px; }
+  .hero-copy { padding-top: calc(70px + 120px); padding-bottom: 76px; }
+  .page-hero .wrap { padding-top: calc(70px + 120px); padding-bottom: 72px; }
 }
