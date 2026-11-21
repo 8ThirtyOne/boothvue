@@ -1350,3 +1350,7 @@ section:has(> .wrap > .sizes) { background-color: var(--surface) !important;
 .share-copy input { flex: 1; min-width: 0; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: 500 14px var(--font-mono); }
 .share-copy-btn { padding: 12px 18px; border-radius: 999px; border: 0; background: var(--accent); color: #fff; font: 700 15px var(--font-body); cursor: pointer; white-space: nowrap; }
 @media (max-width: 460px) { .share-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .share-dlg { padding: 22px; } }
+/* Phone/tablet header: Sign In / Account, Design and the menu button sit at the right edge */
+@media (max-width: 960px) { header.nav .nav-signin, header.nav .nav-acct-group, header.nav > .wrap > .nav-acct { margin-left: auto; } }
+/* Line buttons always have a white face, so their text stays dark in dark mode too */
+.btn.btn-line, .btn.btn-line:hover, .btn.btn-line:active { color: #10172a; }
