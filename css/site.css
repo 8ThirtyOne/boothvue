@@ -1362,3 +1362,12 @@ section:has(> .wrap > .sizes) { background-color: var(--surface) !important;
   .page-hero.hero-3d:has(+ .promo-bar) { min-height: calc(100svh - var(--promo-h, 92px)); }
   .page-hero .wrap { padding-top: calc(70px + 14px); padding-bottom: 34px; }
 }
+
+/* Pricing: no hero, passes first */
+.pricing-top { padding-top: clamp(36px, 5vw, 56px); }
+.pricing-head { text-align: center; margin-inline: auto; max-width: 720px; }
+.pricing-head .crumb { justify-content: center; display: flex; gap: 8px; font: 500 11px var(--font-mono); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.pricing-head .crumb a { color: var(--accent); text-decoration: none; }
+.pricing-head h1 { font-size: clamp(34px, 5vw, 54px); line-height: 1.06; margin: 10px 0 12px; text-wrap: balance; }
+.pricing-head h1 em { font-style: normal; color: var(--accent); }
+.pricing-head p { margin-inline: auto; }
