@@ -36,7 +36,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display&family=IBM+Plex+Mono:wght@500&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="/css/site.css?v=83">
+<link rel="stylesheet" href="/css/site.css?v=84">
 <link rel="stylesheet" href="/css/footer.css?v=4">
 
 <header class="nav">
@@ -306,13 +306,15 @@
 
   <section>
     <div class="wrap">
-      <div class="cta">
-        <div>
-          <h2>Show them your vision, not a sketch.</h2>
-          <p>Start from an idea and end with an ultra-realistic image or video, ready for your next presentation. Nothing to install.</p>
-        </div>
-        <div class="btns">
-          <a class="btn btn-white" href="/app/">Open BoothVue</a>
+      <div class="cta cta-share">
+        <video class="cta-bg" data-src="/img/halcyon-ai.mp4?v=2" poster="/img/halcyon-ai.jpg?v=2" muted loop playsinline preload="none" aria-hidden="true"></video>
+        <div class="cta-in">
+          <h2>Know someone planning a trade show booth?</h2>
+          <p>Send them BoothVue. They can go from an idea to a photo-real image and video of their booth in minutes, before anything is built.</p>
+          <div class="btns">
+            <button type="button" class="btn cta-share-btn" data-share><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>Share BoothVue</button>
+            <a class="btn cta-open" href="/app/">Open BoothVue</a>
+          </div>
         </div>
       </div>
     </div>
@@ -352,5 +354,6 @@
 <script src="/js/nav-account.js?v=2"></script>
 <script src="/js/nav-menu.js?v=1"></script>
 <script src="/js/promo-bar.js?v=1"></script>
+<script src="/js/share.js?v=1"></script>
 </body>
 </html>
